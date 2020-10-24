@@ -22,9 +22,7 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.PlayerXpEvent.PickupXp;
 
 import org.metafetish.buttplug.core.Messages.SingleMotorVibrateCmd;
 import org.metafetish.buttplug.client.*;
@@ -51,13 +49,11 @@ public class MineGasm
 
     private void setup(final FMLCommonSetupEvent event)
     {
-        // some preinit code
-        LOGGER.info("HELLO FROM PREINIT");
+        LOGGER.info("Pre-init...");
     }
 
     private void doClientStuff(final FMLClientSetupEvent event) {
         LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
-
         connectDevice();
     }
 
@@ -115,56 +111,18 @@ public class MineGasm
     }
 
     @SubscribeEvent
-    public void onPickupXp(PickupXp event)
-    {
-        System.out.println("XP picked up");
-        // Commands.SendPlayerSystemMessage((PlayerEntity) event.getEntity(), TextFormatting.RED + "Test");
-    }
-
-    /*@SubscribeEvent
-    public void onPickupItem(EntityItemPickupEvent event) {
-        System.out.println("Item picked up!");
-        LOGGER.info(event);
-    }*/
-
-    /*@SubscribeEvent
-    public void onDestroyItem(PlayerDestroyItemEvent event)
-    {
-        System.out.println("Item destroyed");
-    }*/
-
-    @SubscribeEvent
-    public void onDeath(LivingDeathEvent event)
-    {
-        Entity entity = event.getEntityLiving();
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            GameProfile profile = player.getGameProfile();
-            System.out.println("Player dead: " + profile.getName() + " " + profile.getId().toString());
-        }
-    }
-
-    @SubscribeEvent
     public void onHurt(LivingHurtEvent event)
     {
         Entity entity = event.getEntityLiving();
         if (entity instanceof PlayerEntity) {
             PlayerEntity player = (PlayerEntity) entity;
             GameProfile profile = player.getGameProfile();
-            System.out.println("Player hurt: " + profile.getName() + " " + profile.getId().toString());
-            System.out.println("Player hurt: " + playerID);
 
             if (profile.getId().equals(playerID)) {
                 vibrate();
             }
         }
     }
-
-    /*@SubscribeEvent
-    public void onPlayerTick(PlayerTickEvent event)
-    {
-        System.out.println("Tick");
-    }*/
 
     @SubscribeEvent
     public void onWorldLoaded(WorldEvent.Load event) {
@@ -175,15 +133,6 @@ public class MineGasm
         playerName = profile.getName();
         playerID = profile.getId();
         System.out.println("Current player: " + playerName + " " + playerID.toString());
-
-        /*System.out.println("n players: " + world.getPlayers().size());
-
-        for (PlayerEntity player : world.getPlayers()) {
-            if (player.getGameProfile().getId().equals(playerID)) {
-                vibrate();
-                break;
-            }
-        }*/
     }
 
     @SubscribeEvent
@@ -195,11 +144,6 @@ public class MineGasm
             if (playerName != null) {
                 PlayerEntity player = (PlayerEntity) entity;
                 GameProfile profile = player.getGameProfile();
-                //playerName = profile.getName();
-                //playerID = profile.getId();
-
-                //System.out.println(profile.toString() + " " + playerID);
-                //System.out.println(profile.getId().equals(playerID));
 
                 if (profile.getId().equals(playerID)) {
                     System.out.println("Player in: " + playerName + " " + playerID.toString());
