@@ -17,4 +17,4 @@ JAR file: [minegasm-0.1.jar](https://github.com/RainbowVille/minegasm/releases/d
 In theory, this mod should be compatible with any devices on this list: [IoST Index – Vibrators with Buttplug.io Support](https://iostindex.com/?filter0ButtplugSupport=4&filter1Features=OutputsVibrators)
 
 It has been confirmed to work with:
-- Lovense Hush
+- [Lovense Hush](https://www.lovense.com/r/zrzb5e)
