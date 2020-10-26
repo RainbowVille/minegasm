@@ -22,7 +22,9 @@ It has been confirmed to work with:
 - [Lovense Hush](https://www.lovense.com/r/zrzb5e)
 
 ## Troubleshooting
-As with a lot of computer issues, the very first thing you should try is to restart everything. While not strictly necessary, we recommend that you start your device and the Intiface server before Minecraft.
+As with a lot of computer issues, the very first thing you should try is to restart everything. While not strictly necessary, we recommend that you start your device and the Intiface server before Minecraft. This should solve most intermittent issues.
+
+If you run this mod alongside other mods, try disabling them all first and then reenable them one by one when the mods run successfully. If you found any mods that are incompatible with this mod, please file an issue on our [issue tracker](https://github.com/RainbowVille/minegasm/issues).
 
 ## Support
 In principle, we do not provide any dedicated (technical) supports. If you need any assistance, you can try joining our [Discord server](https://discord.gg/Kc7ueWC) and ping @RSwoop there, but please be advised that he might not always be able to help you.
