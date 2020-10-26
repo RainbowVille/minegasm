@@ -1,3 +1,5 @@
+Minegasm is a Minecraft mod that uses connected sex toys to enhance the gameplay experience. This mod is intended for use by consenting adults.
+
 ## Download
 JAR file: [minegasm-0.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.1.0/minegasm-0.1.jar)
 
