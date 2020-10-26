@@ -1,5 +1,3 @@
 # minegasm
 
-## Dependencies
-1. Intiface Desktop: https://intiface.com/desktop/
-2. Minecraft Forge - MC 1.16.3: http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.3.html
+![Gradle Build](https://github.com/RainbowVille/minegasm/workflows/Java%20CI%20with%20Gradle/badge.svg)
