@@ -1,4 +1,4 @@
-Minegasm is a Minecraft mod that uses connected sex toys to enhance the gameplay experience. This mod is intended for use by consenting adults.
+Minegasm is a Minecraft mod that uses connected sex toys to enhance the gameplay experience. This mod is intended to be used by consenting adults.
 
 ## Download
 JAR file: [minegasm-0.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.1.0/minegasm-0.1.jar)
@@ -20,3 +20,9 @@ In theory, this mod should be compatible with any devices on this list: [IoST In
 
 It has been confirmed to work with:
 - [Lovense Hush](https://www.lovense.com/r/zrzb5e)
+
+## Support
+
+In principle, we do not provide any dedicated (technical) support. If you need any assistance, you can try joining our [Discord server](https://discord.gg/Kc7ueWC) and ping @RSwoop there, but please be advised that he might not always be able to help you.
+
+If you have any suggestions or found any bugs, please post them to our [issue tracker](https://github.com/RainbowVille/minegasm/issues) on GitHub.
