@@ -21,8 +21,10 @@ In theory, this mod should be compatible with any devices on this list: [IoST In
 It has been confirmed to work with:
 - [Lovense Hush](https://www.lovense.com/r/zrzb5e)
 
-## Support
+## Troubleshooting
+As with a lot of computer issues, the very first thing you should try is to restart everything. While not strictly necessary, we recommend that you start your device and the Intiface server before Minecraft.
 
+## Support
 In principle, we do not provide any dedicated (technical) supports. If you need any assistance, you can try joining our [Discord server](https://discord.gg/Kc7ueWC) and ping @RSwoop there, but please be advised that he might not always be able to help you.
 
 If you have any suggestions or found any bugs, please post them to our [issue tracker](https://github.com/RainbowVille/minegasm/issues) on GitHub.
