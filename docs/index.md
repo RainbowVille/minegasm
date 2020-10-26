@@ -26,3 +26,5 @@ It has been confirmed to work with:
 In principle, we do not provide any dedicated (technical) support. If you need any assistance, you can try joining our [Discord server](https://discord.gg/Kc7ueWC) and ping @RSwoop there, but please be advised that he might not always be able to help you.
 
 If you have any suggestions or found any bugs, please post them to our [issue tracker](https://github.com/RainbowVille/minegasm/issues) on GitHub.
+
+The status of confirmed bugs and planned future enhancements are available on our [project board](https://github.com/RainbowVille/minegasm/projects/1).
