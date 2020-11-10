@@ -1,10 +1,11 @@
 {
 	"homepage": "https://minegasm.therainbowville.com",
 	"promos": {
-		"1.16.3-latest": "0.1.0",
-		"1.16.3-recommended": "0.1.0"
+		"1.16.3-latest": "0.1.1",
+		"1.16.3-recommended": "0.1.1"
 	},
 	"1.16.3": {
+		"0.1.1": "bug fixes and performance improvements",
 		"0.1.0": "initial MVP version"
 	}
 }
