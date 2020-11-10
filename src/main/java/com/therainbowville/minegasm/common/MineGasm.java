@@ -1,6 +1,7 @@
 package com.therainbowville.minegasm.common;
 
 import com.mojang.authlib.GameProfile;
+import com.therainbowville.minegasm.config.MineGasmConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -24,145 +25,29 @@ import org.apache.logging.log4j.Logger;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
-import org.metafetish.buttplug.core.Messages.SingleMotorVibrateCmd;
-import org.metafetish.buttplug.client.*;
+import com.therainbowville.minegasm.client.ToyController;
 
 import java.util.UUID;
-import java.net.URI;
 
-@Mod("minegasm")
+@Mod(MineGasm.MOD_ID)
 public class MineGasm
 {
+    public static final String MOD_ID = "minegasm";
     private static final Logger LOGGER = LogManager.getLogger();
-    private static String playerName = null;
-    private static UUID playerID = null;
-    private final ButtplugWSClient client = new ButtplugWSClient("Minegasm");
-    private ButtplugClientDevice device = null;
 
     public MineGasm() {
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.DISPLAYTEST, () -> Pair.of(() -> FMLNetworkConstants.IGNORESERVERONLY, (a, b) -> true));
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setup);
-        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::doClientStuff);
-
-        MinecraftForge.EVENT_BUS.register(this);
+        MineGasmConfig.register(ModLoadingContext.get());
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupCommon);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::setupClient);
     }
 
-    private void setup(final FMLCommonSetupEvent event)
+    private void setupCommon(final FMLCommonSetupEvent event)
     {
-        LOGGER.info("Pre-init...");
+        LOGGER.info("Common setup...");
     }
 
-    private void doClientStuff(final FMLClientSetupEvent event) {
+    private void setupClient(final FMLClientSetupEvent event) {
         LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
-        connectDevice();
-    }
-
-    private void connectDevice() {
-        try {
-            client.Connect(new URI("ws://localhost:12345/buttplug"), true);
-            client.startScanning();
-
-            Thread.sleep(5000);
-            client.requestDeviceList();
-
-            for (ButtplugClientDevice dev : client.getDevices()) {
-                if (dev.allowedMessages.contains(SingleMotorVibrateCmd.class.getSimpleName())) {
-                    device = dev;
-                    client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, 0, client.getNextMsgId()));
-                    break;
-                }
-            }
-
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                try {
-                    LOGGER.info("Disconnecting devices...");
-                    client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, 0, client.getNextMsgId()));
-                    client.stopAllDevices();
-                    client.Disconnect();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }));
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void vibrate() {
-        try {
-            client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, (1.0 - Math.random()), client.getNextMsgId()));
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            try {
-                                client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, 0, client.getNextMsgId()));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    Math.round(100 + 5000 * (1.0 - Math.random()))
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @SubscribeEvent
-    public void onHurt(LivingHurtEvent event)
-    {
-        Entity entity = event.getEntityLiving();
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            GameProfile profile = player.getGameProfile();
-
-            if (profile.getId().equals(playerID)) {
-                vibrate();
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void onWorldLoaded(WorldEvent.Load event) {
-        IWorld world = event.getWorld();
-        System.out.println("World loaded: " + world.toString());
-
-        GameProfile profile = Minecraft.getInstance().getSession().getProfile();
-        playerName = profile.getName();
-        playerID = profile.getId();
-        System.out.println("Current player: " + playerName + " " + playerID.toString());
-    }
-
-    @SubscribeEvent
-    public void onWorldEntry(EntityJoinWorldEvent event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof ClientPlayerEntity) {
-            System.out.println("Entered world: " + entity.toString());
-
-            if (playerName != null) {
-                PlayerEntity player = (PlayerEntity) entity;
-                GameProfile profile = player.getGameProfile();
-
-                if (profile.getId().equals(playerID)) {
-                    System.out.println("Player in: " + playerName + " " + playerID.toString());
-                    vibrate();
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public void onWorldExit(EntityLeaveWorldEvent event) {
-        Entity entity = event.getEntity();
-        if ((entity instanceof PlayerEntity) && (playerName != null)) {
-            playerName = null;
-        }
-    }
-
-    @SubscribeEvent
-    public void onServerStarting(FMLServerStartingEvent event) {
-        LOGGER.info("Server starting...");
     }
 }
