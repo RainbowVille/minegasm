@@ -19,7 +19,9 @@ JAR file: [minegasm-0.1.1.jar](https://github.com/RainbowVille/minegasm/releases
 In theory, this mod should be compatible with any devices on this list: [IoST Index – Vibrators with Buttplug.io Support](https://iostindex.com/?filter0ButtplugSupport=4&filter1Features=OutputsVibrators)
 
 It has been confirmed to work with:
-- [Lovense Hush](https://www.lovense.com/r/zrzb5e)
+- [Lovense Edge](https://www.lovense.com/r/qvl9jn) (prostate massager)
+- [Lovense Hush](https://www.lovense.com/r/zrzb5e) (butt plug)
+- [Lovense Max 2](https://www.lovense.com/r/n4x2bh) (male masturbator)
 
 ## Troubleshooting
 As with a lot of computer issues, the very first thing you should try is to restart everything. While not strictly necessary, we recommend that you start your device and the Intiface server before Minecraft. This should solve most intermittent issues.
