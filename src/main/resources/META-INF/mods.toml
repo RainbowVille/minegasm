@@ -1,11 +1,11 @@
 modLoader="javafml"
-loaderVersion="[34,)"
-license="All rights reserved"
+loaderVersion="[35,)"
+license="Creative Commons Attribution Share Alike 4.0"
 issueTrackerURL="https://github.com/RainbowVille/minegasm/issues"
 [[mods]]
 modId="minegasm"
-version="0.1.1"
-displayName="MineGasm"
+version="0.2.0"
+displayName="Minegasm"
 updateJSONURL="https://minegasm.therainbowville.com/updates.json"
 displayURL="https://minegasm.therainbowville.com/"
 logoFile="minegasm.png"
@@ -17,12 +17,12 @@ description='''
 [[dependencies.minegasm]]
     modId="forge"
     mandatory=true
-    versionRange="[34,)"
+    versionRange="[35,)"
     ordering="NONE"
     side="BOTH"
 [[dependencies.minegasm]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.16.3]"
+    versionRange="[1.16.4,1.17)"
     ordering="NONE"
     side="BOTH"

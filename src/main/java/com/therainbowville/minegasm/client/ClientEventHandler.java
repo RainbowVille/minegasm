@@ -1,7 +1,7 @@
 package com.therainbowville.minegasm.client;
 
 import com.mojang.authlib.GameProfile;
-import com.therainbowville.minegasm.common.MineGasm;
+import com.therainbowville.minegasm.common.Minegasm;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -19,7 +19,7 @@ import net.minecraftforge.fml.common.Mod;
 
 import java.util.UUID;
 
-@Mod.EventBusSubscriber(modid = MineGasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientEventHandler {
     private static String playerName = null;
     private static UUID playerID = null;
@@ -65,7 +65,7 @@ public class ClientEventHandler {
                         ToyController.vibrate();
                         player.sendStatusMessage(new StringTextComponent(String.format("Connected to %s [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
                     } else {
-                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "MineGasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
+                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
                     }
                 }
             }

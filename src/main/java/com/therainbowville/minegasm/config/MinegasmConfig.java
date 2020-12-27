@@ -1,24 +1,14 @@
 package com.therainbowville.minegasm.config;
 
-import com.electronwill.nightconfig.core.file.CommentedFileConfig;
-import com.therainbowville.minegasm.common.MineGasm;
+import com.therainbowville.minegasm.common.Minegasm;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModContainer;
-import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.ObfuscationReflectionHelper;
-import net.minecraftforge.fml.config.ConfigTracker;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.commons.lang3.tuple.Pair;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collections;
-import java.util.Map;
-import java.util.Optional;
-
-@Mod.EventBusSubscriber(modid = MineGasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class MineGasmConfig {
+@Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
+public class MinegasmConfig {
     public static void register(final ModLoadingContext context) {
         context.registerConfig(ModConfig.Type.CLIENT, Client.SPEC);
     }
@@ -44,7 +34,7 @@ public class MineGasmConfig {
 
             private Impl(final ForgeConfigSpec.Builder builder) {
                 serverUrl = builder
-                        .translation(MineGasm.MOD_ID + ".config.serverUrl")
+                        .translation(Minegasm.MOD_ID + ".config.serverUrl")
                         .define("serverUrl", "ws://localhost:12345/buttplug");
             }
 
