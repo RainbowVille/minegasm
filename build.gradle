@@ -81,7 +81,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.4-35.1.4'
+    minecraft 'net.minecraftforge:forge:1.16.5-36.0.14'
     compile 'org.metafetish.buttplug:buttplug.core:0.0.14-SNAPSHOT'
     compile 'org.metafetish.buttplug:buttplug.client:0.0.14-SNAPSHOT'
 }
