@@ -1,44 +1,47 @@
 package com.therainbowville.minegasm.config;
 
 import com.therainbowville.minegasm.common.Minegasm;
-import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraft.item.DyeColor;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
-import org.apache.commons.lang3.tuple.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.List;
+
 
 @Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class MinegasmConfig {
-    public static void register(final ModLoadingContext context) {
-        context.registerConfig(ModConfig.Type.CLIENT, Client.SPEC);
-    }
+    private static final Logger LOGGER = LogManager.getLogger();
 
-    public static class Client {
-        public static final Impl INSTANCE;
-        public static final ForgeConfigSpec SPEC;
-        public static String serverUrl;
+    // Client
+    public static String serverUrl;
+    public static boolean clientBoolean;
+    public static List<String> clientStringList;
+    public static DyeColor clientDyeColorEnum;
 
-        static {
-            final Pair<Impl, ForgeConfigSpec> specPair = new ForgeConfigSpec.Builder().configure(Impl::new);
-            SPEC = specPair.getRight();
-            INSTANCE = specPair.getLeft();
+    public static boolean modelTranslucency;
+    public static float modelScale;
+
+    // Server
+    public static boolean serverBoolean;
+    public static List<String> serverStringList;
+    public static DyeColor serverEnumDyeColor;
+
+    public static int electricFurnaceEnergySmeltCostPerTick = 100;
+    public static int heatCollectorTransferAmountPerTick = 100;
+
+    @SubscribeEvent
+    public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {
+        final ModConfig config = event.getConfig();
+        // Rebake the configs when they change
+        if (config.getSpec() == ConfigHolder.CLIENT_SPEC) {
+            ConfigHelper.bakeClient(config);
+            LOGGER.debug("Baked client config");
+        } else if (config.getSpec() == ConfigHolder.SERVER_SPEC) {
+            ConfigHelper.bakeServer(config);
+            LOGGER.debug("Baked server config");
         }
-
-        public static void bake() {
-
-        }
-
-        static class Impl {
-
-            final ForgeConfigSpec.ConfigValue<String> serverUrl;
-
-            private Impl(final ForgeConfigSpec.Builder builder) {
-                serverUrl = builder
-                        .translation(Minegasm.MOD_ID + ".config.serverUrl")
-                        .define("serverUrl", "ws://localhost:12345/buttplug");
-            }
-
-        }
-
     }
 }

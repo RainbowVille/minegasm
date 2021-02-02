@@ -1,0 +1,6 @@
+{
+	"gui.minegasm.intensity": "Intensity",
+	"gui.minegasm.hurt": "Energy %s",
+	"gui.minegasm.mine": "Smelt time %s/%s",
+	"gui.minegasm.damage": "Fuel burn time %s/%s"
+}

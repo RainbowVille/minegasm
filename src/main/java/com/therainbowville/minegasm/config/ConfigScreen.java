@@ -6,7 +6,11 @@ import net.minecraft.client.gui.screen.IngameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.list.OptionsRowList;
+import net.minecraft.client.settings.BooleanOption;
+import net.minecraft.client.settings.IteratableOption;
+import net.minecraft.client.settings.SliderPercentageOption;
 import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.Objects;
 
@@ -29,10 +33,16 @@ public final class ConfigScreen extends Screen {
     private final Screen lastScreen;
     private OptionsRowList optionsRowList;
 
+    private static final ClientConfig clientConfig = ConfigHolder.getClientInstance();
+    private static final ServerConfig serverConfig = ConfigHolder.getServerInstance();
+
     public ConfigScreen(Screen parentScreen) {
         super(new StringTextComponent(Minegasm.NAME));
         this.lastScreen = parentScreen;
     }
+
+    private static boolean testBool = false;
+    private static int testHudX = 0;
 
     @Override
     protected void init() {
@@ -43,9 +53,23 @@ public final class ConfigScreen extends Screen {
                 OPTIONS_LIST_ITEM_HEIGHT
         );
 
+        this.optionsRowList.addOption(new BooleanOption(
+                "gui.minegasm.hurt",
+                // GameSettings argument unused for both getter and setter
+                unused -> getShowArmorInfo(),
+                (unused, newValue) -> setShowArmorInfo(newValue)
+        ));
+
+        this.optionsRowList.addOption(new SliderPercentageOption(
+                "gui.minegasm.intensity",
+                0.0, /*this.width*/ 10, 1.0F,
+                unused -> (double) getHudX(),
+                (unused, newValue) -> setHudX(newValue.intValue()),
+                (gs, option) -> new TranslationTextComponent("gui.minegasm.intensity").append(new StringTextComponent(": " + (int) option.get(gs)))
+        ));
+
         this.children.add(this.optionsRowList);
 
-        // "Done" button
         this.addButton(new Button(
                 (this.width - BUTTON_WIDTH) / 2,
                 this.height - DONE_BUTTON_TOP_OFFSET,
@@ -53,6 +77,23 @@ public final class ConfigScreen extends Screen {
                 new StringTextComponent("Done"),
                 button -> this.closeScreen()
         ));
+    }
+
+    private void setHudX(int intValue) {
+        testHudX = intValue;
+    }
+
+    private int getHudX() {
+        return testHudX;
+    }
+
+    public boolean getShowArmorInfo() {
+        return testBool;
+    }
+
+    public void setShowArmorInfo(boolean newValue) {
+        Objects.requireNonNull(newValue, "newValue");
+        testBool = newValue;
     }
 
     @Override
@@ -67,7 +108,7 @@ public final class ConfigScreen extends Screen {
 
     @Override
     public void onClose() {
-        // ConfigManager.save();
+        // Config.save();
     }
 
     @Override

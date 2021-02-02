@@ -1,5 +1,6 @@
 package com.therainbowville.minegasm.client;
 
+import com.therainbowville.minegasm.config.MinegasmConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.metafetish.buttplug.client.ButtplugClientDevice;
@@ -24,7 +25,9 @@ public class ToyController {
         try {
             device = null;
             client.Disconnect();
-            client.Connect(new URI("ws://localhost:12345/buttplug"), true);
+            LOGGER.info("URL: " + MinegasmConfig.serverUrl);
+
+            client.Connect(new URI(MinegasmConfig.serverUrl), true);
             client.startScanning();
 
             Thread.sleep(5000);
