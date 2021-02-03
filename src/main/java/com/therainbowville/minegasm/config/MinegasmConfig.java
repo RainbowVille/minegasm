@@ -1,14 +1,11 @@
 package com.therainbowville.minegasm.config;
 
 import com.therainbowville.minegasm.common.Minegasm;
-import net.minecraft.item.DyeColor;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.util.List;
 
 
 @Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
@@ -17,30 +14,28 @@ public class MinegasmConfig {
 
     // Client
     public static String serverUrl;
-    public static boolean clientBoolean;
-    public static List<String> clientStringList;
-    public static DyeColor clientDyeColorEnum;
 
-    public static boolean modelTranslucency;
-    public static float modelScale;
+    public static boolean vibrate;
+    public static Enum<ClientConfig.GameplayMode> mode;
+    public static int attackIntensity;
+    public static int hurtIntensity;
+    public static int mineIntensity;
+    public static int xpChangeIntensity;
+    public static int harvestIntensity;
+    public static int vitalityIntensity;
 
     // Server
-    public static boolean serverBoolean;
-    public static List<String> serverStringList;
-    public static DyeColor serverEnumDyeColor;
-
-    public static int electricFurnaceEnergySmeltCostPerTick = 100;
-    public static int heatCollectorTransferAmountPerTick = 100;
+    // -- none at the moment
 
     @SubscribeEvent
     public static void onModConfigEvent(final ModConfig.ModConfigEvent event) {
         final ModConfig config = event.getConfig();
-        // Rebake the configs when they change
+        // Re-bake the configs when they change
         if (config.getSpec() == ConfigHolder.CLIENT_SPEC) {
-            ConfigHelper.bakeClient(config);
+            ConfigHelper.bakeClient();
             LOGGER.debug("Baked client config");
         } else if (config.getSpec() == ConfigHolder.SERVER_SPEC) {
-            ConfigHelper.bakeServer(config);
+            ConfigHelper.bakeServer();
             LOGGER.debug("Baked server config");
         }
     }

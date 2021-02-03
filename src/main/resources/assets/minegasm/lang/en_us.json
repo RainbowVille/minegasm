@@ -1,6 +1,16 @@
 {
-	"gui.minegasm.intensity": "Intensity",
-	"gui.minegasm.hurt": "Energy %s",
-	"gui.minegasm.mine": "Smelt time %s/%s",
-	"gui.minegasm.damage": "Fuel burn time %s/%s"
+	"gui.minegasm.config.vibrate": "Vibrate",
+
+	"gui.minegasm.config.mode": "Mode",
+	"gui.minegasm.config.mode.normal": "Normal",
+	"gui.minegasm.config.mode.masochist": "Masochist",
+	"gui.minegasm.config.mode.hedonist": "Hedonist",
+	"gui.minegasm.config.mode.custom": "Custom",
+
+	"gui.minegasm.config.intensity.attack": "Attack",
+	"gui.minegasm.config.intensity.hurt": "Hurt",
+	"gui.minegasm.config.intensity.mine": "Mine",
+	"gui.minegasm.config.intensity.xp": "XP",
+	"gui.minegasm.config.intensity.harvest": "Harvest",
+	"gui.minegasm.config.intensity.vitality": "Vitality"
 }

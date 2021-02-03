@@ -1,7 +1,6 @@
 package com.therainbowville.minegasm.client;
 
 import com.mojang.authlib.GameProfile;
-import com.sun.media.jfxmedia.logging.Logger;
 import com.therainbowville.minegasm.common.Minegasm;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
@@ -15,8 +14,7 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.PlayerEvent;
-import net.minecraftforge.event.entity.player.PlayerXpEvent;
+import net.minecraftforge.event.entity.player.*;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -50,7 +48,11 @@ public class ClientEventHandler {
         if (event.phase == TickEvent.Phase.END) {
             tickCounter = (tickCounter + 1) % 24000;
 
-            if (tickCounter % 20 == 0) {
+            if (tickCounter % (5 * 20) == 0) { // 5 secs
+                LOGGER.debug("Idle: " + event.player.getIdleTime());
+                LOGGER.debug("Health: " + event.player.getHealth());
+                LOGGER.debug("Food: " + event.player.getFoodStats().getFoodLevel());
+                //TODO on full health and food, low vibrate
                 LOGGER.debug("Tick " + tickCounter / 20 + ": " + toyLevel[tickCounter / 20]);
             }
         }
@@ -71,11 +73,31 @@ public class ClientEventHandler {
                     }
 
                     if (paused) {
-                        LOGGER.debug("Paused");
+                        //LOGGER.debug("Paused");
                     }
                 }
             }
         }
+    }
+
+    @SubscribeEvent
+    public static void onAttack(AttackEntityEvent event)
+    {
+        Entity entity = event.getEntityLiving();
+        if (entity instanceof PlayerEntity) {
+            PlayerEntity player = (PlayerEntity) entity;
+            GameProfile profile = player.getGameProfile();
+
+            if (profile.getId().equals(playerID)) {
+                ToyController.vibrate();
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onCriticalHit(CriticalHitEvent event)
+    {
+        LOGGER.debug("Critical: " + event.isVanillaCritical());
     }
 
     @SubscribeEvent
@@ -95,28 +117,48 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onHarvest(PlayerEvent.HarvestCheck event)
     {
-        LOGGER.info(event.canHarvest());
-        LOGGER.info(event.getTargetBlock().getBlockState().getValues().toString());
+        LOGGER.debug("Harvest: " + event.canHarvest() + "[" + event.getTargetBlock().getBlock().getDefaultState().getBlockHardness(null, null) + "]");
+        //TODO if true, low vibrate
+
+        //LOGGER.info(event.canHarvest());
+        //LOGGER.info(event.getTargetBlock().getBlockState().getValues().toString());
     }
 
     @SubscribeEvent
     public static void onBreaking(PlayerEvent.BreakSpeed event)
     {
-        LOGGER.info("OLD SPEED" + event.getOriginalSpeed());
+        //LOGGER.info("OLD SPEED" + event.getOriginalSpeed());
         //LOGGER.info("NEW SPEED" + event.getNewSpeed());
     }
 
     @SubscribeEvent
     public static void onBreak(BlockEvent.BreakEvent event)
     {
-        LOGGER.info(event.getState().toString());
-        LOGGER.info(event.getExpToDrop());
+        LOGGER.info("Breaking: " + event.getState().getBlock().toString());
+        //TODO vibrate
+        LOGGER.info("XP to drop: " + event.getExpToDrop());
+    }
+
+    @SubscribeEvent
+    public static void onItemPickup(EntityItemPickupEvent event)
+    {
+        LOGGER.info("Pickup item: " + event.getItem().toString());
+    }
+
+    @SubscribeEvent
+    public static void onXpPickup(PlayerXpEvent.PickupXp event)
+    {
+        //LOGGER.info("Pickup XP: " + event.getOrb().xpValue);
     }
 
     @SubscribeEvent
     public static void onXpChange(PlayerXpEvent.XpChange event)
     {
-        LOGGER.info("XP CHANGE" + event.getAmount());
+        int xpChange = event.getAmount();
+        long duration = Math.round(Math.ceil(Math.log(xpChange+0.5)));
+
+        LOGGER.info("XP CHANGE: " + xpChange);
+        LOGGER.debug("duration: " + duration);
     }
 
     @SubscribeEvent

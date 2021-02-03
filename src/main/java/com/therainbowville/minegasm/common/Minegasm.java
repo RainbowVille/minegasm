@@ -2,7 +2,6 @@ package com.therainbowville.minegasm.common;
 
 import com.therainbowville.minegasm.config.ConfigHolder;
 import com.therainbowville.minegasm.config.ConfigScreen;
-import com.therainbowville.minegasm.config.MinegasmConfig;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;

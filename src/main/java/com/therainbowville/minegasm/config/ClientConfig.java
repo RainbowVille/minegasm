@@ -1,36 +1,90 @@
 package com.therainbowville.minegasm.config;
 
 import com.therainbowville.minegasm.common.Minegasm;
-import net.minecraft.item.DyeColor;
 import net.minecraftforge.common.ForgeConfigSpec;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Objects;
 
 final class ClientConfig {
     final ForgeConfigSpec.ConfigValue<String> serverUrl;
-    final ForgeConfigSpec.BooleanValue clientBoolean;
-    final ForgeConfigSpec.BooleanValue modelTranslucency;
-    final ForgeConfigSpec.DoubleValue modelScale;
+
+    final ForgeConfigSpec.BooleanValue vibrate;
+    final ForgeConfigSpec.EnumValue<GameplayMode> mode;
+    final ForgeConfigSpec.IntValue attackIntensity;
+    final ForgeConfigSpec.IntValue hurtIntensity;
+    final ForgeConfigSpec.IntValue mineIntensity;
+    final ForgeConfigSpec.IntValue xpChangeIntensity;
+    final ForgeConfigSpec.IntValue harvestIntensity;
+    final ForgeConfigSpec.IntValue vitalityIntensity;
 
     ClientConfig(final ForgeConfigSpec.Builder builder) {
-        builder.push("general");
+        builder.push("buttplug");
+
         serverUrl = builder
                 .translation(Minegasm.MOD_ID + ".config.serverUrl")
                 .define("serverUrl", "ws://localhost:12345/buttplug");
-        clientBoolean = builder
-                .comment("An example boolean in the client config")
-                .translation(Minegasm.MOD_ID + ".config.clientBoolean")
-                .define("clientBoolean", true);
-        modelTranslucency = builder
-                .comment("If the model should be rendered translucent")
-                .translation(Minegasm.MOD_ID + ".config.modelTranslucency")
-                .define("modelTranslucency", true);
-        modelScale = builder
-                .comment("The scale to render the model at")
-                .translation(Minegasm.MOD_ID + ".config.modelScale")
-                .defineInRange("modelScale", 0.0625F, 0.0001F, 100F);
+
+        builder.pop();
+
+        builder.push("general");
+
+        vibrate = builder
+                .comment("Enable vibration")
+                .translation(Minegasm.MOD_ID + ".config.vibrate")
+                .define(
+                        "vibrate", true);
+        mode = builder
+                .comment("Gameplay mode")
+                .translation(Minegasm.MOD_ID + ".config.mode")
+                .defineEnum("mode", GameplayMode.NORMAL);
+
+        attackIntensity = builder
+                .comment("Vibration intensity when attacking on custom mode")
+                .translation(Minegasm.MOD_ID + ".config.intensity.attack")
+                .defineInRange("attackIntensity", 60, 0, 100);
+
+        hurtIntensity = builder
+                .comment("Vibration intensity when hurting on custom mode")
+                .translation(Minegasm.MOD_ID + ".config.intensity.hurt")
+                .defineInRange("hurtIntensity", 0, 0, 100);
+
+        mineIntensity = builder
+                .comment("Vibration intensity when mining on custom mode")
+                .translation(Minegasm.MOD_ID + ".config.intensity.mine")
+                .defineInRange("mineIntensity", 80, 0, 100);
+
+        xpChangeIntensity = builder
+                .comment("Vibration intensity when gaining XP on custom mode")
+                .translation(Minegasm.MOD_ID + ".config.intensity.xp_change")
+                .defineInRange("xpChangeIntensity", 100, 0, 100);
+
+        harvestIntensity = builder
+                .comment("Vibration intensity when harvesting on custom mode")
+                .translation(Minegasm.MOD_ID + ".config.intensity.harvest")
+                .defineInRange("harvestIntensity", 20, 0, 100);
+
+        vitalityIntensity = builder
+                .comment("Vibration intensity on high level of player's vitality on custom mode")
+                .translation(Minegasm.MOD_ID + ".config.intensity.vitality")
+                .defineInRange("vitalityIntensity", 40, 0, 100);
+
         builder.pop();
     }
+    public enum GameplayMode {
+        NORMAL("gui." + Minegasm.MOD_ID + ".config.mode.normal"),
+        MASOCHIST("gui." + Minegasm.MOD_ID + ".config.mode.masochist"),
+        HEDONIST("gui." + Minegasm.MOD_ID + ".config.mode.hedonist"),
+        CUSTOM("gui." + Minegasm.MOD_ID + ".config.mode.custom");
 
+        private final String translateKey;
+
+        GameplayMode(String translateKey) {
+            this.translateKey =
+                    Objects.requireNonNull(translateKey, "translateKey");
+        }
+
+        public String getTranslateKey() {
+            return this.translateKey;
+        }
+    }
 }
