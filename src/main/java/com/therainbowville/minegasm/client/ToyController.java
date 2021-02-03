@@ -15,11 +15,10 @@ public class ToyController {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final ButtplugWSClient client = new ButtplugWSClient("Minegasm");
     private static ButtplugClientDevice device = null;
-    private static int[] state = new int[24000];
-    private static int currentStateIndex = 0;
-    private static int currentState = 0;
-    private static String lastErrorMessage = "";
     private static boolean shutDownHookAdded = false;
+    public static String lastErrorMessage = "";
+    public static boolean isConnected = false;
+    public static double currentVibrationLevel = 0;
 
     public static boolean connectDevice() {
         try {
@@ -71,6 +70,7 @@ public class ToyController {
                 shutDownHookAdded = true;
             }
 
+            isConnected = true;
         } catch (Exception e) {
             lastErrorMessage = e.getMessage();
             e.printStackTrace();
@@ -79,24 +79,24 @@ public class ToyController {
         return Objects.nonNull(device);
     }
 
-    public static void vibrate() {
-        try {
-            client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, (1.0 - Math.random()), client.getNextMsgId()));
-            new java.util.Timer().schedule(
-                    new java.util.TimerTask() {
-                        @Override
-                        public void run() {
-                            try {
-                                client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, 0, client.getNextMsgId()));
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    },
-                    Math.round(100 + 5000 * (1.0 - Math.random()))
-            );
-        } catch (Exception e) {
-            e.printStackTrace();
+    public static void setVibrationLevel(double level) {
+        if (MinegasmConfig.vibrate) {
+            try {
+                client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, level, client.getNextMsgId()));
+                currentVibrationLevel = level;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            if (currentVibrationLevel > 0) {
+                try {
+                    level = 0;
+                    client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, level, client.getNextMsgId()));
+                    currentVibrationLevel = level;
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 

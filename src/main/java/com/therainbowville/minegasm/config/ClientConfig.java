@@ -5,7 +5,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 
 import java.util.Objects;
 
-final class ClientConfig {
+public final class ClientConfig {
     final ForgeConfigSpec.ConfigValue<String> serverUrl;
 
     final ForgeConfigSpec.BooleanValue vibrate;
@@ -61,12 +61,12 @@ final class ClientConfig {
         harvestIntensity = builder
                 .comment("Vibration intensity when harvesting on custom mode")
                 .translation(Minegasm.MOD_ID + ".config.intensity.harvest")
-                .defineInRange("harvestIntensity", 20, 0, 100);
+                .defineInRange("harvestIntensity", 0, 0, 100);
 
         vitalityIntensity = builder
                 .comment("Vibration intensity on high level of player's vitality on custom mode")
                 .translation(Minegasm.MOD_ID + ".config.intensity.vitality")
-                .defineInRange("vitalityIntensity", 40, 0, 100);
+                .defineInRange("vitalityIntensity", 0, 0, 100);
 
         builder.pop();
     }
