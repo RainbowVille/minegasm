@@ -43,52 +43,32 @@ Additionally, the config file contains a configurable `buttplug.serverUrl` to al
 ### NORMAL
 In this mode, the toy will vibrate when you attack other entities, mine, or gain XP.
 
-|              | Intensity |
-| ------------ | --------- |
-| **Attack**   | 60%       |
-| **Hurt**     | Off       |
-| **Mine**     | 80%       |
-| **XP**       | 100%      |
-| **Harvest**  | Off       |
-| **Vitality** | Off       |
+| Attack | Hurt | Mine | XP | Harvest | Vitality |
+| --- | --- | --- | --- | --- | ---|
+| 60% | Off | 80% | 100% | Off | Off |
 
 ### MASOCHIST
 In this mode, the toy will vibrate when you're hurt or dying.
 
-|              | Intensity |
-| ------------ | --------- |
-| **Attack**   | Off       |
-| **Hurt**     | 100%      |
-| **Mine**     | Off       |
-| **XP**       | Off       |
-| **Harvest**  | Off       |
-| **Vitality** | 10%, when dying |
+| Attack | Hurt | Mine | XP | Harvest | Vitality |
+| --- | --- | --- | --- | --- | ---|
+| Off | 100% | Off | Off | Off | 10%, when dying |
 
 ### HEDONIST
 In this mode, the toy will vibrate on all events defined in other modes, except dying (this is replaced, instead, by having the toy vibrate when you're full and healthy).
 
-|              | Intensity |
-| ------------ | --------- |
-| **Attack**   | 60%       |
-| **Hurt**     | 10%       |
-| **Mine**     | 80%       |
-| **XP**       | 100%      |
-| **Harvest**  | 20%       |
-| **Vitality** | 10%       |
+| Attack | Hurt | Mine | XP | Harvest | Vitality |
+| --- | --- | --- | --- | --- | ---|
+| 60% | 10% | 80% | 100% | 20% | 10% |
 
 ### CUSTOM
 In this mode, the toy will vibrate depending on the intensity levels configured by the user.
 
 To emulate the behavior of Minegasm v0.1, you can use the following settings:
 
-|              | Intensity |
-| ------------ | --------- |
-| **Attack**   | Off       |
-| **Hurt**     | 100%      |
-| **Mine**     | Off       |
-| **XP**       | Off       |
-| **Harvest**  | Off       |
-| **Vitality** | Off       |
+| Attack | Hurt | Mine | XP | Harvest | Vitality |
+| --- | --- | --- | --- | --- | ---|
+| Off | 100% | Off | Off | Off | Off |
 
 ## Troubleshooting
 As with a lot of computer issues, the very first thing you should try is to restart everything. While not strictly necessary, we recommend that you start your device and the Intiface server before Minecraft. This should solve most intermittent issues.
