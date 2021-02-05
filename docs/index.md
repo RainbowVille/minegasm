@@ -79,6 +79,17 @@ In this mode, the toy will vibrate on all events defined in other modes, except 
 ### CUSTOM
 In this mode, the toy will vibrate depending on the intensity levels configured by the user.
 
+To emulate the behavior of Minegasm v1, you can use the following settings:
+
+|              | Intensity |
+| ------------ | --------- |
+| **Attack**   | Off       |
+| **Hurt**     | 100%      |
+| **Mine**     | Off       |
+| **XP**       | Off       |
+| **Harvest**  | Off       |
+| **Vitality** | Off       |
+
 ## Troubleshooting
 As with a lot of computer issues, the very first thing you should try is to restart everything. While not strictly necessary, we recommend that you start your device and the Intiface server before Minecraft. This should solve most intermittent issues.
 
