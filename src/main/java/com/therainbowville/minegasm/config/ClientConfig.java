@@ -1,13 +1,16 @@
 package com.therainbowville.minegasm.config;
 
 import com.therainbowville.minegasm.common.Minegasm;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.ForgeConfigSpec;
+import net.minecraftforge.fml.mclanguageprovider.MinecraftModLanguageProvider;
 
 import java.util.Objects;
 
 public final class ClientConfig {
     final ForgeConfigSpec.ConfigValue<String> serverUrl;
 
+    final ForgeConfigSpec.ConfigValue<String> version;
     final ForgeConfigSpec.BooleanValue vibrate;
     final ForgeConfigSpec.EnumValue<GameplayMode> mode;
     final ForgeConfigSpec.IntValue attackIntensity;
@@ -26,17 +29,20 @@ public final class ClientConfig {
 
         builder.pop();
 
-        builder.push("general");
+        builder.push("minegasm");
+
+        version = builder
+                .translation(Minegasm.MOD_ID + ".config.version")
+                .define("version", "0.2");
 
         vibrate = builder
-                .comment("Enable vibration")
                 .translation(Minegasm.MOD_ID + ".config.vibrate")
-                .define(
-                        "vibrate", true);
+                .define("vibrate", true);
         mode = builder
-                .comment("Gameplay mode")
                 .translation(Minegasm.MOD_ID + ".config.mode")
                 .defineEnum("mode", GameplayMode.NORMAL);
+
+        builder.push("intensity");
 
         attackIntensity = builder
                 .comment("Vibration intensity when attacking on custom mode")
@@ -68,6 +74,7 @@ public final class ClientConfig {
                 .translation(Minegasm.MOD_ID + ".config.intensity.vitality")
                 .defineInRange("vitalityIntensity", 0, 0, 100);
 
+        builder.pop();
         builder.pop();
     }
     public enum GameplayMode {

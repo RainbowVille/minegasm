@@ -80,6 +80,8 @@ public class ToyController {
     }
 
     public static void setVibrationLevel(double level) {
+        if (Objects.isNull(device)) return;
+
         if (MinegasmConfig.vibrate) {
             try {
                 client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, level, client.getNextMsgId()));

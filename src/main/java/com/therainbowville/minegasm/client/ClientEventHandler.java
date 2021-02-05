@@ -4,6 +4,8 @@ import com.mojang.authlib.GameProfile;
 import com.therainbowville.minegasm.common.Minegasm;
 import com.therainbowville.minegasm.config.ClientConfig;
 import com.therainbowville.minegasm.config.MinegasmConfig;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -13,6 +15,7 @@ import net.minecraft.util.text.StringTextComponent;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorld;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
@@ -25,19 +28,17 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import org.apache.logging.log4j.LogManager;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientEventHandler {
     private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
     private static String playerName = null;
     private static UUID playerID = null;
+    private static final int TICKS_PER_SECOND = 20;
     private static int tickCounter = -1;
     private static int clientTickCounter = -1;
-    private static double[] state = new double[1200];
+    private static final double[] state = new double[1200];
     private static boolean paused = false;
 
     private static void clearState() {
@@ -73,11 +74,12 @@ public class ClientEventHandler {
     }
 
     private static void setState(int counter, int intensity) {
-        setState(counter, intensity, false);
+        boolean accumulate = false; //XXX reserved for future use
+        setState(counter, intensity, accumulate);
     }
 
     private static void setState(int counter, int intensity, boolean accumulate) {
-        int safeCounter = (counter+1) % state.length;
+        int safeCounter = (counter + ((tickCounter % (TICKS_PER_SECOND - 1) == 0) ? 1 : 0)) % state.length; // if we're at the end of the second, wait for next second
         if (accumulate) {
             state[safeCounter] = Math.min(1.0, state[safeCounter] + (intensity / 100.0));
         } else {
@@ -86,7 +88,7 @@ public class ClientEventHandler {
     }
 
     private static int getIntensity(String type) {
-        Map<String, Integer> normal = new HashMap<String, Integer>();
+        Map<String, Integer> normal = new HashMap<>();
         normal.put("attack", 60);
         normal.put("hurt", 0);
         normal.put("mine", 80);
@@ -94,7 +96,7 @@ public class ClientEventHandler {
         normal.put("harvest", 0);
         normal.put("vitality", 0);
 
-        Map<String, Integer> masochist = new HashMap<String, Integer>();
+        Map<String, Integer> masochist = new HashMap<>();
         masochist.put("attack", 0);
         masochist.put("hurt", 100);
         masochist.put("mine", 0);
@@ -102,7 +104,7 @@ public class ClientEventHandler {
         masochist.put("harvest", 0);
         masochist.put("vitality", 10);
 
-        Map<String, Integer> hedonist = new HashMap<String, Integer>();
+        Map<String, Integer> hedonist = new HashMap<>();
         hedonist.put("attack", 60);
         hedonist.put("hurt", 10);
         hedonist.put("mine", 80);
@@ -110,7 +112,7 @@ public class ClientEventHandler {
         hedonist.put("harvest", 20);
         hedonist.put("vitality", 10);
 
-        Map<String, Integer> custom = new HashMap<String, Integer>();
+        Map<String, Integer> custom = new HashMap<>();
         custom.put("attack", MinegasmConfig.attackIntensity);
         custom.put("hurt", MinegasmConfig.hurtIntensity);
         custom.put("mine", MinegasmConfig.mineIntensity);
@@ -132,33 +134,42 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            tickCounter = (tickCounter + 1) % 24000;
+            PlayerEntity player = event.player;
+            GameProfile profile = player.getGameProfile();
 
-            if (tickCounter % 20 == 0) { // every 1 sec
-                int stateCounter = getStateCounter();
+            float playerHealth = player.getHealth();
+            float playerFoodLevel = player.getFoodStats().getFoodLevel();
+            int playerIdleTime = player.getIdleTime();
 
-                if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
-                    if (event.player.getHealth() > 0 && event.player.getHealth() <= 1) {
+            tickCounter = (tickCounter + 1) % (20 * (60 * TICKS_PER_SECOND)); // 20 min day cycle
+
+            if (tickCounter % TICKS_PER_SECOND == 0) { // every 1 sec
+                if (profile.getId().equals(playerID)) {
+                    int stateCounter = getStateCounter();
+
+                    if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
+                        if (playerHealth > 0 && playerHealth <= 1) {
+                            setState(stateCounter, getIntensity("vitality"));
+                        }
+                    } else if (playerHealth >= 20 && playerFoodLevel >= 20) {
                         setState(stateCounter, getIntensity("vitality"));
                     }
-                } else if (event.player.getHealth() >= 20 && event.player.getFoodStats().getFoodLevel() >= 20) {
-                    setState(stateCounter, getIntensity("vitality"));
-                }
 
-                double newVibrationLevel = state[stateCounter];
-                state[stateCounter] = 0;
+                    double newVibrationLevel = state[stateCounter];
+                    state[stateCounter] = 0;
 
-                LOGGER.debug("Tick " + stateCounter + ": " + newVibrationLevel);
+                    LOGGER.trace("Tick " + stateCounter + ": " + newVibrationLevel);
 
-                if (ToyController.currentVibrationLevel != newVibrationLevel) {
-                    ToyController.setVibrationLevel(newVibrationLevel);
+                    if (ToyController.currentVibrationLevel != newVibrationLevel) {
+                        ToyController.setVibrationLevel(newVibrationLevel);
+                    }
                 }
             }
 
-            if (tickCounter % (5 * 20) == 0) { // 5 secs
-                LOGGER.debug("Idle: " + event.player.getIdleTime());
-                LOGGER.debug("Health: " + event.player.getHealth());
-                LOGGER.debug("Food: " + event.player.getFoodStats().getFoodLevel());
+            if (tickCounter % (5 * TICKS_PER_SECOND) == 0) { // 5 secs
+                LOGGER.debug("Idle: " + playerIdleTime);
+                LOGGER.debug("Health: " + playerHealth);
+                LOGGER.debug("Food: " + playerFoodLevel);
             }
         }
     }
@@ -178,7 +189,7 @@ public class ClientEventHandler {
                     }
 
                     if (paused) {
-                        //LOGGER.debug("Paused");
+                        LOGGER.trace("Paused");
                     }
                 }
             }
@@ -236,37 +247,57 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onHarvest(PlayerEvent.HarvestCheck event)
     {
-        float blockHardness = event.getTargetBlock().getBlock().getDefaultState().getBlockHardness(null, null);
-        LOGGER.debug("Harvest: " + event.canHarvest() + "[" + blockHardness + "]");
+        PlayerEntity player = event.getPlayer();
+        GameProfile profile = player.getGameProfile();
 
-        if (event.canHarvest()) {
-            setState(getStateCounter(), 1, Math.toIntExact(Math.round((getIntensity("harvest")/100.0 * (blockHardness/50.0)) * 100)), false);
+        if (profile.getId().equals(playerID)) {
+            BlockState blockState = event.getTargetBlock();
+            Block block = blockState.getBlock();
+
+            // ToolType. AXE, HOE, PICKAXE, SHOVEL
+            @SuppressWarnings("ConstantConditions") float blockHardness = block.getDefaultState().getBlockHardness(null, null);
+            LOGGER.debug("Harvest: tool: " +
+                    Objects.requireNonNull(block.getHarvestTool(blockState)).getName() +
+                    " can harvest? " + event.canHarvest() + " hardness: " + blockHardness);
+
+            int intensity = Math.toIntExact(Math.round((getIntensity("harvest") / 100.0 * (blockHardness / 50.0)) * 100));
+
+            if (event.canHarvest()) {
+                setState(getStateCounter(), 1, intensity, false);
+            }
         }
-    }
-
-    @SubscribeEvent
-    public static void onBreaking(PlayerEvent.BreakSpeed event)
-    {
-        //LOGGER.info("OLD SPEED" + event.getOriginalSpeed());
-        //LOGGER.info("NEW SPEED" + event.getNewSpeed());
     }
 
     @SubscribeEvent
     public static void onBreak(BlockEvent.BreakEvent event)
     {
-        float blockHardness = event.getState().getBlock().getDefaultState().getBlockHardness(null, null);
-        LOGGER.info("Breaking: " + event.getState().getBlock().toString());
+        PlayerEntity player = event.getPlayer();
+        GameProfile profile = player.getGameProfile();
 
-        ItemStack mainhandItem = event.getPlayer().getHeldItemMainhand();
-        boolean usingPickaxe = mainhandItem.getItem().getTranslationKey().contains("pickaxe");
-        LOGGER.debug(mainhandItem);
+        if (profile.getId().equals(playerID)) {
+            BlockState blockState = event.getState();
+            Block block = blockState.getBlock();
+            @SuppressWarnings("ConstantConditions") float blockHardness = block.getDefaultState().getBlockHardness(null, null);
 
-        if (usingPickaxe) {
-            int duration = 5; //TODO set depending on block
-            setState(getStateCounter(), duration, Math.toIntExact(Math.round((getIntensity("mine") / 100.0 * (blockHardness / 50.0)) * 100)), true);
+            LOGGER.info("Breaking: " + block.toString());
+
+            ToolType blockHarvestTool = block.getHarvestTool(blockState);
+            ItemStack mainhandItem = event.getPlayer().getHeldItemMainhand();
+            Set<ToolType> mainhandToolTypes = mainhandItem.getItem().getToolTypes(mainhandItem);
+
+            boolean usingPickaxe = mainhandToolTypes.contains(ToolType.PICKAXE);
+            boolean usingAppropriateTool = mainhandToolTypes.contains(blockHarvestTool);
+            LOGGER.debug("mainhand: " + mainhandItem + " [" + mainhandToolTypes + "]");
+            LOGGER.debug("using pickaxe: " + usingPickaxe + ", using appropriate tool: " + usingAppropriateTool);
+
+            if (usingPickaxe && usingAppropriateTool) {
+                int duration = Math.max(1, Math.min(5, Math.toIntExact(Math.round(Math.ceil(Math.log(blockHardness + 0.5))))));
+                int intensity = Math.toIntExact(Math.round((getIntensity("mine") / 100.0 * (blockHardness / 50.0)) * 100));
+                setState(getStateCounter(), duration, intensity, true);
+            }
+
+            LOGGER.info("XP to drop: " + event.getExpToDrop());
         }
-
-        LOGGER.info("XP to drop: " + event.getExpToDrop());
     }
 
     @SubscribeEvent
@@ -284,13 +315,18 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onXpChange(PlayerXpEvent.XpChange event)
     {
-        int xpChange = event.getAmount();
-        long duration = Math.round(Math.ceil(Math.log(xpChange+0.5)));
+        PlayerEntity player = event.getPlayer();
+        GameProfile profile = player.getGameProfile();
 
-        LOGGER.info("XP CHANGE: " + xpChange);
-        LOGGER.debug("duration: " + duration);
+        if (profile.getId().equals(playerID)) {
+            int xpChange = event.getAmount();
+            long duration = Math.round(Math.ceil(Math.log(xpChange + 0.5)));
 
-        setState(getStateCounter(), Math.toIntExact(duration), getIntensity("xpChange"), true);
+            LOGGER.info("XP CHANGE: " + xpChange);
+            LOGGER.debug("duration: " + duration);
+
+            setState(getStateCounter(), Math.toIntExact(duration), getIntensity("xpChange"), true);
+        }
     }
 
     @SubscribeEvent

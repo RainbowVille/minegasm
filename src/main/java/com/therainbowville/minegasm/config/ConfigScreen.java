@@ -34,7 +34,6 @@ public final class ConfigScreen extends Screen {
     private OptionsRowList optionsRowList;
 
     private static final ClientConfig clientConfig = ConfigHolder.getClientInstance();
-    private static final ServerConfig serverConfig = ConfigHolder.getServerInstance();
 
     public ConfigScreen(Screen parentScreen) {
         super(new StringTextComponent(Minegasm.NAME));
@@ -192,6 +191,8 @@ public final class ConfigScreen extends Screen {
         this.optionsRowList = createOptions();
         this.children.add(this.optionsRowList);
         this.optionsRowList.render(matrixStack, mouseX, mouseY, partialTicks);
+
+        //noinspection SuspiciousNameCombination
         drawCenteredString(matrixStack, this.font, this.title,
                 this.width / 2, TITLE_HEIGHT, 0xFFFFFF);
 
