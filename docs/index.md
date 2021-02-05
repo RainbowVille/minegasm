@@ -79,7 +79,7 @@ In this mode, the toy will vibrate on all events defined in other modes, except 
 ### CUSTOM
 In this mode, the toy will vibrate depending on the intensity levels configured by the user.
 
-To emulate the behavior of Minegasm v1, you can use the following settings:
+To emulate the behavior of Minegasm v0.1, you can use the following settings:
 
 |              | Intensity |
 | ------------ | --------- |
