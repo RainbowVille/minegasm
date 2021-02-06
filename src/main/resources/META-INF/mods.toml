@@ -4,7 +4,7 @@ license="Creative Commons Attribution Share Alike 4.0"
 issueTrackerURL="https://github.com/RainbowVille/minegasm/issues"
 [[mods]]
 modId="minegasm"
-version="0.2.0"
+version="0.2.1"
 displayName="Minegasm"
 updateJSONURL="https://minegasm.therainbowville.com/updates.json"
 displayURL="https://minegasm.therainbowville.com/"

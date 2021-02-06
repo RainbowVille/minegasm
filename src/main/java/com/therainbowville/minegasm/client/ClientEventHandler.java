@@ -257,7 +257,7 @@ public class ClientEventHandler {
             // ToolType. AXE, HOE, PICKAXE, SHOVEL
             @SuppressWarnings("ConstantConditions") float blockHardness = block.getDefaultState().getBlockHardness(null, null);
             LOGGER.debug("Harvest: tool: " +
-                    Objects.requireNonNull(block.getHarvestTool(blockState)).getName() +
+                    block.getHarvestTool(blockState) +
                     " can harvest? " + event.canHarvest() + " hardness: " + blockHardness);
 
             int intensity = Math.toIntExact(Math.round((getIntensity("harvest") / 100.0 * (blockHardness / 50.0)) * 100));
