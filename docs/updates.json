@@ -1,12 +1,13 @@
 {
 	"homepage": "https://minegasm.therainbowville.com",
 	"promos": {
-		"1.16.5-latest": "0.2.0",
-		"1.16.5-recommended": "0.2.0",
+		"1.16.5-latest": "0.2.1",
+		"1.16.5-recommended": "0.2.1",
 		"1.16.3-latest": "0.1.1",
 		"1.16.3-recommended": "0.1.1"
 	},
 	"1.16.5": {
+		"0.2.1": "fix crashes when harvesting",
 		"0.2.0": "new gameplay modes, minegasm is now configurable"
 	},
 	"1.16.3": {
