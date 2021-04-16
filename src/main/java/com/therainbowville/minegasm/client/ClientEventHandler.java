@@ -79,7 +79,7 @@ public class ClientEventHandler {
     }
 
     private static void setState(int counter, int intensity, boolean accumulate) {
-        int safeCounter = (counter + ((tickCounter % (TICKS_PER_SECOND - 1) == 0) ? 1 : 0)) % state.length; // if we're at the end of the second, wait for next second
+        int safeCounter = counter % state.length;
         if (accumulate) {
             state[safeCounter] = Math.min(1.0, state[safeCounter] + (intensity / 100.0));
         } else {
