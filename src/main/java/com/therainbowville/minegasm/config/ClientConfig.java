@@ -33,7 +33,7 @@ public final class ClientConfig {
 
         version = builder
                 .translation(Minegasm.MOD_ID + ".config.version")
-                .define("version", "0.2");
+                .define("version", "0.3");
 
         vibrate = builder
                 .translation(Minegasm.MOD_ID + ".config.vibrate")
