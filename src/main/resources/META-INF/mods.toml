@@ -1,6 +1,6 @@
 modLoader="javafml"
 loaderVersion="[35,)"
-license="Creative Commons Attribution Share Alike 4.0"
+license="GNU Affero General Public License v3.0"
 issueTrackerURL="https://github.com/RainbowVille/minegasm/issues"
 [[mods]]
 modId="minegasm"
