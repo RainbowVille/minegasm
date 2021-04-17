@@ -42,6 +42,6 @@ public class Minegasm
     }
 
     private void setupClient(final FMLClientSetupEvent event) {
-        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().gameSettings);
+        LOGGER.info("Got game settings {}", event.getMinecraftSupplier().get().options);
     }
 }

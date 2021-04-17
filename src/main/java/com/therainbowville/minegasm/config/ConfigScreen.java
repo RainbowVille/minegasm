@@ -70,7 +70,7 @@ public final class ConfigScreen extends Screen {
                 this.height - DONE_BUTTON_TOP_OFFSET,
                 BUTTON_WIDTH, BUTTON_HEIGHT,
                 new StringTextComponent("Done"),
-                button -> this.closeScreen()
+                button -> this.onClose()
         ));
     }
 
@@ -94,7 +94,7 @@ public final class ConfigScreen extends Screen {
                 MODE,
                 (gameSettings, newValue) -> mode = (mode + newValue) % ClientConfig.GameplayMode.values().length,
                 (gameSettings, option) ->
-                        new TranslationTextComponent(MODE).appendString(": ")
+                        new TranslationTextComponent(MODE).append(": ")
                                 .append(new TranslationTextComponent(
                                         ClientConfig.GameplayMode.values()[mode].getTranslateKey())));
 
@@ -171,16 +171,16 @@ public final class ConfigScreen extends Screen {
                 (gameSettings, option) -> getPercentValueComponent(VITALITY_INTENSITY, gameSettings, option)
         );
 
-        optionsRowList.addOption(vibrateOption, modeOption);
-        optionsRowList.addOption(attackIntensityOption, hurtIntensityOption);
-        optionsRowList.addOption(mineIntensityOption, xpChangeIntensityOption);
-        optionsRowList.addOption(harvestIntensityOption, vitalityIntensityOption);
+        optionsRowList.addSmall(vibrateOption, modeOption);
+        optionsRowList.addSmall(attackIntensityOption, hurtIntensityOption);
+        optionsRowList.addSmall(mineIntensityOption, xpChangeIntensityOption);
+        optionsRowList.addSmall(harvestIntensityOption, vitalityIntensityOption);
 
         return optionsRowList;
     }
 
     private ITextComponent getPercentValueComponent(String translationKey, GameSettings gameSettings, SliderPercentageOption option) {
-        return new TranslationTextComponent(translationKey).appendString(": ").appendString(option.normalizeValue(option.get(gameSettings)) == 0.0D ? "Off" : (int) option.get(gameSettings) + "%");
+        return new TranslationTextComponent(translationKey).append(": ").append(option.toPct(option.get(gameSettings)) == 0.0D ? "Off" : (int) option.get(gameSettings) + "%");
     }
 
     @SuppressWarnings("NullableProblems")
@@ -212,10 +212,6 @@ public final class ConfigScreen extends Screen {
         clientConfig.vitalityIntensity.set(vitalityIntensity);
         ConfigHolder.CLIENT_SPEC.save();
         ConfigHelper.bakeClient();
-    }
-
-    @Override
-    public void closeScreen() {
-        Objects.requireNonNull(this.minecraft).displayGuiScreen(this.lastScreen instanceof IngameMenuScreen ? null : this.lastScreen);
+        Objects.requireNonNull(this.minecraft).setScreen(this.lastScreen instanceof IngameMenuScreen ? null : this.lastScreen);
     }
 }

@@ -138,8 +138,7 @@ public class ClientEventHandler {
             GameProfile profile = player.getGameProfile();
 
             float playerHealth = player.getHealth();
-            float playerFoodLevel = player.getFoodStats().getFoodLevel();
-            int playerIdleTime = player.getIdleTime();
+            float playerFoodLevel = player.getFoodData().getFoodLevel();
 
             tickCounter = (tickCounter + 1) % (20 * (60 * TICKS_PER_SECOND)); // 20 min day cycle
 
@@ -167,7 +166,6 @@ public class ClientEventHandler {
             }
 
             if (tickCounter % (5 * TICKS_PER_SECOND) == 0) { // 5 secs
-                LOGGER.debug("Idle: " + playerIdleTime);
                 LOGGER.debug("Health: " + playerHealth);
                 LOGGER.debug("Food: " + playerFoodLevel);
             }
@@ -255,7 +253,7 @@ public class ClientEventHandler {
             Block block = blockState.getBlock();
 
             // ToolType. AXE, HOE, PICKAXE, SHOVEL
-            @SuppressWarnings("ConstantConditions") float blockHardness = block.getDefaultState().getBlockHardness(null, null);
+            @SuppressWarnings("ConstantConditions") float blockHardness = block.defaultBlockState().getDestroySpeed(null, null);
             LOGGER.debug("Harvest: tool: " +
                     block.getHarvestTool(blockState) +
                     " can harvest? " + event.canHarvest() + " hardness: " + blockHardness);
@@ -277,12 +275,12 @@ public class ClientEventHandler {
         if (profile.getId().equals(playerID)) {
             BlockState blockState = event.getState();
             Block block = blockState.getBlock();
-            @SuppressWarnings("ConstantConditions") float blockHardness = block.getDefaultState().getBlockHardness(null, null);
+            @SuppressWarnings("ConstantConditions") float blockHardness = block.defaultBlockState().getDestroySpeed(null, null);
 
             LOGGER.info("Breaking: " + block.toString());
 
             ToolType blockHarvestTool = block.getHarvestTool(blockState);
-            ItemStack mainhandItem = event.getPlayer().getHeldItemMainhand();
+            ItemStack mainhandItem = event.getPlayer().getMainHandItem();
             Set<ToolType> mainhandToolTypes = mainhandItem.getItem().getToolTypes(mainhandItem);
 
             boolean usingPickaxe = mainhandToolTypes.contains(ToolType.PICKAXE);
@@ -338,7 +336,7 @@ public class ClientEventHandler {
     }
 
     private static void populatePlayerInfo() {
-        GameProfile profile = Minecraft.getInstance().getSession().getProfile();
+        GameProfile profile = Minecraft.getInstance().getUser().getGameProfile();
         playerName = profile.getName();
         playerID = profile.getId();
         System.out.println("Current player: " + playerName + " " + playerID.toString());
@@ -366,9 +364,9 @@ public class ClientEventHandler {
                     System.out.println("Player in: " + playerName + " " + playerID.toString());
                     if (ToyController.connectDevice()) {
                         setState(getStateCounter(), 5);
-                        player.sendStatusMessage(new StringTextComponent(String.format("Connected to %s [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
+                        player.displayClientMessage(new StringTextComponent(String.format("Connected to " + TextFormatting.GREEN + "%s" + TextFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
                     } else {
-                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
+                        player.displayClientMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
                     }
                 }
             }
