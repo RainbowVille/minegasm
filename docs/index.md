@@ -15,6 +15,13 @@ JAR file: [minegasm-0.2.1.jar](https://github.com/RainbowVille/minegasm/releases
 5. Start Minecraft and connect to a world. If everything works properly, you should see a message stating that Minegasm is connected to your device when you enter the world. If the connection fails, go back to Intiface Desktop and make sure that the Server Status shows that the server is running. To force Minegasm to retry to connect, leave the world and then re-enter.
 6. Have fun!
 
+## Known Issues
+The mod has only undergone limited testing in multiplayer mode and it might not work with some mods. See the *Troubleshooting* part below if you encounter any issues.
+
+- \[[#12](https://github.com/RainbowVille/minegasm/issues/12)\] In the multiplayer mode, the on hurt vibration is not triggered.
+
+See our [issue tracker](https://github.com/RainbowVille/minegasm/issues?q=is%3Aissue+is%3Aopen+label%3Abug) for all the reported issues.
+
 ## Supported Devices
 In theory, this mod should be compatible with any devices on this list: [IoST Index – Vibrators with Buttplug.io Support](https://iostindex.com/?filter0ButtplugSupport=4&filter1Features=OutputsVibrators)
 
@@ -26,16 +33,16 @@ It has been confirmed to work with:
 ## Configuration
 Minegasm is configurable through the `Mods > Config` screen, as well as by manually editing the `minegasm-client.toml` config file.
 
-| Config   | Config Key                             | Description                                                           | Version |
-| -------- | -------------------------------------- | --------------------------------------------------------------------- | ------- |
-| Vibrate  | `minegasm.vibrate`                     | Enable/disable vibration                                              | 0.2+    |
-| Mode     | `minegasm.mode`                        | Select gameplay mode: NORMAL, MASOCHIST, HEDONIST, or CUSTOM          | 0.2+    |
-| Attack   | `minegasm.intensity.attackIntensity`   | Vibration intensity when attacking on custom mode                     | 0.2+    |
-| Hurt     | `minegasm.intensity.hurtIntensity`     | Vibration intensity when hurting on custom mode                       | 0.2+    |
-| Mine     | `minegasm.intensity.mineIntensity`     | Vibration intensity when mining on custom mode                        | 0.2+    |
-| XP       | `minegasm.intensity.xpChangeIntensity` | Vibration intensity when gaining XP on custom mode                    | 0.2+    |
-| Harvest  | `minegasm.intensity.harvestIntensity`  | Vibration intensity when harvesting on custom mode                    | 0.2+    |
-| Vitality | `minegasm.intensity.vitalityIntensity` | Vibration intensity on high level of player's vitality on custom mode | 0.2+    |
+| Config   | `minegasm.*`                  | Description                                                           | Version |
+| -------- | ----------------------------- | --------------------------------------------------------------------- | ------- |
+| Vibrate  | `vibrate`                     | Enable/disable vibration                                              | 0.2+    |
+| Mode     | `mode`                        | Select gameplay mode: NORMAL, MASOCHIST, HEDONIST, or CUSTOM          | 0.2+    |
+| Attack   | `intensity.attackIntensity`   | Vibration intensity when attacking on custom mode                     | 0.2+    |
+| Hurt     | `intensity.hurtIntensity`     | Vibration intensity when hurting on custom mode                       | 0.2+    |
+| Mine     | `intensity.mineIntensity`     | Vibration intensity when mining on custom mode                        | 0.2+    |
+| XP       | `intensity.xpChangeIntensity` | Vibration intensity when gaining XP on custom mode                    | 0.2+    |
+| Harvest  | `intensity.harvestIntensity`  | Vibration intensity when harvesting on custom mode                    | 0.2+    |
+| Vitality | `intensity.vitalityIntensity` | Vibration intensity on high level of player's vitality on custom mode | 0.2+    |
 
 Additionally, the config file contains a configurable `buttplug.serverUrl` to allow connection to a custom buttplug server.
 
@@ -78,7 +85,7 @@ If you run this mod alongside other mods, try disabling them all first and then 
 ## Support
 In principle, we do not provide any dedicated (technical) supports. If you need any assistance, you can use the [discussion page](https://github.com/RainbowVille/minegasm/discussions). Alternatively, you can join our [Discord server](https://discord.gg/Kc7ueWC) and ping `@RSwoop` in the `#minegasm` channel, but please be advised that he might not always be able to help you.
 
-If you have any suggestions or found any bugs, please post them to our [issue tracker](https://github.com/RainbowVille/minegasm/issues) on GitHub. Please try to be as descriptive as possible.
+If you have any suggestions or found any bugs, please post them to our [issue tracker](https://github.com/RainbowVille/minegasm/issues) on GitHub. Please try to be as descriptive as possible and include your `debug.log` (please remove any references to your username first if that matters). The `debug.log` file is typically under the `logs` directory of your minecraft instance. In the vanilla installation on Windows, it is typically on `<drive>:\Users\<username>\AppData\Roaming\.minecraft`.
 
 The status of confirmed bugs and planned future enhancements are available on our [project board](https://github.com/RainbowVille/minegasm/projects/1).
 
