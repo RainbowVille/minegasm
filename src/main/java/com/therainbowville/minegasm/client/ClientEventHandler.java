@@ -11,10 +11,9 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.World;
-import net.minecraftforge.client.event.ModelRegistryEvent;
-import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.*;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
+import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -24,9 +23,6 @@ import net.minecraftforge.fml.common.thread.SidedThreadGroups;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import javax.annotation.Nonnull;
-
-import java.awt.*;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +42,7 @@ public final class ClientEventHandler {
     private static int clientTickCounter = -1;
     private static final double[] state = new double[DAY_CYCLE];
     private static boolean paused = false;
+    private static boolean motdDisplayed = false;
 
     private static void clearState() {
         playerName = null;
@@ -68,13 +65,13 @@ public final class ClientEventHandler {
         if (decay) {
             int safeDuration = Math.max(0, duration - 2);
             for (int i = 0; i < safeDuration; i++) {
-                setState(start+i, intensity);
+                setState(start + i, intensity);
             }
-            setState(start+safeDuration, intensity/2);
-            setState(start+safeDuration+1, intensity/4);
+            setState(start + safeDuration, intensity / 2);
+            setState(start + safeDuration + 1, intensity / 4);
         } else {
             for (int i = 0; i < duration; i++) {
-                setState(start+i, intensity);
+                setState(start + i, intensity);
             }
         }
     }
@@ -140,10 +137,10 @@ public final class ClientEventHandler {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            LOGGER.debug("TICK");
+            //LOGGER.debug("TICK");
             EntityPlayer player = event.player;
             if (Thread.currentThread().getThreadGroup() != SidedThreadGroups.CLIENT) {
-                LOGGER.debug("server");
+                //LOGGER.debug("server");
                 GameProfile profile = player.getGameProfile();
 
                 if (profile.getId().equals(playerID)) {
@@ -186,8 +183,7 @@ public final class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public static void onAttack(AttackEntityEvent event)
-    {
+    public static void onAttack(AttackEntityEvent event) {
         Entity entity = event.getEntityLiving();
         LOGGER.debug("AX");
         LOGGER.debug(entity instanceof EntityPlayer);
@@ -209,8 +205,7 @@ public final class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public static void onHurt(LivingAttackEvent event)
-    {
+    public static void onHurt(LivingAttackEvent event) {
         Entity entity = event.getEntityLiving();
         LOGGER.debug("HX");
         LOGGER.debug(entity instanceof EntityPlayer);
@@ -232,8 +227,7 @@ public final class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public static void onDeath(LivingDeathEvent event)
-    {
+    public static void onDeath(LivingDeathEvent event) {
         Entity entity = event.getEntityLiving();
         LOGGER.debug("DX");
         LOGGER.debug(entity instanceof EntityPlayer);
@@ -247,9 +241,9 @@ public final class ClientEventHandler {
             LOGGER.debug("D");
             LOGGER.debug(profile);
 
-           if (profile.getId().equals(playerID)) {
-               clearState();
-               ToyController.setVibrationLevel(0);
+            if (profile.getId().equals(playerID)) {
+                clearState();
+                ToyController.setVibrationLevel(0);
             }
         }
     }
@@ -273,13 +267,13 @@ public final class ClientEventHandler {
 
         if (entity instanceof EntityPlayerMP) {
             EntityPlayerMP p = (EntityPlayerMP) entity;
-            System.out.println("Entered world MP: " + entity.toString());
-            System.out.println("Profile: " + p.getGameProfile().toString());
+            System.out.println("Entered world MP: " + entity);
+            System.out.println("Profile: " + p.getGameProfile());
         }
 
         if (entity instanceof EntityPlayerSP) {
             clearState();
-            System.out.println("Entered world: " + entity.toString());
+            System.out.println("Entered world: " + entity);
 
             if (playerName == null) {
                 populatePlayerInfo();
@@ -290,7 +284,7 @@ public final class ClientEventHandler {
                 GameProfile profile = player.getGameProfile();
 
                 if (profile.getId().equals(playerID)) {
-                    System.out.println("Player in: " + playerName + " " + playerID.toString());
+                    System.out.println("Player in: " + playerName + " " + playerID);
                     LOGGER.debug(ToyController.isConnected);
                     if (!ToyController.isConnected) {
                         if (ToyController.connectDevice()) {
@@ -308,6 +302,11 @@ public final class ClientEventHandler {
                         ToyController.setVibrationLevel(0);
                         populatePlayerInfo();
                     }
+
+                    if (!motdDisplayed) {
+                        player.sendStatusMessage(new TextComponentString(String.format(TextFormatting.RED + "Minegasm 0.2.2 BETA 1: " + TextFormatting.RESET + " only attack and hurt events are implemented!\n")), false);
+                        motdDisplayed = true;
+                    }
                 }
             }
         }
@@ -318,6 +317,7 @@ public final class ClientEventHandler {
         LOGGER.debug("World exit");
         clearState();
         ToyController.setVibrationLevel(0);
+        motdDisplayed = false;
     }
 }
 
@@ -340,43 +340,6 @@ public final class ClientEventHandler {
 
 
 /*
-import com.mojang.authlib.GameProfile;
-import com.therainbowville.minegasm.Minegasm;
-import com.therainbowville.minegasm.config.ClientConfig;
-import com.therainbowville.minegasm.config.MinegasmConfig;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
-import net.minecraft.world.IWorld;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.ToolType;
-import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.*;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod;
-import org.apache.logging.log4j.LogManager;
-
-import java.util.*;
-
-@Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-public class ClientEventHandler {
-
-
-
-
-
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
@@ -399,18 +362,6 @@ public class ClientEventHandler {
             }
         }
     }
-
-
-
-    @SubscribeEvent
-    public static void onCriticalHit(CriticalHitEvent event)
-    {
-        LOGGER.debug("Critical: " + event.isVanillaCritical());
-    }
-
-
-
-
 
     @SubscribeEvent
     public static void onHarvest(PlayerEvent.HarvestCheck event)
@@ -496,6 +447,5 @@ public class ClientEventHandler {
             setState(getStateCounter(), Math.toIntExact(duration), getIntensity("xpChange"), true);
         }
     }
-}
 
 */

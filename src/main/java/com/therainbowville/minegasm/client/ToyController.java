@@ -1,6 +1,5 @@
 package com.therainbowville.minegasm.client;
 
-//import com.therainbowville.minegasm.config.MinegasmConfig;
 import com.therainbowville.minegasm.config.MinegasmConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -30,7 +29,7 @@ public class ToyController {
             device = null;
             client.startScanning();
 
-            Thread.sleep(5000);
+            Thread.sleep(2000);
             client.requestDeviceList();
 
             LOGGER.info("Enumerating devices...");
