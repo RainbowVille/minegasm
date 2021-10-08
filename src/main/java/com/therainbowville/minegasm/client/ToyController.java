@@ -1,5 +1,6 @@
 package com.therainbowville.minegasm.client;
 
+//import com.therainbowville.minegasm.config.MinegasmConfig;
 import com.therainbowville.minegasm.config.MinegasmConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,11 +23,11 @@ public class ToyController {
 
     public static boolean connectDevice() {
         try {
-            device = null;
+            LOGGER.info("URL: " + MinegasmConfig.buttplug.serverUrl);
             client.Disconnect();
-            LOGGER.info("URL: " + MinegasmConfig.serverUrl);
+            client.Connect(new URI(MinegasmConfig.buttplug.serverUrl), true);
 
-            client.Connect(new URI(MinegasmConfig.serverUrl), true);
+            device = null;
             client.startScanning();
 
             Thread.sleep(5000);
@@ -70,7 +71,9 @@ public class ToyController {
                 shutDownHookAdded = true;
             }
 
-            isConnected = true;
+            if (nDevices > 0) {
+                isConnected = true;
+            }
         } catch (Exception e) {
             lastErrorMessage = e.getMessage();
             e.printStackTrace();

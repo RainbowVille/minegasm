@@ -5,12 +5,12 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
+        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
     }
 }
 
 plugins {
-    id 'com.github.johnrengelman.shadow' version '5.2.0'
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
 }
 
 apply plugin: 'net.minecraftforge.gradle'
@@ -18,15 +18,14 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.3.0'
+version = '0.2.2'
 group = 'com.therainbowville.minegasm'
 archivesBaseName = 'minegasm'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
 
-println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.16.5'
+    mappings channel: 'snapshot', version: '20171003-1.12'
 
     runs {
         client {
@@ -43,25 +42,8 @@ minecraft {
         }
 
         server {
-            workingDirectory project.file('run')
-
             property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
             property 'forge.logging.console.level', 'debug'
-
-            mods {
-                minegasm {
-                    source sourceSets.main
-                }
-            }
-        }
-
-        data {
-            workingDirectory project.file('run')
-
-            property 'forge.logging.markers', 'SCAN,REGISTRIES,REGISTRYDUMP'
-            property 'forge.logging.console.level', 'debug'
-
-            args '--mod', 'minegasm', '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
 
             mods {
                 minegasm {
@@ -71,8 +53,6 @@ minecraft {
         }
     }
 }
-
-sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
     maven {
@@ -81,7 +61,7 @@ repositories {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.16.5-36.1.4'
+    minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'
     compile 'org.metafetish.buttplug:buttplug.core:0.0.14-SNAPSHOT'
     compile 'org.metafetish.buttplug:buttplug.client:0.0.14-SNAPSHOT'
 }
@@ -98,23 +78,30 @@ jar {
             "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
     }
+    // https://github.com/gradle/gradle/issues/7006
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
 
 shadowJar {
-  dependencies {
-    include(dependency('com.fasterxml.jackson.core:.*:.*'))
-    include(dependency('org.springframework:spring-core:.*'))
-    include(dependency('com.neovisionaries:nv-websocket-client:.*'))
-    include(dependency('org.metafetish.buttplug:.*:.*'))
+    dependencies {
+        include(dependency('com.fasterxml.jackson.core:.*:.*'))
+        include(dependency('org.springframework:spring-core:.*'))
+        include(dependency('com.neovisionaries:nv-websocket-client:.*'))
+        include(dependency('org.metafetish.buttplug:.*:.*'))
 
-    relocate 'com.fasterxml', 'com.therainbowville.repack.com.fasterxml'
-    relocate 'org.springframework', 'com.therainbowville.repack.org.springframework'
-    relocate 'com.neovisionaries', 'com.therainbowville.repack.com.neovisionaries'
-    relocate 'org.metafetish', 'com.therainbowville.repack.org.metafetish'
+        relocate 'com.fasterxml', 'com.therainbowville.repack.com.fasterxml'
+        relocate 'org.springframework', 'com.therainbowville.repack.org.springframework'
+        relocate 'com.neovisionaries', 'com.therainbowville.repack.com.neovisionaries'
+        relocate 'org.metafetish', 'com.therainbowville.repack.org.metafetish'
 
-    classifier ''
-  } 
+        classifier ''
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
+
+// https://forums.minecraftforge.net/topic/26075-multiple-entries-with-same-key-intellij-crash/
+sourceSets { main { output.resourcesDir = output.classesDir } }
 
 reobf {
     shadowJar {}
