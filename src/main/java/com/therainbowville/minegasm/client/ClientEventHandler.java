@@ -14,9 +14,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.ModelRegistryEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.living.LivingDamageEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
+import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -211,7 +209,7 @@ public final class ClientEventHandler {
     }
 
     @SubscribeEvent
-    public static void onHurt(LivingHurtEvent event)
+    public static void onHurt(LivingAttackEvent event)
     {
         Entity entity = event.getEntityLiving();
         LOGGER.debug("HX");
@@ -229,6 +227,29 @@ public final class ClientEventHandler {
             if (profile.getId().equals(playerID)) {
                 LOGGER.debug("HURT!");
                 setState(getStateCounter(), 3, getIntensity("hurt"), true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onDeath(LivingDeathEvent event)
+    {
+        Entity entity = event.getEntityLiving();
+        LOGGER.debug("DX");
+        LOGGER.debug(entity instanceof EntityPlayer);
+        LOGGER.debug((Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER));
+        LOGGER.debug((Thread.currentThread().getThreadGroup() == SidedThreadGroups.CLIENT));
+
+        if ((entity instanceof EntityPlayer) && (Thread.currentThread().getThreadGroup() != SidedThreadGroups.CLIENT)) {
+            EntityPlayer player = (EntityPlayer) entity;
+            GameProfile profile = player.getGameProfile();
+
+            LOGGER.debug("D");
+            LOGGER.debug(profile);
+
+           if (profile.getId().equals(playerID)) {
+               clearState();
+               ToyController.setVibrationLevel(0);
             }
         }
     }
@@ -274,23 +295,30 @@ public final class ClientEventHandler {
                     if (!ToyController.isConnected) {
                         if (ToyController.connectDevice()) {
                             LOGGER.debug("Toy connected");
-                            setState(getStateCounter(), 2);
+                            if (player.getHealth() > 0) {
+                                setState(getStateCounter(), 2);
+                            }
                             player.sendStatusMessage(new TextComponentString(String.format("Connected to " + TextFormatting.GREEN + "%s" + TextFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
                         } else {
                             LOGGER.debug("Failed to connect");
                             player.sendStatusMessage(new TextComponentString(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
                         }
+                    } else {
+                        clearState();
+                        ToyController.setVibrationLevel(0);
+                        populatePlayerInfo();
                     }
                 }
             }
         }
     }
 
-    /*@SubscribeEvent
+    @SubscribeEvent
     public static void onWorldExit(WorldEvent.Unload event) {
         LOGGER.debug("World exit");
         clearState();
-    }*/
+        ToyController.setVibrationLevel(0);
+    }
 }
 
 
@@ -382,19 +410,7 @@ public class ClientEventHandler {
 
 
 
-    @SubscribeEvent
-    public static void onDeath(LivingDeathEvent event)
-    {
-        Entity entity = event.getEntityLiving();
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            GameProfile profile = player.getGameProfile();
 
-            if (profile.getId().equals(playerID)) {
-                ToyController.setVibrationLevel(0);
-            }
-        }
-    }
 
     @SubscribeEvent
     public static void onHarvest(PlayerEvent.HarvestCheck event)
@@ -480,16 +496,6 @@ public class ClientEventHandler {
             setState(getStateCounter(), Math.toIntExact(duration), getIntensity("xpChange"), true);
         }
     }
-
-    @SubscribeEvent
-    public static void onRespawn(PlayerEvent.PlayerRespawnEvent event)
-    {
-        clearState();
-        ToyController.setVibrationLevel(0);
-        populatePlayerInfo();
-    }
-
-
 }
 
 */
