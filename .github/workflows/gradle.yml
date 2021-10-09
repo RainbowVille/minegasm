@@ -32,6 +32,7 @@ jobs:
       uses: gradle/gradle-build-action@v2.0-beta.4
       with:
         build-root-directory: 1.16
+        arguments: build
     - uses: actions/upload-artifact@v2
       with:
         name: Package
