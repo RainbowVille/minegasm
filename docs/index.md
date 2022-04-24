@@ -1,7 +1,9 @@
 Minegasm is a Minecraft (Java Edition) Forge mod that uses connected sex toys to enhance the gameplay experience. This mod is intended to be used only by consenting adults.
 
 ## Download
-JAR file: [minegasm-0.2.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.2.1/minegasm-0.2.1.jar)
+JAR file (MC 1.16.5): [minegasm-0.2.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.2.1-1.16.5/minegasm-0.2.1.jar)
+
+Releases for other versions: https://github.com/RainbowVille/minegasm/releases
 
 ### Dependencies
 1. Intiface Desktop: [https://intiface.com/desktop/](https://intiface.com/desktop/)
