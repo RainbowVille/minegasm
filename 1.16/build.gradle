@@ -22,7 +22,7 @@ version = '0.3.0'
 group = 'com.therainbowville.minegasm'
 archivesBaseName = 'minegasm'
 
-java.toolchain.languageVersion = JavaLanguageVersion.of(8)
+java.toolchain.languageVersion = JavaLanguageVersion.of(11)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
@@ -75,15 +75,12 @@ minecraft {
 sourceSets.main.resources { srcDir 'src/generated/resources' }
 
 repositories {
-    maven {
-        url "https://packagecloud.io/blackspherefollower/buttplug4j/maven2"
-    }
+    mavenCentral()
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.16.5-36.1.4'
-    compile 'org.metafetish.buttplug:buttplug.core:0.0.14-SNAPSHOT'
-    compile 'org.metafetish.buttplug:buttplug.client:0.0.14-SNAPSHOT'
+    compile 'io.github.blackspherefollower:buttplug4j:3.0.67'
 }
 
 jar {
@@ -105,12 +102,12 @@ shadowJar {
     include(dependency('com.fasterxml.jackson.core:.*:.*'))
     include(dependency('org.springframework:spring-core:.*'))
     include(dependency('com.neovisionaries:nv-websocket-client:.*'))
-    include(dependency('org.metafetish.buttplug:.*:.*'))
+    include(dependency('io.github.blackspherefollower:.*:.*'))
 
     relocate 'com.fasterxml', 'com.therainbowville.repack.com.fasterxml'
     relocate 'org.springframework', 'com.therainbowville.repack.org.springframework'
     relocate 'com.neovisionaries', 'com.therainbowville.repack.com.neovisionaries'
-    relocate 'org.metafetish', 'com.therainbowville.repack.org.metafetish'
+    relocate 'io.github.blackspherefollower', 'com.therainbowville.repack.io.github.blackspherefollower'
 
     classifier ''
   } 

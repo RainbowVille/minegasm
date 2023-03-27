@@ -5,7 +5,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:3.+'
+        classpath group: 'net.minecraftforge.gradle', name: 'ForgeGradle', version: '4.1.+', changing: true
     }
 }
 
@@ -22,7 +22,7 @@ version = '0.2.2'
 group = 'com.therainbowville.minegasm'
 archivesBaseName = 'minegasm'
 
-sourceCompatibility = targetCompatibility = compileJava.sourceCompatibility = compileJava.targetCompatibility = '1.8' // Need this here so eclipse task generates correctly.
+java.toolchain.languageVersion = JavaLanguageVersion.of(11)
 
 minecraft {
     mappings channel: 'snapshot', version: '20171003-1.12'
@@ -54,16 +54,15 @@ minecraft {
     }
 }
 
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
 repositories {
-    maven {
-        url "https://packagecloud.io/blackspherefollower/buttplug4j/maven2"
-    }
+    mavenCentral()
 }
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.12.2-14.23.5.2855'
-    compile 'org.metafetish.buttplug:buttplug.core:0.0.14-SNAPSHOT'
-    compile 'org.metafetish.buttplug:buttplug.client:0.0.14-SNAPSHOT'
+    compile 'io.github.blackspherefollower:buttplug4j:3.0.67'
 }
 
 jar {
@@ -87,21 +86,18 @@ shadowJar {
         include(dependency('com.fasterxml.jackson.core:.*:.*'))
         include(dependency('org.springframework:spring-core:.*'))
         include(dependency('com.neovisionaries:nv-websocket-client:.*'))
-        include(dependency('org.metafetish.buttplug:.*:.*'))
+        include(dependency('io.github.blackspherefollower:.*:.*'))
 
         relocate 'com.fasterxml', 'com.therainbowville.repack.com.fasterxml'
         relocate 'org.springframework', 'com.therainbowville.repack.org.springframework'
         relocate 'com.neovisionaries', 'com.therainbowville.repack.com.neovisionaries'
-        relocate 'org.metafetish', 'com.therainbowville.repack.org.metafetish'
+        relocate 'io.github.blackspherefollower', 'com.therainbowville.repack.io.github.blackspherefollower'
 
         classifier ''
     }
 
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }
-
-// https://forums.minecraftforge.net/topic/26075-multiple-entries-with-same-key-intellij-crash/
-sourceSets { main { output.resourcesDir = output.classesDir } }
 
 reobf {
     shadowJar {}
