@@ -77,20 +77,35 @@ sourceSets.main.resources { srcDir 'src/generated/resources' }
 repositories {
     mavenCentral()
 }
+configurations {
+    shade
+    implementation.extendsFrom shade
+}
 
 dependencies {
     minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
-    implementation 'io.github.blackspherefollower:buttplug4j:3.0.67'
+    shade 'io.github.blackspherefollower:buttplug4j:3.0.67'
+}
+
+// Fix the classpath the right way and once and for all
+afterEvaluate {
+    // Collect deps in runtimeClasspath but NOT in minecraft
+    def deps = (configurations.runtimeClasspath - configurations.minecraft).join(';')
+    // Add deps to classpath
+    minecraft.runs.each { run ->
+        run.token 'minecraft_classpath', deps
+    }
 }
 
 jar {
+    archiveClassifier = 'slim'
     manifest {
         attributes([
                 "Specification-Title"     : "minegasm",
                 "Specification-Vendor"    : "therainbowville",
                 "Specification-Version"   : "1", // We are version 1 of ourselves
                 "Implementation-Title"    : project.name,
-                "Implementation-Version"  : "${archiveVersion}",
+                "Implementation-Version"  : project.jar.archiveVersion,
                 "Implementation-Vendor"   : "therainbowville",
                 "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
         ])
@@ -100,22 +115,33 @@ jar {
 shadowJar {
     dependencies {
         include(dependency('com.fasterxml.jackson.core:.*:.*'))
-        include(dependency('org.springframework:spring-core:.*'))
-        include(dependency('com.neovisionaries:nv-websocket-client:.*'))
         include(dependency('io.github.blackspherefollower:.*:.*'))
-        include(dependency('org.eclipse.jetty:.*:.*'))
+        include(dependency('org.eclipse.jetty.*:.*:.*'))
+        include(dependency('jakarta.websocket:.*:.*'))
+        include(dependency('javax.websocket:.*:.*'))
 
         relocate 'com.fasterxml', 'com.therainbowville.repack.com.fasterxml'
-        relocate 'org.springframework', 'com.therainbowville.repack.org.springframework'
-        relocate 'com.neovisionaries', 'com.therainbowville.repack.com.neovisionaries'
         relocate 'io.github.blackspherefollower', 'com.therainbowville.repack.io.github.blackspherefollower'
         relocate 'org.eclipse.jetty', 'com.therainbowville.repack.org.eclipse.jetty'
-
+        relocate 'javax.websocket', 'com.therainbowville.repack.javax.websocket'
+        relocate 'jakarta.websocket', 'com.therainbowville.repack.javax.websocket'
+        relocate 'javax.servlet', 'com.therainbowville.repack.javax.servlet'
 
         classifier ''
     }
     archiveClassifier.set('')
-    dependsOn(reobf)
+    configurations = [project.configurations.shade]
+    mergeServiceFiles()
+    finalizedBy 'reobfShadowJar'
+}
+assemble.dependsOn shadowJar
+
+reobf {
+    shadowJar {}
 }
 
-build.dependsOn shadowJar
+jar.finalizedBy('reobfJar')
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}

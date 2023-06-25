@@ -6,7 +6,7 @@ issueTrackerURL="https://github.com/RainbowVille/minegasm/issues"
 modId="minegasm"
 version="0.3.0"
 displayName="Minegasm"
-updateJSONURL="https://www.minegasm.net/updates.json"
+#updateJSONURL="https://www.minegasm.net/updates.json"
 displayURL="https://www.minegasm.net/"
 logoFile="minegasm.png"
 authors="RSwoop"
@@ -22,6 +22,6 @@ description='''
 [[dependencies.minegasm]]
     modId="minecraft"
     mandatory=true
-    versionRange="[1.18,1.19)"
+    versionRange="[1.18.2,1.19)"
     ordering="NONE"
     side="BOTH"
