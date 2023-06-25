@@ -5,6 +5,7 @@ import com.therainbowville.minegasm.config.ClientConfig;
 import com.therainbowville.minegasm.config.MinegasmConfig;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
@@ -32,7 +33,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 
-@Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
+@Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ClientEventHandler {
     private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
     private static final int TICKS_PER_SECOND = 20;
@@ -40,6 +41,8 @@ public class ClientEventHandler {
     private static int clientTickCounter = -1;
     private static final double[] state = new double[1200];
     private static boolean paused = false;
+    private static UUID playerId = null;
+
 
     private static void clearState() {
         tickCounter = -1;
@@ -132,7 +135,8 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         try {
-        if (event.phase == TickEvent.Phase.END) {
+            LOGGER.info("tick?");
+        if (event.phase == TickEvent.Phase.END ) {
             Player player = event.player;;
             UUID uuid = player.getGameProfile().getId();
 
@@ -144,7 +148,8 @@ public class ClientEventHandler {
             tickCounter = (tickCounter + 1) % (20 * (60 * TICKS_PER_SECOND)); // 20 min day cycle
 
             if (tickCounter % TICKS_PER_SECOND == 0) { // every 1 sec
-                if (uuid.equals(Minecraft.getInstance().player.getGameProfile().getId())) {
+                if (uuid.equals(playerId)) {
+                    LOGGER.info("tick!");
                     int stateCounter = getStateCounter();
 
                     if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
@@ -178,6 +183,7 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
+        LOGGER.info("client tock?");
         if (event.phase == TickEvent.Phase.END) {
             if (tickCounter >= 0) {
                 if (tickCounter != clientTickCounter) {
@@ -207,7 +213,7 @@ public class ClientEventHandler {
             Player player = (Player) entity;;
             UUID uuid = player.getGameProfile().getId();
 
-            if (uuid.equals(Minecraft.getInstance().player.getGameProfile().getId())) {
+            if (uuid.equals(playerId)) {
                 setState(getStateCounter(), 3, getIntensity("attack"), true);
             }
         }
@@ -231,7 +237,7 @@ public class ClientEventHandler {
             Player player = (Player) entity;;
             UUID uuid = player.getGameProfile().getId();
 
-            if (uuid.equals(Minecraft.getInstance().player.getGameProfile().getId())) {
+            if (uuid.equals(playerId)) {
                 setState(getStateCounter(), 3, getIntensity("hurt"), true);
             }
         }
@@ -249,7 +255,7 @@ public class ClientEventHandler {
             Player player = (Player) entity;;
             UUID uuid = player.getGameProfile().getId();
 
-            if (uuid.equals(Minecraft.getInstance().player.getGameProfile().getId())) {
+            if (uuid.equals(playerId)) {
                 ToyController.setVibrationLevel(0);
             }
         }
@@ -265,7 +271,7 @@ public class ClientEventHandler {
         Player player = event.getPlayer();;
             UUID uuid = player.getGameProfile().getId();
 
-            if (uuid.equals(Minecraft.getInstance().player.getGameProfile().getId())) {
+            if (uuid.equals(playerId)) {
             BlockState blockState = event.getTargetBlock();
             Block block = blockState.getBlock();
 
@@ -293,7 +299,7 @@ public class ClientEventHandler {
         Player player = event.getPlayer();;
             UUID uuid = player.getGameProfile().getId();
 
-            if (uuid.equals(Minecraft.getInstance().player.getGameProfile().getId())) {
+            if (uuid.equals(playerId)) {
             BlockState blockState = event.getState();
             Block block = blockState.getBlock();
             @SuppressWarnings("ConstantConditions") float blockHardness = block.defaultBlockState().getDestroySpeed(null, null);
@@ -338,7 +344,7 @@ public class ClientEventHandler {
         Player player = event.getPlayer();;
             UUID uuid = player.getGameProfile().getId();
 
-            if (uuid.equals(Minecraft.getInstance().player.getGameProfile().getId())) {
+            if (uuid.equals(playerId)) {
             int xpChange = event.getAmount();
             long duration = Math.round(Math.ceil(Math.log(xpChange + 0.5)));
 
@@ -357,7 +363,6 @@ public class ClientEventHandler {
     {
         Entity entity = event.getEntity();
         if( !entity.level.isClientSide() ) {
-            LOGGER.info("Server Entered world: " + entity.toString());
             return;
         }
 
@@ -372,6 +377,7 @@ public class ClientEventHandler {
                     LOGGER.info("Player in: " + player.getGameProfile().getName() + " " + player.getGameProfile().getId().toString());
                     clearState();
                     ToyController.setVibrationLevel(0);
+                    playerId = uuid;
                 }
             } catch (Throwable e) {
                 LOGGER.throwing(e);
@@ -396,7 +402,7 @@ public class ClientEventHandler {
         }
 
         if (entity instanceof Player) {
-            LOGGER.info("Player Entered world: " + entity.toString());
+            LOGGER.info("Player respawn world: " + entity.toString());
 
             try {
                 Player player = (Player) entity;
@@ -410,6 +416,7 @@ public class ClientEventHandler {
                     } else {
                         player.displayClientMessage(new TextComponent(String.format(ChatFormatting.YELLOW + "Minegasm " + ChatFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
                     }
+                    playerId = uuid;
                 }
             } catch (Throwable e) {
                 LOGGER.throwing(e);
