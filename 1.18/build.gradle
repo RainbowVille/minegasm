@@ -18,7 +18,7 @@ apply plugin: 'net.minecraftforge.gradle'
 apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 
-version = '0.3.0'
+version = '0.4.0'
 group = 'com.therainbowville.minegasm'
 archivesBaseName = 'minegasm'
 
@@ -26,7 +26,7 @@ java.toolchain.languageVersion = JavaLanguageVersion.of(17)
 
 println('Java: ' + System.getProperty('java.version') + ' JVM: ' + System.getProperty('java.vm.version') + '(' + System.getProperty('java.vendor') + ') Arch: ' + System.getProperty('os.arch'))
 minecraft {
-    mappings channel: 'official', version: '1.18.2'
+    mappings channel: 'official', version: mcVer
 
     runs {
         client {
@@ -83,7 +83,7 @@ configurations {
 }
 
 dependencies {
-    minecraft 'net.minecraftforge:forge:1.18.2-40.2.0'
+    minecraft "net.minecraftforge:forge:${mcVer}-${forgeVer}"
     shade 'io.github.blackspherefollower:buttplug4j:3.0.67'
 }
 
@@ -127,7 +127,7 @@ shadowJar {
         relocate 'jakarta.websocket', 'com.therainbowville.repack.javax.websocket'
         relocate 'javax.servlet', 'com.therainbowville.repack.javax.servlet'
 
-        classifier ''
+        classifier "${mcVer}-Forge-${forgeVer}"
     }
     archiveClassifier.set('')
     configurations = [project.configurations.shade]

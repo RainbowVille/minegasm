@@ -135,12 +135,9 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         try {
-            LOGGER.info("tick?");
         if (event.phase == TickEvent.Phase.END ) {
             Player player = event.player;;
             UUID uuid = player.getGameProfile().getId();
-
-
 
             float playerHealth = player.getHealth();
             float playerFoodLevel = player.getFoodData().getFoodLevel();
@@ -149,7 +146,6 @@ public class ClientEventHandler {
 
             if (tickCounter % TICKS_PER_SECOND == 0) { // every 1 sec
                 if (uuid.equals(playerId)) {
-                    LOGGER.info("tick!");
                     int stateCounter = getStateCounter();
 
                     if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
@@ -183,7 +179,6 @@ public class ClientEventHandler {
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
-        LOGGER.info("client tock?");
         if (event.phase == TickEvent.Phase.END) {
             if (tickCounter >= 0) {
                 if (tickCounter != clientTickCounter) {

@@ -10,7 +10,6 @@ import java.util.Objects;
 public final class ClientConfig {
     final ForgeConfigSpec.ConfigValue<String> serverUrl;
 
-    final ForgeConfigSpec.ConfigValue<String> version;
     final ForgeConfigSpec.BooleanValue vibrate;
     final ForgeConfigSpec.EnumValue<GameplayMode> mode;
     final ForgeConfigSpec.IntValue attackIntensity;
@@ -30,10 +29,6 @@ public final class ClientConfig {
         builder.pop();
 
         builder.push("minegasm");
-
-        version = builder
-                .translation(Minegasm.MOD_ID + ".config.version")
-                .define("version", "0.3");
 
         vibrate = builder
                 .translation(Minegasm.MOD_ID + ".config.vibrate")

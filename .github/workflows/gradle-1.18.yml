@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Build 1.18
+name: Build 1.18+
 
 on:
   push:
@@ -19,6 +19,15 @@ jobs:
   build:
 
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - mvVer: 1.18.2
+            forgeVer: 40.2.0
+#          - mvVer: 1.19.4
+#            forgeVer: 45.1.0
+#          - mvVer: 1.20.1
+#            forgeVer: 47.0.19
 
     steps:
     - uses: actions/checkout@v2
@@ -36,4 +45,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: Package
-        path: 1.18/build/libs
+        path: 1.18/build/libs/*-${{ matrix.mvVer }}-*
