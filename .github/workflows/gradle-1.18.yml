@@ -22,12 +22,18 @@ jobs:
     strategy:
       matrix:
         include:
-          - mvVer: 1.18.2
+          - mcVer: 1.18.2
+            mcRange: "[1.19,1.19)"
             forgeVer: 40.2.0
-#          - mvVer: 1.19.4
-#            forgeVer: 45.1.0
-#          - mvVer: 1.20.1
-#            forgeVer: 47.0.19
+            forgeRange: "[40,)"
+          - mcVer: 1.19.4
+            mcRange: "[1.19,1.20)"
+            forgeVer: 45.1.0
+            forgeRange: "[45,)"
+          - mcVer: 1.20.1
+            mcRange: "[1.20,1.21)"
+            forgeVer: 47.0.19
+            forgeRange: "[47,)"
 
     steps:
     - uses: actions/checkout@v2
@@ -37,11 +43,16 @@ jobs:
         java-version: 17
     - name: Grant execute permission for gradlew
       run: chmod +x 1.18/gradlew
+    - name: Edit Toml
+      run: sed -i.bak -e s/\\[40,\\)/${{ matrix.forgeRange }}/ -e s/\\[1.18,1.19\\)/${{ matrix.mcRange }}/ 1.18/src/main/resources/META-INF/mods.toml
     - name: Gradle Build Action
-      uses: gradle/gradle-build-action@v2.0-beta.4
+      uses: gradle/gradle-build-action@v2
       with:
         build-root-directory: 1.18
-        arguments: build
+        arguments: |
+          build
+          -PmcVer=${{ matrix.mcVer }}
+          -PforgeVer=${{ matrix.forgeVer }}
     - uses: actions/upload-artifact@v2
       with:
         name: Package
