@@ -126,6 +126,7 @@ shadowJar {
         relocate 'javax.websocket', 'com.therainbowville.repack.javax.websocket'
         relocate 'jakarta.websocket', 'com.therainbowville.repack.javax.websocket'
         relocate 'javax.servlet', 'com.therainbowville.repack.javax.servlet'
+
     }
     archiveClassifier = "${mcVer}-Forge-${forgeVer}"
     configurations = [project.configurations.shade]

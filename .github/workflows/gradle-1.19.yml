@@ -1,19 +1,19 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Build 1.18
+name: Build 1.19
 
 on:
   push:
     branches: [ main ]
     paths:
-      - '1.18/**'
-      - '.github/workflows/gradle-1.18.yml'
+      - '1.19/**'
+      - '.github/workflows/gradle-1.19.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - '1.18/**'
-      - '.github/workflows/gradle-1.18.yml'
+      - '1.19/**'
+      - '.github/workflows/gradle-1.19.yml'
 
 jobs:
   build:
@@ -27,13 +27,13 @@ jobs:
       with:
         java-version: 17
     - name: Grant execute permission for gradlew
-      run: chmod +x 1.18/gradlew
+      run: chmod +x 1.19/gradlew
     - name: Gradle Build Action
       uses: gradle/gradle-build-action@v2
       with:
-        build-root-directory: 1.18
+        build-root-directory: 1.19
         arguments: build
     - uses: actions/upload-artifact@v2
       with:
         name: Package
-        path: 1.18/build/libs/*-1.18*
+        path: 1.19/build/libs/*-1.19*
