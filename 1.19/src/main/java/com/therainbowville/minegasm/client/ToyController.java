@@ -73,7 +73,7 @@ public class ToyController {
             isConnected = true;
         } catch (Exception e) {
             lastErrorMessage = e.getMessage();
-            e.printStackTrace();
+            LOGGER.error(e.getMessage(), e);
         }
 
         return Objects.nonNull(device);

@@ -1,19 +1,19 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Build 1.16
+name: Build 1.20
 
 on:
   push:
     branches: [ main ]
     paths:
-      - '1.16/**'
-      - '.github/workflows/gradle-1.16.yml'
+      - '1.20/**'
+      - '.github/workflows/gradle-1.20.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - '1.16/**'
-      - '.github/workflows/gradle-1.16.yml'
+      - '1.20/**'
+      - '.github/workflows/gradle-1.20.yml'
 
 jobs:
   build:
@@ -22,18 +22,18 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Set up JDK 11
+    - name: Set up JDK 17
       uses: actions/setup-java@v1
       with:
-        java-version: 11
+        java-version: 17
     - name: Grant execute permission for gradlew
-      run: chmod +x 1.16/gradlew        
+      run: chmod +x 1.20/gradlew
     - name: Gradle Build Action
-      uses: gradle/gradle-build-action@v2.0-beta.4
+      uses: gradle/gradle-build-action@v2
       with:
-        build-root-directory: 1.16
+        build-root-directory: 1.20
         arguments: build
     - uses: actions/upload-artifact@v2
       with:
         name: Package
-        path: 1.16/build/libs
+        path: 1.20/build/libs/*-1.20*

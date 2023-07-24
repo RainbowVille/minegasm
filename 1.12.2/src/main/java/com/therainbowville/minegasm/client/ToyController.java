@@ -1,11 +1,10 @@
 package com.therainbowville.minegasm.client;
 
 import com.therainbowville.minegasm.config.MinegasmConfig;
+import io.github.blackspherefollower.buttplug4j.client.ButtplugClientDevice;
+import io.github.blackspherefollower.buttplug4j.client.ButtplugClientWSClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.metafetish.buttplug.client.ButtplugClientDevice;
-import org.metafetish.buttplug.client.ButtplugWSClient;
-import org.metafetish.buttplug.core.Messages.SingleMotorVibrateCmd;
 
 import java.net.URI;
 import java.util.List;
@@ -13,7 +12,7 @@ import java.util.Objects;
 
 public class ToyController {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final ButtplugWSClient client = new ButtplugWSClient("Minegasm");
+    private static final ButtplugClientWSClient client = new ButtplugClientWSClient("Minegasm");
     private static ButtplugClientDevice device = null;
     private static boolean shutDownHookAdded = false;
     public static String lastErrorMessage = "";
@@ -23,8 +22,8 @@ public class ToyController {
     public static boolean connectDevice() {
         try {
             LOGGER.info("URL: " + MinegasmConfig.buttplug.serverUrl);
-            client.Disconnect();
-            client.Connect(new URI(MinegasmConfig.buttplug.serverUrl), true);
+            client.disconnect();
+            client.connect(new URI(MinegasmConfig.buttplug.serverUrl));
 
             device = null;
             client.startScanning();
@@ -44,11 +43,11 @@ public class ToyController {
             }
 
             for (ButtplugClientDevice dev : devices) {
-                if (dev.allowedMessages.contains(SingleMotorVibrateCmd.class.getSimpleName())) {
-                    LOGGER.info(dev.name);
+                if (dev.getScalarVibrateCount() != 0) {
+                    LOGGER.info(dev.getDisplayName());
                     device = dev;
                     try {
-                        client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, 0, client.getNextMsgId()));
+                        device.sendScalarVibrateCmd(0);
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -61,7 +60,7 @@ public class ToyController {
                     try {
                         LOGGER.info("Disconnecting devices...");
                         client.stopAllDevices();
-                        client.Disconnect();
+                        client.disconnect();
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
@@ -86,7 +85,7 @@ public class ToyController {
 
         if (MinegasmConfig.vibrate) {
             try {
-                client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, level, client.getNextMsgId()));
+                device.sendScalarVibrateCmd(level);
                 currentVibrationLevel = level;
             } catch (Exception e) {
                 e.printStackTrace();
@@ -95,7 +94,7 @@ public class ToyController {
             if (currentVibrationLevel > 0) {
                 try {
                     level = 0;
-                    client.sendDeviceMessage(device, new SingleMotorVibrateCmd(device.index, level, client.getNextMsgId()));
+                    device.sendScalarVibrateCmd(level);
                     currentVibrationLevel = level;
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -105,11 +104,11 @@ public class ToyController {
     }
 
     public static String getDeviceName() {
-        return (Objects.nonNull(device)) ? device.name : "<none>";
+        return (Objects.nonNull(device)) ? device.getDisplayName() : "<none>";
     }
 
     public static long getDeviceId() {
-        return (Objects.nonNull(device)) ? device.index : -1;
+        return (Objects.nonNull(device)) ? device.getDeviceIndex() : -1;
     }
 
     public static String getLastErrorMessage() {
