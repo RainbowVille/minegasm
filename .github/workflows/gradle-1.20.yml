@@ -31,7 +31,7 @@ jobs:
     - name: Gradle Build Action
       uses: gradle/gradle-build-action@v2
       with:
-        build-root-directory: 1.20
+        build-root-directory: '1.20'
         arguments: build
     - uses: actions/upload-artifact@v2
       with:
