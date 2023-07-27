@@ -1,20 +1,31 @@
 Minegasm is a Minecraft (Java Edition) Forge mod that uses connected sex toys to enhance the gameplay experience. This mod is intended to be used only by consenting adults.
 
 ## Download
-JAR file (MC 1.16.5): [minegasm-0.2.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.2.1-1.16.5/minegasm-0.2.1.jar)
 
-Releases for other versions: <https://github.com/RainbowVille/minegasm/releases>
+| Minecraft  | Forge        | JAR file                                                                                                          |
+|------------|--------------|-------------------------------------------------------------------------------------------------------------------|
+| **1.20**.1 | 47.0.19      | _coming soon_                                                                                                     |
+| **1.19**.4 | 45.1.2       | _coming soon_                                                                                                     |
+| **1.18**.2 | 40.2.0       | _coming soon_                                                                                                     |
+| **1.17**   | -            | _coming soon_                                                                                                     |
+| **1.16**.5 | [36.1.4](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html)    | [minegasm-0.2.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.2.1-1.16.5/minegasm-0.2.1.jar) |
+| **1.15**   | -            | _coming soon_                                                                                                     |
+| **1.14**   | -            | _coming soon_                                                                                                     |
+| **1.13**   | -            | _coming soon_                                                                                                     |
+| **1.12**.2 | 14.23.5.2855 | _coming soon_                                                                                                     |
+
+Old releases can be found here: <https://github.com/RainbowVille/minegasm/releases>
 
 ### Dependencies
-1. Intiface Desktop: [https://intiface.com/desktop/](https://intiface.com/desktop/)
-2. Minecraft Forge - MC 1.16.5: [http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html)
+1. Intiface Central: [https://intiface.com/central/](https://intiface.com/central/)
+2. Minecraft Forge: the versions mentioned on the corresponding Forge column above are the tested version (newer versions are probably okay) 
 
 ## How to Use
 1. Make sure you have all the dependencies installed.
 2. Download the JAR file and put it in your mods directory. If you don't know where your mods directory is, you can simply open your Minecraft, click the 'Mods' button on the main menu, then click 'Open Mods Folder'.
-3. Run the Intiface Desktop and turn on the Regular Websockets server (on 127.0.0.1:12345). For advanced users, it is possible to use a buttplug server on a different endpoint by specifying it in the Minegasm config file.
+3. Run the Intiface Central and start the server (`ws://localhost:12345`). For advanced users, it is possible to use an Intiface server on a different endpoint by specifying it in the Minegasm config file.
 4. Turn on the device.
-5. Start Minecraft and connect to a world. If everything works properly, you should see a message stating that Minegasm is connected to your device when you enter the world. If the connection fails, go back to Intiface Desktop and make sure that the Server Status shows that the server is running. To force Minegasm to retry to connect, leave the world and then re-enter.
+5. Start Minecraft and connect to a world. If everything works properly, you should see a message stating that Minegasm is connected to your device when you enter the world. If the connection fails, go back to Intiface Central and make sure that the Server Status shows that the server is running. To force Minegasm to retry to connect, leave the world and then re-enter.
 6. Have fun!
 
 ## Known Issues
