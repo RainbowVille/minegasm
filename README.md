@@ -12,4 +12,4 @@ User Guide: https://minegasm.therainbowville.com/
 | 1.15 | |
 | 1.14 | |
 | 1.13 | |
-| 1.12 | [![1.12.2](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-1.12.2.yml/badge.svg)](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-1.12.2.yml) |
+| 1.12 | [![1.12](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-1.12.yml/badge.svg)](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-1.12.yml) |

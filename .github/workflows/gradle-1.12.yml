@@ -1,19 +1,19 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Build 1.12.2
+name: Build 1.12
 
 on:
   push:
     branches: [ main ]
     paths:
-      - '1.12.2/**'
-      - '.github/workflows/gradle-1.12.2.yml'
+      - '1.12/**'
+      - '.github/workflows/gradle-1.12.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - '1.12.2/**'
-      - '.github/workflows/gradle-1.12.2.yml'
+      - '1.12/**'
+      - '.github/workflows/gradle-1.12.yml'
 
 jobs:
   build:
@@ -27,13 +27,13 @@ jobs:
       with:
         java-version: 11
     - name: Grant execute permission for gradlew
-      run: chmod +x 1.12.2/gradlew        
+      run: chmod +x 1.12/gradlew
     - name: Gradle Build Action
       uses: gradle/gradle-build-action@v2.0-beta.4
       with:
-        build-root-directory: 1.12.2
+        build-root-directory: 1.12
         arguments: build
     - uses: actions/upload-artifact@v2
       with:
         name: Package
-        path: 1.12.2/build/libs
+        path: 1.12/build/libs
