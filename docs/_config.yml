@@ -1,6 +1,6 @@
 title: Minegasm
 logo: minegasm.png
 description: A teledildonics Minecraft Forge mod
-remote_theme: RainbowVille/minimal@v0.2.0
+remote_theme: RainbowVille/minimalist
 plugins:
 - jekyll-remote-theme
