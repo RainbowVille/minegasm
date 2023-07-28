@@ -10,7 +10,6 @@ import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
-
 public class ToyController {
     private static final Logger LOGGER = LogManager.getLogger();
     private static final ButtplugClientWSClient client = new ButtplugClientWSClient("Minegasm");
@@ -22,14 +21,14 @@ public class ToyController {
 
     public static boolean connectDevice() {
         try {
-            device = null;
-            client.disconnect();
             LOGGER.info("URL: " + MinegasmConfig.serverUrl);
-
+            client.disconnect();
             client.connect(new URI(MinegasmConfig.serverUrl));
+
+            device = null;
             client.startScanning();
 
-            Thread.sleep(5000);
+            Thread.sleep(2000);
             client.requestDeviceList();
 
             LOGGER.info("Enumerating devices...");
@@ -70,7 +69,9 @@ public class ToyController {
                 shutDownHookAdded = true;
             }
 
-            isConnected = true;
+            if (nDevices > 0) {
+                isConnected = true;
+            }
         } catch (Exception e) {
             lastErrorMessage = e.getMessage();
             e.printStackTrace();

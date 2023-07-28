@@ -1,9 +1,7 @@
 package com.therainbowville.minegasm.config;
 
 import com.therainbowville.minegasm.common.Minegasm;
-import net.minecraft.client.Minecraft;
 import net.minecraftforge.common.ForgeConfigSpec;
-import net.minecraftforge.fml.mclanguageprovider.MinecraftModLanguageProvider;
 
 import java.util.Objects;
 

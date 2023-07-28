@@ -4,42 +4,45 @@ import com.mojang.authlib.GameProfile;
 import com.therainbowville.minegasm.common.Minegasm;
 import com.therainbowville.minegasm.config.ClientConfig;
 import com.therainbowville.minegasm.config.MinegasmConfig;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.entity.player.ClientPlayerEntity;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.text.StringTextComponent;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.util.text.TextComponentString;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.world.IWorld;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.ToolType;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
-import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.event.entity.player.*;
-import net.minecraftforge.event.world.BlockEvent;
+import net.minecraftforge.event.entity.player.AttackEntityEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.common.gameevent.TickEvent;
+import net.minecraftforge.fml.common.thread.SidedThreadGroups;
 import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
-public class ClientEventHandler {
-    private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
+public final class ClientEventHandler {
+
+    private static final Logger LOGGER = LogManager.getLogger();
     private static String playerName = null;
     private static UUID playerID = null;
     private static final int TICKS_PER_SECOND = 20;
+    private static final int DAY_CYCLE = 20 * 60; // 20 minutes
     private static int tickCounter = -1;
     private static int clientTickCounter = -1;
-    private static final double[] state = new double[1200];
+    private static final double[] state = new double[DAY_CYCLE];
     private static boolean paused = false;
+    private static boolean motdDisplayed = false;
 
     private static void clearState() {
         playerName = null;
@@ -51,7 +54,7 @@ public class ClientEventHandler {
     }
 
     private static int getStateCounter() {
-        return tickCounter / 20;
+        return tickCounter / TICKS_PER_SECOND;
     }
 
     private static void setState(int start, int duration, int intensity, boolean decay) {
@@ -62,13 +65,13 @@ public class ClientEventHandler {
         if (decay) {
             int safeDuration = Math.max(0, duration - 2);
             for (int i = 0; i < safeDuration; i++) {
-                setState(start+i, intensity);
+                setState(start + i, intensity);
             }
-            setState(start+safeDuration, intensity/2);
-            setState(start+safeDuration+1, intensity/4);
+            setState(start + safeDuration, intensity / 2);
+            setState(start + safeDuration + 1, intensity / 4);
         } else {
             for (int i = 0; i < duration; i++) {
-                setState(start+i, intensity);
+                setState(start + i, intensity);
             }
         }
     }
@@ -112,20 +115,10 @@ public class ClientEventHandler {
         hedonist.put("harvest", 20);
         hedonist.put("vitality", 10);
 
-        Map<String, Integer> custom = new HashMap<>();
-        custom.put("attack", MinegasmConfig.attackIntensity);
-        custom.put("hurt", MinegasmConfig.hurtIntensity);
-        custom.put("mine", MinegasmConfig.mineIntensity);
-        custom.put("xpChange", MinegasmConfig.xpChangeIntensity);
-        custom.put("harvest", MinegasmConfig.harvestIntensity);
-        custom.put("vitality", MinegasmConfig.vitalityIntensity);
-
         if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
             return masochist.get(type);
         } else if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.HEDONIST)) {
             return hedonist.get(type);
-        } else if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.CUSTOM)) {
-            return custom.get(type);
         } else {
             return normal.get(type);
         }
@@ -134,43 +127,211 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         if (event.phase == TickEvent.Phase.END) {
-            PlayerEntity player = event.player;
-            GameProfile profile = player.getGameProfile();
+            //LOGGER.debug("TICK");
+            EntityPlayer player = event.player;
+            if (Thread.currentThread().getThreadGroup() != SidedThreadGroups.CLIENT) {
+                //LOGGER.debug("server");
+                GameProfile profile = player.getGameProfile();
 
-            float playerHealth = player.getHealth();
-            float playerFoodLevel = player.getFoodData().getFoodLevel();
-
-            tickCounter = (tickCounter + 1) % (20 * (60 * TICKS_PER_SECOND)); // 20 min day cycle
-
-            if (tickCounter % TICKS_PER_SECOND == 0) { // every 1 sec
                 if (profile.getId().equals(playerID)) {
-                    int stateCounter = getStateCounter();
+                    float playerHealth = player.getHealth();
+                    float playerFoodLevel = player.getFoodStats().getFoodLevel();
 
-                    if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
-                        if (playerHealth > 0 && playerHealth <= 1) {
+                    tickCounter = (tickCounter + 1) % (DAY_CYCLE * TICKS_PER_SECOND);
+
+                    if (tickCounter % TICKS_PER_SECOND == 0) { // every 1 sec
+                        LOGGER.debug("1");
+
+                        int stateCounter = getStateCounter();
+
+                        /*if (MinegasmConfig.mode.equals(MinegasmConfig.Mode.MASOCHIST)) {
+                            if (playerHealth > 0 && playerHealth <= 1) {
+                                setState(stateCounter, getIntensity("vitality"));
+                            }
+                        } else if (playerHealth >= 20 && playerFoodLevel >= 20) {
                             setState(stateCounter, getIntensity("vitality"));
+                        }*/
+
+                        double newVibrationLevel = state[stateCounter];
+                        state[stateCounter] = 0;
+
+                        LOGGER.trace("Tick " + stateCounter + ": " + newVibrationLevel);
+
+                        if (ToyController.currentVibrationLevel != newVibrationLevel) {
+                            ToyController.setVibrationLevel(newVibrationLevel);
                         }
-                    } else if (playerHealth >= 20 && playerFoodLevel >= 20) {
-                        setState(stateCounter, getIntensity("vitality"));
+
                     }
 
-                    double newVibrationLevel = state[stateCounter];
-                    state[stateCounter] = 0;
-
-                    LOGGER.trace("Tick " + stateCounter + ": " + newVibrationLevel);
-
-                    if (ToyController.currentVibrationLevel != newVibrationLevel) {
-                        ToyController.setVibrationLevel(newVibrationLevel);
+                    if (tickCounter % (5 * TICKS_PER_SECOND) == 0) { // 5 secs
+                        LOGGER.debug("Health: " + playerHealth);
+                        LOGGER.debug("Food: " + playerFoodLevel);
                     }
                 }
             }
+        }
+    }
 
-            if (tickCounter % (5 * TICKS_PER_SECOND) == 0) { // 5 secs
-                LOGGER.debug("Health: " + playerHealth);
-                LOGGER.debug("Food: " + playerFoodLevel);
+    @SubscribeEvent
+    public static void onAttack(AttackEntityEvent event) {
+        Entity entity = event.getEntityLiving();
+        LOGGER.debug("AX");
+        LOGGER.debug(entity instanceof EntityPlayer);
+        LOGGER.debug((Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER));
+        LOGGER.debug((Thread.currentThread().getThreadGroup() == SidedThreadGroups.CLIENT));
+
+        if ((entity instanceof EntityPlayer) && (Thread.currentThread().getThreadGroup() != SidedThreadGroups.CLIENT)) {
+            EntityPlayer player = (EntityPlayer) entity;
+            GameProfile profile = player.getGameProfile();
+
+            LOGGER.debug("A");
+            LOGGER.debug(profile);
+
+            if (profile.getId().equals(playerID)) {
+                LOGGER.debug("ATTACK!");
+                setState(getStateCounter(), 3, getIntensity("attack"), true);
             }
         }
     }
+
+    @SubscribeEvent
+    public static void onHurt(LivingAttackEvent event) {
+        Entity entity = event.getEntityLiving();
+        LOGGER.debug("HX");
+        LOGGER.debug(entity instanceof EntityPlayer);
+        LOGGER.debug((Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER));
+        LOGGER.debug((Thread.currentThread().getThreadGroup() == SidedThreadGroups.CLIENT));
+
+        if ((entity instanceof EntityPlayer) && (Thread.currentThread().getThreadGroup() != SidedThreadGroups.CLIENT)) {
+            EntityPlayer player = (EntityPlayer) entity;
+            GameProfile profile = player.getGameProfile();
+
+            LOGGER.debug("H");
+            LOGGER.debug(profile);
+
+            if (profile.getId().equals(playerID)) {
+                LOGGER.debug("HURT!");
+                setState(getStateCounter(), 3, getIntensity("hurt"), true);
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onDeath(LivingDeathEvent event) {
+        Entity entity = event.getEntityLiving();
+        LOGGER.debug("DX");
+        LOGGER.debug(entity instanceof EntityPlayer);
+        LOGGER.debug((Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER));
+        LOGGER.debug((Thread.currentThread().getThreadGroup() == SidedThreadGroups.CLIENT));
+
+        if ((entity instanceof EntityPlayer) && (Thread.currentThread().getThreadGroup() != SidedThreadGroups.CLIENT)) {
+            EntityPlayer player = (EntityPlayer) entity;
+            GameProfile profile = player.getGameProfile();
+
+            LOGGER.debug("D");
+            LOGGER.debug(profile);
+
+            if (profile.getId().equals(playerID)) {
+                clearState();
+                ToyController.setVibrationLevel(0);
+            }
+        }
+    }
+
+    private static void populatePlayerInfo() {
+        GameProfile profile = Minecraft.getInstance().player.getGameProfile();
+        playerName = profile.getName();
+        playerID = profile.getId();
+        System.out.println("Current player: " + playerName + " " + playerID.toString());
+    }
+
+    @SubscribeEvent
+    public static void onWorldLoaded(WorldEvent.Load event) {
+        IWorld world = event.getWorld();
+        System.out.println("World loaded: " + world.toString());
+
+        populatePlayerInfo();
+    }
+
+    @SubscribeEvent
+    public static void onWorldEntry(EntityJoinWorldEvent event) {
+        Entity entity = event.getEntity();
+
+        if (entity instanceof EntityPlayerMP) {
+            EntityPlayerMP p = (EntityPlayerMP) entity;
+            System.out.println("Entered world MP: " + entity);
+            System.out.println("Profile: " + p.getGameProfile());
+        }
+
+        if (entity instanceof EntityPlayerSP) {
+            clearState();
+            System.out.println("Entered world: " + entity);
+
+            if (playerName == null) {
+                populatePlayerInfo();
+            }
+
+            if (playerName != null) {
+                EntityPlayer player = (EntityPlayer) entity;
+                GameProfile profile = player.getGameProfile();
+
+                if (profile.getId().equals(playerID)) {
+                    System.out.println("Player in: " + playerName + " " + playerID);
+                    LOGGER.debug(ToyController.isConnected);
+                    if (!ToyController.isConnected) {
+                        if (ToyController.connectDevice()) {
+                            LOGGER.debug("Toy connected");
+                            if (player.getHealth() > 0) {
+                                setState(getStateCounter(), 2);
+                            }
+                            player.sendStatusMessage(new TextComponentString(String.format("Connected to " + TextFormatting.GREEN + "%s" + TextFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
+                        } else {
+                            LOGGER.debug("Failed to connect");
+                            player.sendStatusMessage(new TextComponentString(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
+                        }
+                    } else {
+                        clearState();
+                        ToyController.setVibrationLevel(0);
+                        populatePlayerInfo();
+                    }
+
+                    if (!motdDisplayed) {
+                        player.sendStatusMessage(new TextComponentString(String.format(TextFormatting.RED + "Minegasm 0.2.2 BETA 1: " + TextFormatting.RESET + " only attack and hurt events are implemented!\n")), false);
+                        motdDisplayed = true;
+                    }
+                }
+            }
+        }
+    }
+
+    @SubscribeEvent
+    public static void onWorldExit(WorldEvent.Unload event) {
+        LOGGER.debug("World exit");
+        clearState();
+        ToyController.setVibrationLevel(0);
+        motdDisplayed = false;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
@@ -190,54 +351,6 @@ public class ClientEventHandler {
                         LOGGER.trace("Paused");
                     }
                 }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onAttack(AttackEntityEvent event)
-    {
-        Entity entity = event.getEntityLiving();
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            GameProfile profile = player.getGameProfile();
-
-            if (profile.getId().equals(playerID)) {
-                setState(getStateCounter(), 3, getIntensity("attack"), true);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onCriticalHit(CriticalHitEvent event)
-    {
-        LOGGER.debug("Critical: " + event.isVanillaCritical());
-    }
-
-    @SubscribeEvent
-    public static void onHurt(LivingHurtEvent event)
-    {
-        Entity entity = event.getEntityLiving();
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            GameProfile profile = player.getGameProfile();
-
-            if (profile.getId().equals(playerID)) {
-                setState(getStateCounter(), 3, getIntensity("hurt"), true);
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onDeath(LivingDeathEvent event)
-    {
-        Entity entity = event.getEntityLiving();
-        if (entity instanceof PlayerEntity) {
-            PlayerEntity player = (PlayerEntity) entity;
-            GameProfile profile = player.getGameProfile();
-
-            if (profile.getId().equals(playerID)) {
-                ToyController.setVibrationLevel(0);
             }
         }
     }
@@ -327,58 +440,4 @@ public class ClientEventHandler {
         }
     }
 
-    @SubscribeEvent
-    public static void onRespawn(PlayerEvent.PlayerRespawnEvent event)
-    {
-        clearState();
-        ToyController.setVibrationLevel(0);
-        populatePlayerInfo();
-    }
-
-    private static void populatePlayerInfo() {
-        GameProfile profile = Minecraft.getInstance().getUser().getGameProfile();
-        playerName = profile.getName();
-        playerID = profile.getId();
-        System.out.println("Current player: " + playerName + " " + playerID.toString());
-    }
-
-    @SubscribeEvent
-    public static void onWorldLoaded(WorldEvent.Load event) {
-        IWorld world = event.getWorld();
-        System.out.println("World loaded: " + world.toString());
-
-        populatePlayerInfo();
-    }
-
-    @SubscribeEvent
-    public static void onWorldEntry(EntityJoinWorldEvent event) {
-        Entity entity = event.getEntity();
-        if (entity instanceof ClientPlayerEntity) {
-            System.out.println("Entered world: " + entity.toString());
-
-            if (playerName != null) {
-                PlayerEntity player = (PlayerEntity) entity;
-                GameProfile profile = player.getGameProfile();
-
-                if (profile.getId().equals(playerID)) {
-                    System.out.println("Player in: " + playerName + " " + playerID.toString());
-                    if (ToyController.connectDevice()) {
-                        setState(getStateCounter(), 5);
-                        player.displayClientMessage(new StringTextComponent(String.format("Connected to " + TextFormatting.GREEN + "%s" + TextFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
-                    } else {
-                        player.displayClientMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
-                    }
-                }
-            }
-        }
-    }
-
-    @SubscribeEvent
-    public static void onWorldExit(EntityLeaveWorldEvent event) {
-        Entity entity = event.getEntity();
-        if ((entity instanceof PlayerEntity) && (playerName != null)) {
-            clearState();
-        }
-    }
-}
-
+*/
