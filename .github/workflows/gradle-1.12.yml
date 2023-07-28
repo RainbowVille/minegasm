@@ -29,11 +29,11 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x 1.12/gradlew
     - name: Gradle Build Action
-      uses: gradle/gradle-build-action@v2.0-beta.4
+      uses: gradle/gradle-build-action@v2
       with:
-        build-root-directory: 1.12
+        build-root-directory: '1.12'
         arguments: build
     - uses: actions/upload-artifact@v2
       with:
         name: Package
-        path: 1.12/build/libs
+        path: 1.12/build/libs/*-1.12*
