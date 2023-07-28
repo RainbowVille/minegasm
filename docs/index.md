@@ -18,7 +18,7 @@ Old releases can be found here: <https://github.com/RainbowVille/minegasm/releas
 
 ### Dependencies
 1. Intiface Central: [https://intiface.com/central/](https://intiface.com/central/)
-2. Minecraft Forge: the versions mentioned on the corresponding Forge column above are the tested version (newer versions are probably okay) 
+2. Minecraft Forge: the versions mentioned on the corresponding Forge column above are the tested versions (newer versions are probably okay) 
 
 ## How to Use
 1. Make sure you have all the dependencies installed.
@@ -45,19 +45,7 @@ It has been confirmed to work with:
 
 ## Configuration
 Minegasm is configurable through the `Mods > Config` screen, as well as by manually editing the `minegasm-client.toml` config file.
-
-| Config   | `minegasm.*`                  | Description                                                           | Version |
-| -------- | ----------------------------- | --------------------------------------------------------------------- | ------- |
-| Vibrate  | `vibrate`                     | Enable/disable vibration                                              | 0.2+    |
-| Mode     | `mode`                        | Select gameplay mode: NORMAL, MASOCHIST, HEDONIST, or CUSTOM          | 0.2+    |
-| Attack   | `intensity.attackIntensity`   | Vibration intensity when attacking on custom mode                     | 0.2+    |
-| Hurt     | `intensity.hurtIntensity`     | Vibration intensity when hurting on custom mode                       | 0.2+    |
-| Mine     | `intensity.mineIntensity`     | Vibration intensity when mining on custom mode                        | 0.2+    |
-| XP       | `intensity.xpChangeIntensity` | Vibration intensity when gaining XP on custom mode                    | 0.2+    |
-| Harvest  | `intensity.harvestIntensity`  | Vibration intensity when harvesting on custom mode                    | 0.2+    |
-| Vitality | `intensity.vitalityIntensity` | Vibration intensity on high level of player's vitality on custom mode | 0.2+    |
-
-Additionally, the config file contains a configurable `buttplug.serverUrl` to allow connection to a custom buttplug server.
+The [config page](./config) explains this in further details.
 
 ## Gameplay modes
 ### NORMAL
@@ -104,4 +92,4 @@ The status of confirmed bugs and planned future enhancements are available on ou
 
 ## Credits
 - `Lone_Destroyer` for the logo
-- `qdot` for the buttplug library
+- `qdot` and `BlackSphereFollower` for the buttplug library
