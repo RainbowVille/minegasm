@@ -2,17 +2,17 @@ Minegasm is a Minecraft (Java Edition) Forge mod that uses connected sex toys to
 
 ## Download
 
-| Minecraft  | Forge                                                                                      | JAR file                                                                                                          |
-|------------|--------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
-| **1.20**.1 | 47.1.0                                                                                     | _coming soon_                                                                                                     |
-| **1.19**.4 | 45.1.0                                                                                     | _coming soon_                                                                                                     |
-| **1.18**.2 | 40.2.0                                                                                     | _coming soon_                                                                                                     |
-| **1.17**.1 | 37.1.1                                                                                     | _coming soon_                                                                                                     |
-| **1.16**.5 | [36.1.4](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html) | [minegasm-0.2.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.2.1-1.16.5/minegasm-0.2.1.jar) |
-| **1.15**.2 | 31.2.57                                                                                    | _coming soon_                                                                                                     |
-| **1.14**.4 | 28.2.26                                                                                    | _coming soon_                                                                                                     |
-| **1.13**.2 | 25.0.223                                                                                   | _coming soon_                                                                                                     |
-| **1.12**.2 | 14.23.5.2859                                                                               | _coming soon_                                                                                                     |
+| Minecraft  | Forge                                                                                      | Java | JAR file                                                                                                          |
+|------------|--------------------------------------------------------------------------------------------|------|-------------------------------------------------------------------------------------------------------------------|
+| **1.20**.1 | 47.1.0                                                                                     | 17   | _coming soon_                                                                                                     |
+| **1.19**.4 | 45.1.0                                                                                     | 17   | _coming soon_                                                                                                     |
+| **1.18**.2 | 40.2.0                                                                                     | 17   | _coming soon_                                                                                                     |
+| **1.17**.1 | 37.1.1                                                                                     | 16   | _coming soon_                                                                                                     |
+| **1.16**.5 | [36.1.4](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html) | 11   | [minegasm-0.2.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.2.1-1.16.5/minegasm-0.2.1.jar) |
+| **1.15**.2 | 31.2.57                                                                                    | 11   | _coming soon_                                                                                                     |
+| **1.14**.4 | 28.2.26                                                                                    | 11   | _coming soon_                                                                                                     |
+| **1.13**.2 | 25.0.223                                                                                   | 11   | _coming soon_                                                                                                     |
+| **1.12**.2 | 14.23.5.2859                                                                               | 11   | _coming soon_                                                                                                     |
 
 Old releases can be found here: <https://github.com/RainbowVille/minegasm/releases>
 
@@ -31,8 +31,10 @@ Old releases can be found here: <https://github.com/RainbowVille/minegasm/releas
 For more detailed instructions, please see the [setup page](./setup).
 
 ## Known Issues
-The mod has only undergone limited testing in multiplayer mode and it might not work with some mods. Make sure to check out our [issue tracker](https://github.com/RainbowVille/minegasm/issues?q=is%3Aissue+is%3Aopen+label%3Abug) for all the known issues and their status.
-The [troubleshooting page](./troubleshoot) provides suggestions of things to do if you encounter any issues.
+* There is currently a bug in some versions of the Minecraft launcher that prevents the use of newer Java runtimes: https://bugs.mojang.com/browse/MCL-18306. This affects the mods for the Minecraft versions before 1.17 as Minegasm requires at least Java 11. If you encounter this issue, a workaround is to delete `JavaCheck.jar` shipped with the launcher.
+* The mod has only undergone limited testing in multiplayer mode and it might not work with some mods.
+
+Make sure to check out our [issue tracker](https://github.com/RainbowVille/minegasm/issues?q=is%3Aissue+is%3Aopen+label%3Abug) for all the known issues and their status. The [troubleshooting page](./troubleshoot) provides suggestions of things to do if you encounter any issues.
 
 ## Supported Devices
 In theory, this mod should be compatible with any devices on this list: [IoST Index – Vibrators with Buttplug.io Support](https://iostindex.com/?filter0ButtplugSupport=4&filter1Features=OutputsVibrators)
