@@ -36,4 +36,4 @@ jobs:
     - uses: actions/upload-artifact@v2
       with:
         name: Package
-        path: 1.17/build/libs/*-1.18*
+        path: 1.17/build/libs/*-1.17*
