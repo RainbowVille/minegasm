@@ -2,17 +2,17 @@ Minegasm is a Minecraft (Java Edition) Forge mod that uses connected sex toys to
 
 ## Download
 
-| Minecraft  | Forge        | JAR file                                                                                                          |
-|------------|--------------|-------------------------------------------------------------------------------------------------------------------|
-| **1.20**.1 | 47.0.19      | _coming soon_                                                                                                     |
-| **1.19**.4 | 45.1.2       | _coming soon_                                                                                                     |
-| **1.18**.2 | 40.2.0       | _coming soon_                                                                                                     |
-| **1.17**   | -            | _coming soon_                                                                                                     |
-| **1.16**.5 | [36.1.4](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html)    | [minegasm-0.2.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.2.1-1.16.5/minegasm-0.2.1.jar) |
-| **1.15**   | -            | _coming soon_                                                                                                     |
-| **1.14**   | -            | _coming soon_                                                                                                     |
-| **1.13**   | -            | _coming soon_                                                                                                     |
-| **1.12**.2 | 14.23.5.2855 | _coming soon_                                                                                                     |
+| Minecraft  | Forge                                                                                      | JAR file                                                                                                          |
+|------------|--------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| **1.20**.1 | 47.1.0                                                                                     | _coming soon_                                                                                                     |
+| **1.19**.4 | 45.1.0                                                                                     | _coming soon_                                                                                                     |
+| **1.18**.2 | 40.2.0                                                                                     | _coming soon_                                                                                                     |
+| **1.17**   | 37.1.1                                                                                     | _coming soon_                                                                                                     |
+| **1.16**.5 | [36.1.4](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html) | [minegasm-0.2.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.2.1-1.16.5/minegasm-0.2.1.jar) |
+| **1.15**   | 31.2.57                                                                                    | _coming soon_                                                                                                     |
+| **1.14**   | 28.2.26                                                                                    | _coming soon_                                                                                                     |
+| **1.13**   | 25.0.223                                                                                   | _coming soon_                                                                                                     |
+| **1.12**.2 | 14.23.5.2859                                                                               | _coming soon_                                                                                                     |
 
 Old releases can be found here: <https://github.com/RainbowVille/minegasm/releases>
 
@@ -28,60 +28,30 @@ Old releases can be found here: <https://github.com/RainbowVille/minegasm/releas
 5. Start Minecraft and connect to a world. If everything works properly, you should see a message stating that Minegasm is connected to your device when you enter the world. If the connection fails, go back to Intiface Central and make sure that the Server Status shows that the server is running. To force Minegasm to retry to connect, leave the world and then re-enter.
 6. Have fun!
 
+For more detailed instructions, please see the [setup page](./setup).
+
 ## Known Issues
-The mod has only undergone limited testing in multiplayer mode and it might not work with some mods. See the *Troubleshooting* part below if you encounter any issues.
-
-- \[[#12](https://github.com/RainbowVille/minegasm/issues/12)\] In the multiplayer mode, the on hurt vibration is not triggered.
-
-See our [issue tracker](https://github.com/RainbowVille/minegasm/issues?q=is%3Aissue+is%3Aopen+label%3Abug) for all the reported issues.
+The mod has only undergone limited testing in multiplayer mode and it might not work with some mods. Make sure to check out our [issue tracker](https://github.com/RainbowVille/minegasm/issues?q=is%3Aissue+is%3Aopen+label%3Abug) for all the known issues and their status.
+The [troubleshooting page](./troubleshoot) provides suggestions of things to do if you encounter any issues.
 
 ## Supported Devices
 In theory, this mod should be compatible with any devices on this list: [IoST Index – Vibrators with Buttplug.io Support](https://iostindex.com/?filter0ButtplugSupport=4&filter1Features=OutputsVibrators)
 
-It has been confirmed to work with:
+It has been confirmed by the developers to work with:
 - [Lovense Edge](https://www.lovense.com/r/qvl9jn) (prostate massager)
 - [Lovense Hush](https://www.lovense.com/r/zrzb5e) (butt plug)
 - [Lovense Max 2](https://www.lovense.com/r/n4x2bh) (male masturbator)
+- [Lovense Domi 2](https://www.lovense.com/r/khhgol?t=m1) (wand)
 
 ## Configuration
 Minegasm is configurable through the `Mods > Config` screen, as well as by manually editing the `minegasm-client.toml` config file.
 The [config page](./config) explains this in further details.
 
 ## Gameplay modes
-### NORMAL
-In this mode, the toy will vibrate when you attack other entities, mine, or gain XP.
-
-| Attack | Hurt | Mine | XP | Harvest | Vitality |
-| --- | --- | --- | --- | --- | ---|
-| 60% | Off | 80% | 100% | Off | Off |
-
-### MASOCHIST
-In this mode, the toy will vibrate when you're hurt or dying.
-
-| Attack | Hurt | Mine | XP | Harvest | Vitality |
-| --- | --- | --- | --- | --- | ---|
-| Off | 100% | Off | Off | Off | 10%, when dying |
-
-### HEDONIST
-In this mode, the toy will vibrate on all events defined in other modes, except dying (this is replaced, instead, by having the toy vibrate when you're full and healthy).
-
-| Attack | Hurt | Mine | XP | Harvest | Vitality |
-| --- | --- | --- | --- | --- | ---|
-| 60% | 10% | 80% | 100% | 20% | 10% |
-
-### CUSTOM
-In this mode, the toy will vibrate depending on the intensity levels configured by the user.
-
-To emulate the behavior of Minegasm v0.1, you can use the following settings:
-
-| Attack | Hurt | Mine | XP | Harvest | Vitality |
-| --- | --- | --- | --- | --- | ---|
-| Off | 100% | Off | Off | Off | Off |
-
-## Troubleshooting
-As with a lot of computer issues, the very first thing you should try is to restart everything. While not strictly necessary, we recommend that you start your device and the Intiface server before Minecraft. This should solve most intermittent issues.
-
-If you run this mod alongside other mods, try disabling them all first and then reenable them one by one when the mods run successfully. If you found any mods that are incompatible with this mod, please file an issue on our [issue tracker](https://github.com/RainbowVille/minegasm/issues).
+* **NORMAL**: The toy will vibrate when you attack other entities, mine, or gain XP.
+* **MASOCHIST**: The toy will vibrate when you're hurt or dying.
+* **HEDONIST**: The toy will vibrate on all events defined in other modes, except dying (this is replaced, instead, by having the toy vibrate when you're full and healthy).
+* **CUSTOM**: The toy will vibrate depending on the intensity levels configured by the user.
 
 ## Support
 In principle, we do not provide any dedicated (technical) supports. If you need any assistance, you can use the [discussion page](https://github.com/RainbowVille/minegasm/discussions). Alternatively, you can join our [Discord server](https://discord.gg/Kc7ueWC) and ping `@RSwoop` in the `#minegasm` channel, but please be advised that he might not always be able to help you.
