@@ -18,7 +18,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.*;
@@ -372,13 +371,9 @@ public class ClientEventHandler {
             }
         }
     }
-
     @SubscribeEvent
-    public static void onWorldExit(EntityLeaveWorldEvent event) {
-        Entity entity = event.getEntity();
-        if ((entity instanceof PlayerEntity) && (playerName != null)) {
-            clearState();
-        }
+    public static void onWorldExit(WorldEvent.Unload event) {
+        clearState();
     }
 }
 

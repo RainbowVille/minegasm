@@ -1,19 +1,16 @@
 package com.therainbowville.minegasm.config;
 
-import com.mojang.blaze3d.matrix.MatrixStack;
 import com.therainbowville.minegasm.common.Minegasm;
-import net.minecraft.client.AbstractOption;
 import net.minecraft.client.GameSettings;
 import net.minecraft.client.gui.screen.IngameMenuScreen;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.gui.widget.list.OptionsRowList;
+import net.minecraft.client.settings.AbstractOption;
 import net.minecraft.client.settings.BooleanOption;
 import net.minecraft.client.settings.IteratableOption;
 import net.minecraft.client.settings.SliderPercentageOption;
-import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -69,7 +66,7 @@ public final class ConfigScreen extends Screen {
                 (this.width - BUTTON_WIDTH) / 2,
                 this.height - DONE_BUTTON_TOP_OFFSET,
                 BUTTON_WIDTH, BUTTON_HEIGHT,
-                new StringTextComponent("Done"),
+                "Done",
                 button -> this.onClose()
         ));
     }
@@ -93,10 +90,7 @@ public final class ConfigScreen extends Screen {
         AbstractOption modeOption = new IteratableOption(
                 MODE,
                 (gameSettings, newValue) -> mode = (mode + newValue) % ClientConfig.GameplayMode.values().length,
-                (gameSettings, option) ->
-                        new TranslationTextComponent(MODE).append(": ")
-                                .append(new TranslationTextComponent(
-                                        ClientConfig.GameplayMode.values()[mode].getTranslateKey())));
+                (gameSettings, option) -> MODE + ": " + ClientConfig.GameplayMode.values()[mode].getTranslateKey());
 
         // Intensity
         String ATTACK_INTENSITY = "gui.minegasm.config.intensity.attack";
@@ -179,24 +173,22 @@ public final class ConfigScreen extends Screen {
         return optionsRowList;
     }
 
-    private ITextComponent getPercentValueComponent(String translationKey, GameSettings gameSettings, SliderPercentageOption option) {
-        return new TranslationTextComponent(translationKey).append(": ").append(option.toPct(option.get(gameSettings)) == 0.0D ? "Off" : (int) option.get(gameSettings) + "%");
+    private String getPercentValueComponent(String translationKey, GameSettings gameSettings, SliderPercentageOption option) {
+        return translationKey + ": " + (option.toPct(option.get(gameSettings)) == 0.0D ? "Off" : (int) option.get(gameSettings) + "%");
     }
 
-    @SuppressWarnings("NullableProblems")
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
+    public void render(int mouseX, int mouseY, float partialTicks) {
+        this.renderBackground();
         this.children.remove(this.optionsRowList);
         this.optionsRowList = createOptions();
         this.children.add(this.optionsRowList);
-        this.optionsRowList.render(matrixStack, mouseX, mouseY, partialTicks);
+        this.optionsRowList.render(mouseX, mouseY, partialTicks);
 
-        //noinspection SuspiciousNameCombination
-        drawCenteredString(matrixStack, this.font, this.title,
+        drawCenteredString(this.font, this.title.getString(),
                 this.width / 2, TITLE_HEIGHT, 0xFFFFFF);
 
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        super.render(mouseX, mouseY, partialTicks);
     }
 
     @Override
