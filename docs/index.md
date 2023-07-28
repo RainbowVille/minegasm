@@ -7,11 +7,11 @@ Minegasm is a Minecraft (Java Edition) Forge mod that uses connected sex toys to
 | **1.20**.1 | 47.1.0                                                                                     | _coming soon_                                                                                                     |
 | **1.19**.4 | 45.1.0                                                                                     | _coming soon_                                                                                                     |
 | **1.18**.2 | 40.2.0                                                                                     | _coming soon_                                                                                                     |
-| **1.17**   | 37.1.1                                                                                     | _coming soon_                                                                                                     |
+| **1.17**.1 | 37.1.1                                                                                     | _coming soon_                                                                                                     |
 | **1.16**.5 | [36.1.4](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html) | [minegasm-0.2.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.2.1-1.16.5/minegasm-0.2.1.jar) |
-| **1.15**   | 31.2.57                                                                                    | _coming soon_                                                                                                     |
-| **1.14**   | 28.2.26                                                                                    | _coming soon_                                                                                                     |
-| **1.13**   | 25.0.223                                                                                   | _coming soon_                                                                                                     |
+| **1.15**.2 | 31.2.57                                                                                    | _coming soon_                                                                                                     |
+| **1.14**.4 | 28.2.26                                                                                    | _coming soon_                                                                                                     |
+| **1.13**.2 | 25.0.223                                                                                   | _coming soon_                                                                                                     |
 | **1.12**.2 | 14.23.5.2859                                                                               | _coming soon_                                                                                                     |
 
 Old releases can be found here: <https://github.com/RainbowVille/minegasm/releases>
@@ -48,10 +48,13 @@ Minegasm is configurable through the `Mods > Config` screen, as well as by manua
 The [config page](./config) explains this in further details.
 
 ## Gameplay modes
-* **NORMAL**: The toy will vibrate when you attack other entities, mine, or gain XP.
-* **MASOCHIST**: The toy will vibrate when you're hurt or dying.
-* **HEDONIST**: The toy will vibrate on all events defined in other modes, except dying (this is replaced, instead, by having the toy vibrate when you're full and healthy).
-* **CUSTOM**: The toy will vibrate depending on the intensity levels configured by the user.
+
+| Mode      | Description                                                                                                                                                  |
+|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| NORMAL    | The toy will vibrate when you attack other entities, mine, or gain XP.                                                                                       |
+| MASOCHIST | The toy will vibrate when you're hurt or dying.                                                                                                              |
+| HEDONIST  | The toy will vibrate on all events defined in other modes, except dying (this is replaced, instead, by having the toy vibrate when you're full and healthy). |
+| CUSTOM    | The toy will vibrate depending on the intensity levels configured by the user.                                                                               |
 
 ## Support
 In principle, we do not provide any dedicated (technical) supports. If you need any assistance, you can use the [discussion page](https://github.com/RainbowVille/minegasm/discussions). Alternatively, you can join our [Discord server](https://discord.gg/Kc7ueWC) and ping `@RSwoop` in the `#minegasm` channel, but please be advised that he might not always be able to help you.

@@ -4,3 +4,12 @@ description: A teledildonics Minecraft Forge mod
 remote_theme: RainbowVille/minimalist
 plugins:
 - jekyll-remote-theme
+- jemoji
+
+sidebar:
+  - name: Setup
+    link: ./setup
+  - name: Config
+    link: ./config
+  - name: Troubleshoot
+    link: ./troubleshoot
