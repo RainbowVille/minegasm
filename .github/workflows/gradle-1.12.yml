@@ -16,7 +16,7 @@ on:
       - '.github/workflows/gradle-1.12.yml'
 
 jobs:
-  build:
+  gradle:
     uses: ./.github/workflows/gradle.yml
     with:
       version: 1.12
