@@ -15,29 +15,9 @@ on:
       - '1.12/**'
       - '.github/workflows/gradle-1.12.yml'
 
-env:
-  VERSION: 1.12
-  JAVA_VERSION: 11
-
 jobs:
   build:
-
-    runs-on: ubuntu-latest
-
-    steps:
-    - uses: actions/checkout@v3
-    - name: Set up JDK ${{ env.JAVA_VERSION }}
-      uses: actions/setup-java@v3
-      with:
-        distribution: 'zulu'
-        java-version: ${{ env.JAVA_VERSION }}
-    - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
-    - name: Gradle Build Action
-      uses: gradle/gradle-build-action@v2
-      with:
-        arguments: :${{ env.VERSION }}:build
-    - uses: actions/upload-artifact@v3
-      with:
-        name: Minegasm-${{ env.VERSION }}
-        path: ${{ env.VERSION }}/build/libs/*-${{ env.VERSION }}*
+    uses: ./.github/workflows/gradle.yml
+    with:
+      version: 1.12
+      java-version: 11
