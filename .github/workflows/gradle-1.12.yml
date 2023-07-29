@@ -4,7 +4,7 @@
 env:
   VERSION: '1.12'
 
-name: Build $VERSION
+name: Build ${{env.VERSION}}
 
 on:
   push:
