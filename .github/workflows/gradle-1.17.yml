@@ -28,7 +28,7 @@ jobs:
         distribution: 'zulu'
         java-version: 17
     - name: Grant execute permission for gradlew
-      run: chmod +x 1.17/gradlew
+      run: chmod +x gradlew
     - name: Gradle Build Action
       uses: gradle/gradle-build-action@v2
       with:
