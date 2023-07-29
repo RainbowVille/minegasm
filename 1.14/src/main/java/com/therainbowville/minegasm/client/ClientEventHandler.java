@@ -18,7 +18,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ToolType;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
-import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.*;
@@ -138,7 +137,7 @@ public class ClientEventHandler {
             GameProfile profile = player.getGameProfile();
 
             float playerHealth = player.getHealth();
-            float playerFoodLevel = player.getFoodData().getFoodLevel();
+            float playerFoodLevel = player.getFoodStats().getFoodLevel();
 
             tickCounter = (tickCounter + 1) % (20 * (60 * TICKS_PER_SECOND)); // 20 min day cycle
 
@@ -253,7 +252,7 @@ public class ClientEventHandler {
             Block block = blockState.getBlock();
 
             // ToolType. AXE, HOE, PICKAXE, SHOVEL
-            @SuppressWarnings("ConstantConditions") float blockHardness = block.defaultBlockState().getDestroySpeed(null, null);
+            @SuppressWarnings("ConstantConditions") float blockHardness = block.getDefaultState().getBlockHardness(null, null);
             LOGGER.debug("Harvest: tool: " +
                     block.getHarvestTool(blockState) +
                     " can harvest? " + event.canHarvest() + " hardness: " + blockHardness);
@@ -275,12 +274,12 @@ public class ClientEventHandler {
         if (profile.getId().equals(playerID)) {
             BlockState blockState = event.getState();
             Block block = blockState.getBlock();
-            @SuppressWarnings("ConstantConditions") float blockHardness = block.defaultBlockState().getDestroySpeed(null, null);
+            @SuppressWarnings("ConstantConditions") float blockHardness = block.getDefaultState().getBlockHardness(null, null);
 
             LOGGER.info("Breaking: " + block.toString());
 
             ToolType blockHarvestTool = block.getHarvestTool(blockState);
-            ItemStack mainhandItem = event.getPlayer().getMainHandItem();
+            ItemStack mainhandItem = event.getPlayer().getHeldItemMainhand();
             Set<ToolType> mainhandToolTypes = mainhandItem.getItem().getToolTypes(mainhandItem);
 
             boolean usingPickaxe = mainhandToolTypes.contains(ToolType.PICKAXE);
@@ -336,7 +335,7 @@ public class ClientEventHandler {
     }
 
     private static void populatePlayerInfo() {
-        GameProfile profile = Minecraft.getInstance().getUser().getGameProfile();
+        GameProfile profile = Minecraft.getInstance().player.getGameProfile();
         playerName = profile.getName();
         playerID = profile.getId();
         System.out.println("Current player: " + playerName + " " + playerID.toString());
@@ -364,21 +363,17 @@ public class ClientEventHandler {
                     System.out.println("Player in: " + playerName + " " + playerID.toString());
                     if (ToyController.connectDevice()) {
                         setState(getStateCounter(), 5);
-                        player.displayClientMessage(new StringTextComponent(String.format("Connected to " + TextFormatting.GREEN + "%s" + TextFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
+                        player.sendStatusMessage(new StringTextComponent(String.format("Connected to " + TextFormatting.GREEN + "%s" + TextFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
                     } else {
-                        player.displayClientMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
+                        player.sendStatusMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
                     }
                 }
             }
         }
     }
-
     @SubscribeEvent
-    public static void onWorldExit(EntityLeaveWorldEvent event) {
-        Entity entity = event.getEntity();
-        if ((entity instanceof PlayerEntity) && (playerName != null)) {
-            clearState();
-        }
+    public static void onWorldExit(WorldEvent.Unload event) {
+        clearState();
     }
 }
 
