@@ -8,11 +8,13 @@ Minegasm is a Minecraft (Java Edition) Forge mod that uses connected sex toys to
 | **1.19**.4 | [45.1.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.19.4.html)       | 17   | [minegasm-0.4.0-1.19.4-Forge-45.1.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.19.4-Forge-45.1.0.jar)             |
 | **1.18**.2 | [40.2.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.18.2.html)       | 17   | [minegasm-0.4.0-1.18.2-Forge-40.2.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.18.2-Forge-40.2.0.jar)             |
 | **1.17**.1 | [37.1.1](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.17.1.html)       | 16   | [minegasm-0.4.0-1.17.1-Forge-37.1.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.17.1-Forge-37.1.1.jar)             |
-| **1.16**.5 | [36.2.34](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html)      | 11   | [minegasm-0.4.0-1.16.5-Forge-36.2.34.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.16.5-Forge-36.2.34.jar)           |
-| **1.15**.2 | [31.2.57](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.15.2.html)      | 11   | [minegasm-0.4.0-1.15.2-Forge-31.2.57.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.15.2-Forge-31.2.57.jar)           |
-| **1.14**.4 | [28.2.26](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.14.4.html)      | 11   | [minegasm-0.4.0-1.14.4-Forge-28.2.26.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.14.4-Forge-28.2.26.jar)           |
-| **1.13**.2 | [25.0.223](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.13.2.html)     | 11   | [minegasm-0.4.0-1.13.2-Forge-25.0.223.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.13.2-Forge-25.0.223.jar)         |
-| **1.12**.2 | [14.23.5.2859](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.12.2.html) | 11   | [minegasm-0.4.0-1.12.2-Forge-14.23.5.2859.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.12.2-Forge-14.23.5.2859.jar) |
+| **1.16**.5 | [36.2.34](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html)      | 11\* | [minegasm-0.4.0-1.16.5-Forge-36.2.34.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.16.5-Forge-36.2.34.jar)           |
+| **1.15**.2 | [31.2.57](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.15.2.html)      | 11\* | [minegasm-0.4.0-1.15.2-Forge-31.2.57.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.15.2-Forge-31.2.57.jar)           |
+| **1.14**.4 | [28.2.26](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.14.4.html)      | 11\* | [minegasm-0.4.0-1.14.4-Forge-28.2.26.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.14.4-Forge-28.2.26.jar)           |
+| **1.13**.2 | [25.0.223](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.13.2.html)     | 11\* | [minegasm-0.4.0-1.13.2-Forge-25.0.223.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.13.2-Forge-25.0.223.jar)         |
+| **1.12**.2 | [14.23.5.2859](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.12.2.html) | 11\* | [minegasm-0.4.0-1.12.2-Forge-14.23.5.2859.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.12.2-Forge-14.23.5.2859.jar) |
+
+*) For version 1.12&ndash;1.16, you need to set your Minecraft installation to use Java 11 or later instead of the bundled Java 8.
 
 Old releases can be found here: <https://github.com/RainbowVille/minegasm/releases>
 
@@ -31,7 +33,8 @@ Old releases can be found here: <https://github.com/RainbowVille/minegasm/releas
 For more detailed instructions, please see the [setup page](./setup).
 
 ## Known Issues
-* There is currently a bug in some versions of the Minecraft launcher that prevents the use of newer Java runtimes: https://bugs.mojang.com/browse/MCL-18306. This affects the mods for the Minecraft versions before 1.17 as Minegasm requires at least Java 11. If you encounter this issue, a workaround is to delete `JavaCheck.jar` shipped with the launcher.
+* There is currently a bug in some versions of the Minecraft launcher that prevents the use of newer Java runtimes: [https://bugs.mojang.com/browse/MCL-18306](https://bugs.mojang.com/browse/MCL-18306). This affects the mods for the Minecraft versions before 1.17 as Minegasm requires at least Java 11. If you encounter this issue, a workaround is to delete `JavaCheck.jar` shipped with the launcher.
+* In-game config menu is missing for 1.13, 1.17, 1.18, 1.19, and 1.20. The mod can still be configured manually by editing the config file.
 * The mod has only undergone limited testing in multiplayer mode and it might not work with some mods.
 
 Make sure to check out our [issue tracker](https://github.com/RainbowVille/minegasm/issues?q=is%3Aissue+is%3Aopen+label%3Abug) for all the known issues and their status. The [troubleshooting page](./troubleshoot) provides suggestions of things to do if you encounter any issues.
