@@ -31,7 +31,7 @@ jobs:
     - name: Gradle Build Action
       uses: gradle/gradle-build-action@v2.4.2
       with:
-        gradle-executable: ./forge
+        gradle-executable: ./forge/gradlew
         arguments: :${{ inputs.version }}:build
     - uses: actions/upload-artifact@v3
       with:
