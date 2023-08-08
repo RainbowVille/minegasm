@@ -5,11 +5,13 @@ on:
     branches: [ main ]
     paths:
       - '1.17/**'
+      - '.github/workflows/gradle.yml'
       - '.github/workflows/gradle-1.17.yml'
   pull_request:
     branches: [ main ]
     paths:
       - '1.17/**'
+      - '.github/workflows/gradle.yml'
       - '.github/workflows/gradle-1.17.yml'
 
 jobs:
