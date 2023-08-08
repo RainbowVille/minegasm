@@ -30,6 +30,7 @@ jobs:
       run: chmod +x gradlew
     - name: Gradle Build Action
       uses: gradle/gradle-build-action@v2.4.2
+      gradle-executable: ./forge
       with:
         arguments: :${{ inputs.version }}:build
     - uses: actions/upload-artifact@v3
