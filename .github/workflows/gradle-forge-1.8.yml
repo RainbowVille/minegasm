@@ -1,0 +1,22 @@
+name: Build 1.8
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '1.8/**'
+      - '.github/workflows/gradle-forge-legacy.yml'
+      - '.github/workflows/gradle-forge-legacy-1.8.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '1.8/**'
+      - '.github/workflows/gradle-forge-legacy.yml'
+      - '.github/workflows/gradle-forge-legacy-1.8.yml'
+
+jobs:
+  build:
+    uses: ./.github/workflows/gradle-forge-legacy.yml
+    with:
+      version: 1.8
+      java-version: 8

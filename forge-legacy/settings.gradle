@@ -1,0 +1,16 @@
+pluginManagement {
+    repositories {
+        gradlePluginPortal()
+        maven {
+            name = 'MinecraftForge'
+            url = 'https://maven.minecraftforge.net/'
+        }
+    }
+}
+
+rootProject.name = 'minegasm-legacy'
+rootDir.eachDir { dir ->
+    if (dir.name.startsWith('1.')) {
+        include ":${dir.name}"
+    }
+}
