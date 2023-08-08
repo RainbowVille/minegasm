@@ -1,0 +1,22 @@
+name: Build 1.15
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - '1.15/**'
+      - '.github/workflows/gradle-forge.yml'
+      - '.github/workflows/gradle-forge-1.15.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - '1.15/**'
+      - '.github/workflows/gradle-forge.yml'
+      - '.github/workflows/gradle-forge-1.15.yml'
+
+jobs:
+  build:
+    uses: ./.github/workflows/gradle-forge.yml
+    with:
+      version: 1.15
+      java-version: 11
