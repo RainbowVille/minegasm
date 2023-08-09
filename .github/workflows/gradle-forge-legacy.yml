@@ -33,7 +33,7 @@ jobs:
       with:
         gradle-executable: forge-legacy/${{ inputs.version }}/gradlew
         build-root-directory: forge-legacy
-        arguments: :${{ inputs.version }}:build
+        arguments: build
     - uses: actions/upload-artifact@v3
       with:
         name: Minegasm-${{ inputs.version }}
