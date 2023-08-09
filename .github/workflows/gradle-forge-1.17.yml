@@ -5,19 +5,19 @@ on:
   push:
     branches: [ main ]
     paths:
-      - 'forge/1.17/**'
-      - '.github/workflows/gradle-forge.yml'
+      - 'forge/fg-6.0/1.17/**'
+      - '.github/workflows/fg-6.0.yml'
       - '.github/workflows/gradle-forge-1.17.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - 'forge/1.17/**'
-      - '.github/workflows/gradle-forge.yml'
+      - 'forge/fg-6.0/1.17/**'
+      - '.github/workflows/fg-6.0.yml'
       - '.github/workflows/gradle-forge-1.17.yml'
 
 jobs:
   build:
-    uses: ./.github/workflows/gradle-forge.yml
+    uses: ./.github/workflows/fg-6.0.yml
     with:
       version: 1.17
       java-version: 16
