@@ -37,4 +37,4 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
         name: Minegasm-${{ inputs.version }}
-        path: forge-legacy/${{ inputs.version }}/build/libs/*-${{ inputs.version }}*
+        path: forge-legacy/${{ inputs.version }}/build/libs/*
