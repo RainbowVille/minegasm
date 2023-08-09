@@ -4,13 +4,13 @@ on:
   push:
     branches: [ main ]
     paths:
-      - '1.8/**'
+      - 'forge-legacy/1.8/**'
       - '.github/workflows/gradle-forge-legacy.yml'
       - '.github/workflows/gradle-forge-legacy-1.8.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - '1.8/**'
+      - 'forge-legacy/1.8/**'
       - '.github/workflows/gradle-forge-legacy.yml'
       - '.github/workflows/gradle-forge-legacy-1.8.yml'
 

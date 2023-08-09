@@ -4,13 +4,13 @@ on:
   push:
     branches: [ main ]
     paths:
-      - '1.15/**'
+      - 'forge/1.15/**'
       - '.github/workflows/gradle-forge.yml'
       - '.github/workflows/gradle-forge-1.15.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - '1.15/**'
+      - 'forge/1.15/**'
       - '.github/workflows/gradle-forge.yml'
       - '.github/workflows/gradle-forge-1.15.yml'
 
