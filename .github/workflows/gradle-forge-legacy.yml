@@ -32,7 +32,7 @@ jobs:
       uses: gradle/gradle-build-action@v2.4.2
       with:
         gradle-executable: forge-legacy/${{ inputs.version }}/gradlew
-        build-root-directory: forge-legacy
+        build-root-directory: forge-legacy/${{ inputs.version }}
         arguments: build
     - uses: actions/upload-artifact@v3
       with:
