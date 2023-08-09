@@ -27,11 +27,11 @@ jobs:
         distribution: 'zulu'
         java-version: ${{ inputs.java-version }}
     - name: Grant execute permission for gradlew
-      run: chmod +x gradlew
+      run: chmod +x ${{ inputs.version }}/gradlew
     - name: Gradle Build Action
       uses: gradle/gradle-build-action@v2.4.2
       with:
-        gradle-executable: forge-legacy/gradlew
+        gradle-executable: forge-legacy/${{ inputs.version }}/gradlew
         build-root-directory: forge-legacy
         arguments: :${{ inputs.version }}:build
     - uses: actions/upload-artifact@v3
