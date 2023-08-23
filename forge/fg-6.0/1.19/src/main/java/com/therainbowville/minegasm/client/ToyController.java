@@ -2,7 +2,7 @@ package com.therainbowville.minegasm.client;
 
 import com.therainbowville.minegasm.config.MinegasmConfig;
 import io.github.blackspherefollower.buttplug4j.client.ButtplugClientDevice;
-import io.github.blackspherefollower.buttplug4j.client.ButtplugClientWSClient;
+import io.github.blackspherefollower.buttplug4j.connectors.jetty.websocket.client.ButtplugClientWSClient;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
