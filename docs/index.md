@@ -12,7 +12,7 @@ Minegasm is a Minecraft (Java Edition) Forge mod that uses connected sex toys to
 | **1.15**.2 | [31.2.57](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.15.2.html)      | 11\* | [minegasm-0.4.0-1.15.2-Forge-31.2.57.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.15.2-Forge-31.2.57.jar)           |
 | **1.14**.4 | [28.2.26](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.14.4.html)      | 11\* | [minegasm-0.4.0-1.14.4-Forge-28.2.26.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.14.4-Forge-28.2.26.jar)           |
 | **1.13**.2 | [25.0.223](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.13.2.html)     | 11\* | [minegasm-0.4.0-1.13.2-Forge-25.0.223.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.13.2-Forge-25.0.223.jar)         |
-| **1.12**.2 | [14.23.5.2859](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.12.2.html) | 11\* | [minegasm-0.4.0-1.12.2-Forge-14.23.5.2859.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.12.2-Forge-14.23.5.2859.jar) |
+| ~~**1.12**.2~~ | [14.23.5.2859](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.12.2.html) | 11\* | [~~minegasm-0.4.0-1.12.2-Forge-14.23.5.2859.jar~~](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.12.2-Forge-14.23.5.2859.jar) |
 
 *) For version 1.12&ndash;1.16, you need to set your Minecraft installation to use Java 11 or later instead of the bundled Java 8.
 
