@@ -1,23 +1,23 @@
-name: Build 1.20
+name: Build 1.17.1
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - 'forge/fg-6.0/1.20/**'
+      - 'forge/fg-6.0/1.17.1/**'
       - '.github/workflows/fg-6.0.yml'
-      - '.github/workflows/gradle-forge-1.20.yml'
+      - '.github/workflows/gradle-forge-1.17.1.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - 'forge/fg-6.0/1.20/**'
+      - 'forge/fg-6.0/1.17.1/**'
       - '.github/workflows/fg-6.0.yml'
-      - '.github/workflows/gradle-forge-1.20.yml'
+      - '.github/workflows/gradle-forge-1.17.1.yml'
 
 jobs:
   build:
     uses: ./.github/workflows/fg-6.0.yml
     with:
-      version: 1.20
-      java-version: 17
+      version: 1.17.1
+      java-version: 16

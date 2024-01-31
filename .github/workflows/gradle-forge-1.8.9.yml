@@ -1,23 +1,23 @@
-name: Build 1.8
+name: Build 1.8.9
 
 on:
   workflow_dispatch:
   push:
     branches: [ main ]
     paths:
-      - 'forge/fg-2.1/1.8/**'
+      - 'forge/fg-2.1/1.8.9/**'
       - '.github/workflows/fg-2.1.yml'
-      - '.github/workflows/gradle-forge-1.8.yml'
+      - '.github/workflows/gradle-forge-1.8.9.yml'
   pull_request:
     branches: [ main ]
     paths:
-      - 'forge/fg-2.1/1.8/**'
+      - 'forge/fg-2.1/1.8.9/**'
       - '.github/workflows/fg-2.1.yml'
-      - '.github/workflows/gradle-forge-1.8.yml'
+      - '.github/workflows/gradle-forge-1.8.9.yml'
 
 jobs:
   build:
     uses: ./.github/workflows/fg-2.1.yml
     with:
-      version: 1.8
+      version: 1.8.9
       java-version: 8
