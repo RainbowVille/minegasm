@@ -1,0 +1,23 @@
+name: Build 1.16.3
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'forge/fg-6.0/1.16.3/**'
+      - '.github/workflows/fg-6.0.yml'
+      - '.github/workflows/gradle-forge-1.16.3.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'forge/fg-6.0/1.16.3/**'
+      - '.github/workflows/fg-6.0.yml'
+      - '.github/workflows/gradle-forge-1.16.3.yml'
+
+jobs:
+  build:
+    uses: ./.github/workflows/fg-6.0.yml
+    with:
+      version: 1.16.3
+      java-version: 8
