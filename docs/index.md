@@ -16,7 +16,7 @@ Minegasm is a Minecraft (Java Edition) Forge mod that uses connected sex toys to
 
 Notes:
 * For version 1.12&ndash;1.16, you need to set your Minecraft installation to use Java 11 or later instead of the bundled Java 8.
-* The mod for v1.12.2 is reported to be broken.
+* The mod for 1.12.2 is reported to be broken.
 
 Old releases can be found on the [release page](./releases).
 
