@@ -19,7 +19,11 @@
 
 Notes:
 * Java 11 is required because of the `buttplug4j` library.
+
+### Known Issues
 * The mod for v1.12.2 is reported to be broken.
+* There is currently a bug in some versions of the Minecraft launcher that prevents the use of newer Java runtimes: [https://bugs.mojang.com/browse/MCL-18306](https://bugs.mojang.com/browse/MCL-18306). This affects the mods for the Minecraft versions before 1.17 as Minegasm requires at least Java 11. If you encounter this issue, a workaround is to delete `JavaCheck.jar` shipped with the launcher.
+* In-game config menu is missing for 1.13, 1.17, 1.18, 1.19, and 1.20. The mod can still be configured manually by editing the config file.
 
 ## v0.3
 *Internal only*. Switched the hardware control library to [`buttplug-rs-ffi`](https://github.com/buttplugio/buttplug-rs-ffi). Abandoned in favor of v0.4.

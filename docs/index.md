@@ -35,7 +35,6 @@ Old releases can be found on the [release page](./releases).
 For more detailed instructions, please see the [setup page](./setup).
 
 ## Known Issues
-* There is currently a bug in some versions of the Minecraft launcher that prevents the use of newer Java runtimes: [https://bugs.mojang.com/browse/MCL-18306](https://bugs.mojang.com/browse/MCL-18306). This affects the mods for the Minecraft versions before 1.17 as Minegasm requires at least Java 11. If you encounter this issue, a workaround is to delete `JavaCheck.jar` shipped with the launcher.
 * In-game config menu is missing for 1.13, 1.17, 1.18, 1.19, and 1.20. The mod can still be configured manually by editing the config file.
 * The mod has only undergone limited testing in multiplayer mode and it might not work with some mods.
 
@@ -50,11 +49,13 @@ It has been confirmed by the developers to work with:
 - [Lovense Max 2](https://www.lovense.com/r/n4x2bh) (male masturbator)
 - [Lovense Domi 2](https://www.lovense.com/r/khhgol?t=m1) (wand)
 
+Note that at the moment it doesn't work with any other devices that are not vibrators.
+
 ## Configuration
 Minegasm is configurable through the `Mods > Config` screen, as well as by manually editing the `minegasm-client.toml` config file.
 The [config page](./config) explains this in further details.
 
-## Gameplay modes
+## Gameplay Modes
 
 | Mode      | Description                                                                                                                                                  |
 |-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -64,12 +65,33 @@ The [config page](./config) explains this in further details.
 | CUSTOM    | The toy will vibrate depending on the intensity levels configured by the user.                                                                               |
 
 ## Support
-In principle, we do not provide any dedicated (technical) supports. If you need any assistance, you can use the [discussion page](https://github.com/RainbowVille/minegasm/discussions). Alternatively, you can join our [Discord server](https://discord.gg/Kc7ueWC) and ping `@RSwoop` in the `#minegasm` channel, but please be advised that he might not always be able to help you.
+In principle, we do not provide any dedicated (technical) supports. If you need any assistance, you can use the [discussion page](https://github.com/RainbowVille/minegasm/discussions).
+Alternatively, you can join `@RSwoop`'s [Discord server](https://discord.gg/Kc7ueWC) and ping him in the `#minegasm` channel, but please be advised that he might not always be able to help you.
+A dedicated server for Minegasm is planned to be set up in the future.
 
 If you have any suggestions or found any bugs, please post them to our [issue tracker](https://github.com/RainbowVille/minegasm/issues) on GitHub. Please try to be as descriptive as possible and include your `debug.log` (please remove any references to your username first if that matters). The `debug.log` file is typically under the `logs` directory of your minecraft instance. In the vanilla installation on Windows, it is typically on `<drive>:\Users\<username>\AppData\Roaming\.minecraft`.
 
 The status of confirmed bugs and planned future enhancements are available on our [project board](https://github.com/RainbowVille/minegasm/projects/1).
 
+## History
+The mod was conceived in 2020 by `RSwoop` amid the COVID-19 pandemic to combine his newly-found interest of connected intimate adult toys and Minecraft, that he played a lot during the lockdown.
+When researching about the idea, he found that something similar has been done 5 years prior, but [the project](https://old.reddit.com/r/SexToys/comments/3ja9uq/vibrating_egg_controlled_by_a_raspberry_pi_and/) was made for a specific toy and had not been developed further.
+He then decided to make his own mod that would work with more off-the-shelf devices using the [Buttplug.io](https://buttplug.io/) platform, that promised support for a wide range of hardware.
+
+Despite his minimal experience in Java and Minecraft modding, he finally managed to make a working prototype and released it to the public on October 24, 2020 with an open source license, allowing others interested to improve the mod, or even make their own based on it. The mod has since been downloaded thousands of times and has been forked and inspired a few other projects.
+
+The mod was originally designed for PvP duels, which significantly affects some design decisions, but it has since evolved to also support different game modes. The development of the project has slowed down considerably after the pandemic, but it is still being updated occasionally to fix bugs and support newer Minecraft versions.
+
+## Related Projects
+Some (newer and generally more actively maintained) projects based on or inspired by Minegasm:
+
+| Project                                                         | Description                               |
+|-----------------------------------------------------------------|-------------------------------------------|
+| [Minegasm-fabric](https://github.com/vinceh121/Minegasm-fabric) | A Fabric port of Minegasm                 |
+| [mInetiface](https://github.com/Fyustorm/mInetiface)            | A rewrite of Minegasm with extra features |
+
+Please check them out and see if they fit your needs better.
+
 ## Credits
-- `Lone_Destroyer` for the logo
+- `Lone_Destroyer` for the original logo
 - `qdot` and `BlackSphereFollower` for the buttplug library
