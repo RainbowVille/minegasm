@@ -127,29 +127,6 @@ public class ToyController {
         }
     }
 
-    public static void setVibrationLevel(double level) {
-        if (Objects.isNull(device)) return;
-
-        if (MinegasmConfig.vibrate) {
-            try {
-                device.sendScalarVibrateCmd(level);
-                currentVibrationLevel = level;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        } else {
-            if (currentVibrationLevel > 0) {
-                try {
-                    level = 0;
-                    device.sendScalarVibrateCmd(level);
-                    currentVibrationLevel = level;
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
     public static String getDeviceName() {
         return (Objects.nonNull(device)) ? device.getDisplayName() : "<none>";
     }
