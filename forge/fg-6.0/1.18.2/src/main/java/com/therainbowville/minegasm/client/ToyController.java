@@ -33,26 +33,26 @@ public class ToyController {
 
             LOGGER.info("URL: " + MinegasmConfig.serverUrl);
 
-			ExecutorService executor = Executors.newSingleThreadExecutor();
-			Future future = executor.submit(new Callable<Void>() {
-				public Void call() throws Exception {
-					client.connect(new URI(MinegasmConfig.serverUrl));
-					return null;
-				}
-			});
-	        
-			try 
-			{
-				future.get(3, TimeUnit.SECONDS);
-			} catch (TimeoutException e) {
-				future.cancel(true);
-				client = new ButtplugClientWSClient("Minegasm");
-				throw new TimeoutException("Could not find WebSocket");
-			} finally {
-				executor.shutdownNow();
-			}
-			
-			client.startScanning();
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Future future = executor.submit(new Callable<Void>() {
+                public Void call() throws Exception {
+                    client.connect(new URI(MinegasmConfig.serverUrl));
+                    return null;
+                }
+            });
+            
+            try 
+            {
+                future.get(3, TimeUnit.SECONDS);
+            } catch (TimeoutException e) {
+                future.cancel(true);
+                client = new ButtplugClientWSClient("Minegasm");
+                throw new TimeoutException("Could not find WebSocket");
+            } finally {
+                executor.shutdownNow();
+            }
+            
+            client.startScanning();
 
             Thread.sleep(5000);
             client.requestDeviceList();
