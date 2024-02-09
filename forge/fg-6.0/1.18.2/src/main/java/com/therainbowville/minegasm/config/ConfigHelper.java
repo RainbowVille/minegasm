@@ -13,6 +13,7 @@ public final class ConfigHelper {
         MinegasmConfig.xpChangeIntensity = ConfigHolder.CLIENT.xpChangeIntensity.get();
         MinegasmConfig.harvestIntensity = ConfigHolder.CLIENT.harvestIntensity.get();
         MinegasmConfig.vitalityIntensity = ConfigHolder.CLIENT.vitalityIntensity.get();
+        MinegasmConfig.advancementIntensity = ConfigHolder.CLIENT.advancementIntensity.get();
     }
 
     public static void bakeServer() {
