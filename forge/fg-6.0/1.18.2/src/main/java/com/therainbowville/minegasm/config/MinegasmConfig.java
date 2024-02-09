@@ -19,13 +19,14 @@ public class MinegasmConfig {
 
     public static boolean vibrate;
     public static Enum<ClientConfig.GameplayMode> mode = ClientConfig.GameplayMode.NORMAL;
-    public static boolean stealth;
+	public static boolean stealth;
     public static int attackIntensity;
     public static int hurtIntensity;
     public static int mineIntensity;
     public static int xpChangeIntensity;
     public static int harvestIntensity;
     public static int vitalityIntensity;
+    public static int advancementIntensity;
 
     // Server
     // -- none at the moment
