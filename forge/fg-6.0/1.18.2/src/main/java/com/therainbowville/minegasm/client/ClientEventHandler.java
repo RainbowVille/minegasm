@@ -96,6 +96,7 @@ public class ClientEventHandler {
         normal.put("xpChange", 100);
         normal.put("harvest", 0);
         normal.put("vitality", 0);
+        normal.put("advancement", 100);
 
         Map<String, Integer> masochist = new HashMap<>();
         masochist.put("attack", 0);
@@ -104,6 +105,7 @@ public class ClientEventHandler {
         masochist.put("xpChange", 0);
         masochist.put("harvest", 0);
         masochist.put("vitality", 10);
+        normal.put("advancement", 0);
 
         Map<String, Integer> hedonist = new HashMap<>();
         hedonist.put("attack", 60);
@@ -112,6 +114,7 @@ public class ClientEventHandler {
         hedonist.put("xpChange", 100);
         hedonist.put("harvest", 20);
         hedonist.put("vitality", 10);
+        normal.put("advancement", 100);
 
         Map<String, Integer> custom = new HashMap<>();
         custom.put("attack", MinegasmConfig.attackIntensity);
@@ -120,6 +123,7 @@ public class ClientEventHandler {
         custom.put("xpChange", MinegasmConfig.xpChangeIntensity);
         custom.put("harvest", MinegasmConfig.harvestIntensity);
         custom.put("vitality", MinegasmConfig.vitalityIntensity);
+        custom.put("advancement", MinegasmConfig.advancementIntensity);
 
         if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
             return masochist.get(type);
@@ -352,6 +356,23 @@ public class ClientEventHandler {
         LOGGER.throwing(e);
     }
     }
+    
+    @SubscribeEvent
+    public static void onAdvancementEvent(AdvancementEvent event)
+    {
+        
+        try {
+            Player player = event.getPlayer();;
+            UUID uuid = player.getGameProfile().getId();
+
+            if (uuid.equals(playerId)) {
+                LOGGER.info("Advancement Event: " + event);
+                setState(getStateCounter(), 10, getIntensity("advancement"), true);
+            }
+        } catch (Throwable e) {
+            LOGGER.throwing(e);
+        }
+    }
 
     @SubscribeEvent
     public static void onRespawn(PlayerEvent.PlayerRespawnEvent event)
@@ -388,6 +409,7 @@ public class ClientEventHandler {
         LevelAccessor world = event.getWorld();
         LOGGER.info("World loaded: " + world.toString());
     }
+
     @SubscribeEvent
     public static void onWorldEntry(EntityJoinWorldEvent event) {
         Entity entity = event.getEntity();
@@ -407,7 +429,6 @@ public class ClientEventHandler {
                     LOGGER.info("Stealth: " + MinegasmConfig.stealth);
                     if (ToyController.connectDevice()) {
                         setState(getStateCounter(), 5);
-                        
                         if (!MinegasmConfig.stealth){
                             player.displayClientMessage(new TextComponent(String.format("Connected to " + ChatFormatting.GREEN + "%s" + ChatFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
                         }
