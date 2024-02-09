@@ -388,7 +388,6 @@ public class ClientEventHandler {
         LevelAccessor world = event.getWorld();
         LOGGER.info("World loaded: " + world.toString());
     }
-
     @SubscribeEvent
     public static void onWorldEntry(EntityJoinWorldEvent event) {
         Entity entity = event.getEntity();
@@ -405,10 +404,14 @@ public class ClientEventHandler {
 
                 if (uuid.equals(Minecraft.getInstance().player.getGameProfile().getId())) {
                     LOGGER.info("Player in: " + player.getGameProfile().getName() + " " + player.getGameProfile().getId().toString());
+                    LOGGER.info("Stealth: " + MinegasmConfig.stealth);
                     if (ToyController.connectDevice()) {
                         setState(getStateCounter(), 5);
-                        player.displayClientMessage(new TextComponent(String.format("Connected to " + ChatFormatting.GREEN + "%s" + ChatFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
-                    } else {
+                        
+                        if (!MinegasmConfig.stealth){
+                            player.displayClientMessage(new TextComponent(String.format("Connected to " + ChatFormatting.GREEN + "%s" + ChatFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
+                        }
+                    } else if (!MinegasmConfig.stealth){
                         player.displayClientMessage(new TextComponent(String.format(ChatFormatting.YELLOW + "Minegasm " + ChatFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
                     }
                     playerId = uuid;
