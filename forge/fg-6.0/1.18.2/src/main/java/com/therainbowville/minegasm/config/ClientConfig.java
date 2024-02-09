@@ -19,6 +19,7 @@ public final class ClientConfig {
     final ForgeConfigSpec.IntValue xpChangeIntensity;
     final ForgeConfigSpec.IntValue harvestIntensity;
     final ForgeConfigSpec.IntValue vitalityIntensity;
+    final ForgeConfigSpec.IntValue advancementIntensity;
 
     ClientConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("buttplug");
@@ -40,7 +41,7 @@ public final class ClientConfig {
         stealth = builder
                 .translation(Minegasm.MOD_ID + ".config.stealth")
                 .define("stealth", false);
-        
+
         builder.push("intensity");
 
         attackIntensity = builder
@@ -72,6 +73,11 @@ public final class ClientConfig {
                 .comment("Vibration intensity on high level of player's vitality on custom mode")
                 .translation(Minegasm.MOD_ID + ".config.intensity.vitality")
                 .defineInRange("vitalityIntensity", 0, 0, 100);
+                
+        advancementIntensity = builder
+                .comment("Vibration intensity on high level of player's vitality on custom mode")
+                .translation(Minegasm.MOD_ID + ".config.intensity.advancement")
+                .defineInRange("advancementIntensity", 100, 0, 100);
 
         builder.pop();
         builder.pop();
