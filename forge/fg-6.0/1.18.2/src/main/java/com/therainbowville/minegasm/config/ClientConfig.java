@@ -12,6 +12,7 @@ public final class ClientConfig {
 
     final ForgeConfigSpec.BooleanValue vibrate;
     final ForgeConfigSpec.EnumValue<GameplayMode> mode;
+    final ForgeConfigSpec.BooleanValue stealth;
     final ForgeConfigSpec.IntValue attackIntensity;
     final ForgeConfigSpec.IntValue hurtIntensity;
     final ForgeConfigSpec.IntValue mineIntensity;
@@ -36,7 +37,10 @@ public final class ClientConfig {
         mode = builder
                 .translation(Minegasm.MOD_ID + ".config.mode")
                 .defineEnum("mode", GameplayMode.NORMAL);
-
+        stealth = builder
+                .translation(Minegasm.MOD_ID + ".config.stealth")
+                .define("stealth", false);
+        
         builder.push("intensity");
 
         attackIntensity = builder
