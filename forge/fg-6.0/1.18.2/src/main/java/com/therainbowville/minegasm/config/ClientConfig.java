@@ -75,7 +75,7 @@ public final class ClientConfig {
                 .defineInRange("vitalityIntensity", 0, 0, 100);
                 
         advancementIntensity = builder
-                .comment("Vibration intensity on high level of player's vitality on custom mode")
+                .comment("Vibration intensity on achieving advancement on custom mode")
                 .translation(Minegasm.MOD_ID + ".config.intensity.advancement")
                 .defineInRange("advancementIntensity", 100, 0, 100);
 
