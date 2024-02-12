@@ -187,22 +187,6 @@ public class ConfigScreen extends Screen {
             drawCenteredString(poseStack, Minecraft.getInstance().font, text.getString(), Minecraft.getInstance().screen.width / 2, this.y + this.height / 4, 0xFFFFFF);
         }
 
-/*        @Override
-        public void renderBg(PoseStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-            if (text == null || text.getString().isEmpty())
-                return;
-
-            RenderSystem.setShaderColor(1, 1, 1, 1);
-            MutableComponent copy = text.plainCopy();
-            if (suffix != null && !suffix.isEmpty())
-                copy.append(suffix);
-            
-            if (hasShadow)
-                font.drawShadow(matrixStack, copy, x, y, color);
-            else
-                font.draw(matrixStack, copy, x, y, 0xFFFFFF);
-        }*/
-
     }
 }
 
