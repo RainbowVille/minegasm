@@ -162,25 +162,13 @@ public class ClientEventHandler {
 
             float playerHealth = player.getHealth();
             float playerFoodLevel = player.getFoodData().getFoodLevel();
+            
+            onPlayerTickFishing(event);
 
             tickCounter = (tickCounter + 1) % (20 * (60 * TICKS_PER_SECOND)); // 20 min day cycle
 
             if (tickCounter % TICKS_PER_SECOND == 0) { // every 1 sec
-                if (uuid.equals(playerId)) {
-                    // Vibrate on fish hook
-                    if (player.fishing != null)
-                    {
-                        Vec3 vector = player.fishing.getDeltaMovement();
-                        double x = vector.x();
-                        double y = vector.y();
-                        double z = vector.z();
-                        if (y < -0.075 && !player.level.getFluidState(player.fishing.blockPosition()).isEmpty() && x == 0 && z == 0)
-                        {
-                            setState(getStateCounter(), 1, getIntensity("fishing"), true);
-                            LOGGER.info("Fishing!");
-                        }
-                    }
-                    
+                if (uuid.equals(playerId)) {                    
                     int stateCounter = getStateCounter();
 
                     if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
@@ -407,6 +395,28 @@ public class ClientEventHandler {
     } catch (Throwable e) {
         LOGGER.throwing(e);
     }
+    }
+
+    public static void onPlayerTickFishing(TickEvent.PlayerTickEvent event) {
+        try {
+            Player player = event.player;
+            
+            // Vibrate on fish hook
+            if (player.fishing != null)
+            {
+                Vec3 vector = player.fishing.getDeltaMovement();
+                double x = vector.x();
+                double y = vector.y();
+                double z = vector.z();
+                if (y < -0.075 && !player.level.getFluidState(player.fishing.blockPosition()).isEmpty() && x == 0 && z == 0)
+                {
+                    setState(getStateCounter(), 1, getIntensity("fishing"), true);
+                    LOGGER.info("Fishing!");
+                }
+            }
+        } catch (Throwable e) {
+            LOGGER.throwing(e);
+        }
     }
     
     @SubscribeEvent
