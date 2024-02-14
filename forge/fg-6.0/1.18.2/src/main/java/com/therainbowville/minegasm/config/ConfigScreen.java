@@ -287,14 +287,14 @@ class CustomModeConfigScreen extends Screen {
                 new TextComponent(""), // Suffix
                 0, 100, field.getInt(null), 1, 1, true); // Min, Max, Default value, stepsize, percision, drawstring
             fieldReference = field;
-            LOGGER.info("S: " + sliders.size() + "   X: " + parent.width / 2 + (sliders.size() % 2 == 1 ? 5 : -155) + "   Y: " + parent.height / 6 + 25 * (int)Math.floor(sliders.size() / 2));
+//            LOGGER.info("S: " + sliders.size() + "   X: " + parent.width / 2 + (sliders.size() % 2 == 1 ? 5 : -155) + "   Y: " + parent.height / 6 + 25 * (int)Math.floor(sliders.size() / 2));
             sliders.add(this);
         }
         
         @Override
         public void applyValue()
         {
-            LOGGER.info("applyValue");
+//            LOGGER.info("applyValue");
             //responder.accept(this.getValueInt());
             try {
                 fieldReference.set(null, this.getValueInt());
