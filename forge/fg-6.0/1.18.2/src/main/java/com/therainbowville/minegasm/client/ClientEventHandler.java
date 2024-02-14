@@ -356,7 +356,7 @@ public class ClientEventHandler {
                 LOGGER.info("Placing: " + block.toString());
 
                 int duration = Math.max(1, Math.min(5, Math.toIntExact(Math.round(Math.ceil(Math.log(blockHardness + 0.5))))));
-                int intensity = Math.toIntExact(Math.round((getIntensity("mine") / 100.0 * (blockHardness / 50.0)) * 100));
+                int intensity = Math.toIntExact(Math.round((getIntensity("place") / 100.0 * (blockHardness / 50.0)) * 100));
                 setState(getStateCounter(), duration, intensity, true);
             }
         } catch (Throwable e) {
