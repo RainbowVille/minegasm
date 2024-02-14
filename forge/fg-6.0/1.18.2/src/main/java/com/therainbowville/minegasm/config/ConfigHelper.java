@@ -30,23 +30,39 @@ public final class ConfigHelper {
     
     public static void saveClient()
     {
+        try{
         
         MinegasmConfigBuffer buffer = new MinegasmConfigBuffer();
         
+        // Needs to sleep inbetween, or it can get confused and reset the config
+
         ConfigHolder.CLIENT.serverUrl.set(buffer.serverUrl);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.vibrate.set(buffer.vibrate);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.mode.set(buffer.mode);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.stealth.set(buffer.stealth);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.attackIntensity.set(buffer.attackIntensity);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.hurtIntensity.set(buffer.hurtIntensity);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.mineIntensity.set(buffer.mineIntensity);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.placeIntensity.set(buffer.placeIntensity);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.xpChangeIntensity.set(buffer.xpChangeIntensity);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.fishingIntensity.set(buffer.fishingIntensity);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.harvestIntensity.set(buffer.harvestIntensity);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.vitalityIntensity.set(buffer.vitalityIntensity);
+        Thread.sleep(5);
         ConfigHolder.CLIENT.advancementIntensity.set(buffer.advancementIntensity);
-       
+        } catch (Throwable e)
+        {}
     }
     
     public static ConfigGuiHandler.ConfigGuiFactory createConfigGuiFactory() {
