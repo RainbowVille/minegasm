@@ -3,17 +3,20 @@ package com.therainbowville.minegasm.client;
 import com.therainbowville.minegasm.common.Minegasm;
 import com.therainbowville.minegasm.config.ClientConfig;
 import com.therainbowville.minegasm.config.MinegasmConfig;
+
+import net.minecraft.advancements.FrameType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.world.phys.Vec3;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.world.level.LevelAccessor;
+import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.event.TickEvent;
@@ -26,12 +29,13 @@ import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.event.world.WorldEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.*;
 import java.util.stream.Collectors;
-
+import java.lang.Thread;
 
 @Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ClientEventHandler {
@@ -43,7 +47,11 @@ public class ClientEventHandler {
     private static boolean paused = false;
     private static UUID playerId = null;
 
-
+    public static void afterConnect()
+    {
+        setState(getStateCounter(), 5);
+    }
+    
     private static void clearState() {
         tickCounter = -1;
         clientTickCounter = -1;
@@ -93,33 +101,46 @@ public class ClientEventHandler {
         normal.put("attack", 60);
         normal.put("hurt", 0);
         normal.put("mine", 80);
+        normal.put("place", 20);
         normal.put("xpChange", 100);
         normal.put("harvest", 0);
+        normal.put("fishing", 50);
         normal.put("vitality", 0);
+        normal.put("advancement", 100);
+
 
         Map<String, Integer> masochist = new HashMap<>();
         masochist.put("attack", 0);
         masochist.put("hurt", 100);
         masochist.put("mine", 0);
+        masochist.put("place", 0);
         masochist.put("xpChange", 0);
+        masochist.put("fishing", 0);
         masochist.put("harvest", 0);
         masochist.put("vitality", 10);
+        masochist.put("advancement", 0);
 
         Map<String, Integer> hedonist = new HashMap<>();
         hedonist.put("attack", 60);
         hedonist.put("hurt", 10);
         hedonist.put("mine", 80);
+        hedonist.put("place", 20);
         hedonist.put("xpChange", 100);
+        hedonist.put("fishing", 50);
         hedonist.put("harvest", 20);
         hedonist.put("vitality", 10);
+        hedonist.put("advancement", 100);
 
         Map<String, Integer> custom = new HashMap<>();
         custom.put("attack", MinegasmConfig.attackIntensity);
         custom.put("hurt", MinegasmConfig.hurtIntensity);
         custom.put("mine", MinegasmConfig.mineIntensity);
+        custom.put("place", MinegasmConfig.placeIntensity);
         custom.put("xpChange", MinegasmConfig.xpChangeIntensity);
+        custom.put("fishing", MinegasmConfig.fishingIntensity);
         custom.put("harvest", MinegasmConfig.harvestIntensity);
         custom.put("vitality", MinegasmConfig.vitalityIntensity);
+        custom.put("advancement", MinegasmConfig.advancementIntensity);
 
         if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
             return masochist.get(type);
@@ -141,11 +162,13 @@ public class ClientEventHandler {
 
             float playerHealth = player.getHealth();
             float playerFoodLevel = player.getFoodData().getFoodLevel();
+            
+            onPlayerTickFishing(event);
 
             tickCounter = (tickCounter + 1) % (20 * (60 * TICKS_PER_SECOND)); // 20 min day cycle
 
             if (tickCounter % TICKS_PER_SECOND == 0) { // every 1 sec
-                if (uuid.equals(playerId)) {
+                if (uuid.equals(playerId)) {                    
                     int stateCounter = getStateCounter();
 
                     if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
@@ -321,6 +344,27 @@ public class ClientEventHandler {
     }
 
     @SubscribeEvent
+    public static void onPlace(BlockEvent.EntityPlaceEvent event){
+        try {
+            UUID uuid = event.getEntity().getUUID();
+
+            if (uuid.equals(playerId)) {
+                BlockState blockState = event.getState();
+                Block block = blockState.getBlock();
+                @SuppressWarnings("ConstantConditions") float blockHardness = block.defaultBlockState().getDestroySpeed(null, null);
+
+                LOGGER.info("Placing: " + block.toString());
+
+                int duration = Math.max(1, Math.min(5, Math.toIntExact(Math.round(Math.ceil(Math.log(blockHardness + 0.5))))));
+                int intensity = Math.toIntExact(Math.round((getIntensity("place") / 100.0 * (blockHardness / 50.0)) * 100));
+                setState(getStateCounter(), duration, intensity, true);
+            }
+        } catch (Throwable e) {
+            LOGGER.throwing(e);
+        }
+    }
+
+    @SubscribeEvent
     public static void onItemPickup(EntityItemPickupEvent event)
     {
         LOGGER.info("Pickup item: " + event.getItem().toString());
@@ -351,6 +395,51 @@ public class ClientEventHandler {
     } catch (Throwable e) {
         LOGGER.throwing(e);
     }
+    }
+
+    public static void onPlayerTickFishing(TickEvent.PlayerTickEvent event) {
+        try {
+            Player player = event.player;
+            
+            // Vibrate on fish hook
+            if (player.fishing != null)
+            {
+                Vec3 vector = player.fishing.getDeltaMovement();
+                double x = vector.x();
+                double y = vector.y();
+                double z = vector.z();
+                if (y < -0.075 && !player.level.getFluidState(player.fishing.blockPosition()).isEmpty() && x == 0 && z == 0)
+                {
+                    setState(getStateCounter(), 1, getIntensity("fishing"), true);
+                    LOGGER.info("Fishing!");
+                }
+            }
+        } catch (Throwable e) {
+            LOGGER.throwing(e);
+        }
+    }
+    
+    @SubscribeEvent
+    public static void onAdvancementEvent(AdvancementEvent event)
+    {
+        
+        try {
+            Player player = event.getPlayer();;
+            UUID uuid = player.getGameProfile().getId();
+
+            if (uuid.equals(playerId)) {
+                LOGGER.info("Advancement Event: " + event);
+                FrameType type = event.getAdvancement().getDisplay().getFrame();
+                int duration = switch (type) {
+                    case TASK -> 5;
+                    case GOAL -> 7;
+                    case CHALLENGE -> 10;
+                };
+                setState(getStateCounter(), duration, getIntensity("advancement"), true);
+            }
+        } catch (Throwable e) {
+            LOGGER.throwing(e);
+        }
     }
 
     @SubscribeEvent
@@ -398,24 +487,27 @@ public class ClientEventHandler {
 
         if (entity instanceof Player) {
             LOGGER.info("Player respawn world: " + entity.toString());
-
-            try {
+            
+            new Thread(()-> { try {
                 Player player = (Player) entity;
                 UUID uuid = player.getGameProfile().getId();
-
+ 
                 if (uuid.equals(Minecraft.getInstance().player.getGameProfile().getId())) {
                     LOGGER.info("Player in: " + player.getGameProfile().getName() + " " + player.getGameProfile().getId().toString());
+                    LOGGER.info("Stealth: " + MinegasmConfig.stealth);
                     if (ToyController.connectDevice()) {
                         setState(getStateCounter(), 5);
-                        player.displayClientMessage(new TextComponent(String.format("Connected to " + ChatFormatting.GREEN + "%s" + ChatFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
-                    } else {
+                        if (!MinegasmConfig.stealth){
+                            player.displayClientMessage(new TextComponent(String.format("Connected to " + ChatFormatting.GREEN + "%s" + ChatFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
+                        }
+                    } else if (!MinegasmConfig.stealth){
                         player.displayClientMessage(new TextComponent(String.format(ChatFormatting.YELLOW + "Minegasm " + ChatFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
                     }
                     playerId = uuid;
                 }
             } catch (Throwable e) {
                 LOGGER.throwing(e);
-            }
+            }}).start();
         }
     }
 }
