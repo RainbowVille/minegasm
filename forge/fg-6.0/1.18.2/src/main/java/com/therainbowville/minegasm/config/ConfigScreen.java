@@ -247,7 +247,6 @@ class CustomModeConfigScreen extends Screen {
             this.width / 2 - 155, this.height - 27, 150, 20,
             new TextComponent("Reset Values"), button -> {
                 ConfigHolder.getClientInstance().resetConfigCustom();
-                ConfigHelper.bakeClient();
                 IntensitiySliderBar.refreshAllValues();
             }
         ));
