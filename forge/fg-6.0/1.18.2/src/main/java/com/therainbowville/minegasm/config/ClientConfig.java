@@ -134,6 +134,7 @@ public final class ClientConfig {
         NORMAL("gui." + Minegasm.MOD_ID + ".config.mode.normal"),
         MASOCHIST("gui." + Minegasm.MOD_ID + ".config.mode.masochist"),
         HEDONIST("gui." + Minegasm.MOD_ID + ".config.mode.hedonist"),
+        ACCUMULATION("gui." + Minegasm.MOD_ID + ".config.mode.accumulation"),
         CUSTOM("gui." + Minegasm.MOD_ID + ".config.mode.custom");
 
         private final String translateKey;

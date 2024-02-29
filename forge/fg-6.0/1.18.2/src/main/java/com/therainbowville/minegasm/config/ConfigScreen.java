@@ -110,12 +110,15 @@ public class ConfigScreen extends Screen {
                     case NORMAL -> "Normal";
                     case MASOCHIST -> "Masochist";
                     case HEDONIST -> "Hedonist";
+                    case ACCUMULATION -> "Accumulation";
                     case CUSTOM -> "Custom";
                 }))
-                .withValues(ClientConfig.GameplayMode.NORMAL, ClientConfig.GameplayMode.MASOCHIST, ClientConfig.GameplayMode.HEDONIST, ClientConfig.GameplayMode.CUSTOM)
+                .withValues(ClientConfig.GameplayMode.NORMAL, ClientConfig.GameplayMode.MASOCHIST, ClientConfig.GameplayMode.HEDONIST, ClientConfig.GameplayMode.ACCUMULATION, ClientConfig.GameplayMode.CUSTOM)
                 .withInitialValue(MinegasmConfig.mode)
                 .create(this.width / 2 - 155, this.height / 6 + 25 * 4, 150, 20,
-                    new TextComponent("Mode"), (button, value) -> MinegasmConfig.mode = value)
+                    new TextComponent("Mode"), (button, value) -> {
+                        MinegasmConfig.mode = value;
+                    })
         );
 
         this.addRenderableWidget(new Button(
@@ -186,6 +189,7 @@ public class ConfigScreen extends Screen {
 //            Minecraft.getInstance().font.draw(poseStack, text.getString(), x, y, 0xFFFFFF);
             drawCenteredString(poseStack, Minecraft.getInstance().font, text.getString(), Minecraft.getInstance().screen.width / 2, this.y + this.height / 4, 0xFFFFFF);
         }
+
 
     }
 }
