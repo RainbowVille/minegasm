@@ -15,7 +15,7 @@ public class VibrationStatePlace extends AbstractVibrationState
         if (accumulationEnabled())
         {
             intensity = Math.min(100, intensity + .5f);
-            vibrationCountdown = streakCountdownAmount;
+            vibrationCountdown = streakCountdownAmount * MinegasmConfig.ticksPerSecond;
             vibrationFeedbackCountdown = 1 * MinegasmConfig.ticksPerSecond;
         } else {
             vibrationCountdown = 3 * MinegasmConfig.ticksPerSecond;

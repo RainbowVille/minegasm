@@ -30,7 +30,7 @@ public class VibrationStateXpChange extends AbstractVibrationState
         if (accumulationEnabled())
         {
             intensity = Math.min(100, intensity + amount / 5);
-            vibrationCountdown = streakCountdownAmount;
+            vibrationCountdown = streakCountdownAmount * MinegasmConfig.ticksPerSecond;
             vibrationFeedbackCountdown = 1 * MinegasmConfig.ticksPerSecond;
         } else {
             int duration = Math.toIntExact( Math.round( Math.ceil( Math.log(amount + 0.5) ) ) );

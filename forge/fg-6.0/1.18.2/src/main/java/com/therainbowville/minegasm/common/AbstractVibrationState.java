@@ -22,7 +22,7 @@ public abstract class AbstractVibrationState
     
     protected AbstractVibrationState(float streakSeconds)
     {
-        streakCountdownAmount = streakSeconds * MinegasmConfig.ticksPerSecond;
+        streakCountdownAmount = streakSeconds;
         vibrationCountdown = 0;
         vibrationFeedbackCountdown = 0;
         intensity = 0;
@@ -36,7 +36,7 @@ public abstract class AbstractVibrationState
                 vibrationCountdown--;
             else if (intensity > 0) {
                 intensity = Math.max(0, intensity - 5);
-                vibrationCountdown = streakCountdownAmount;
+                vibrationCountdown = streakCountdownAmount * MinegasmConfig.ticksPerSecond;
             }
         } else {
             vibrationCountdown = Math.max(0, vibrationCountdown - 1);        

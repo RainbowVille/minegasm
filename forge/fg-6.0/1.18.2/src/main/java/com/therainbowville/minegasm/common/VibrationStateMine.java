@@ -19,11 +19,11 @@ public class VibrationStateMine extends AbstractVibrationState
         {
             if (blockName.contains("Ore")) {
                 intensity = Math.min(100, intensity + 1);
-                vibrationCountdown = streakCountdownAmount;
+                vibrationCountdown = streakCountdownAmount * MinegasmConfig.ticksPerSecond;
                 vibrationFeedbackCountdown = 1 * MinegasmConfig.ticksPerSecond;
             } else {
                 intensity = Math.min(100, intensity + .25f);
-                vibrationCountdown = streakCountdownAmount;
+                vibrationCountdown = streakCountdownAmount * MinegasmConfig.ticksPerSecond;
             }
         } else {
             if (blockName.contains("Ore")) {
