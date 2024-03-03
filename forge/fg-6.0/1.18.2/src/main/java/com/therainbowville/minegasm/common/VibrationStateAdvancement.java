@@ -4,6 +4,8 @@ import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.Advancement;
 import net.minecraftforge.event.entity.player.AdvancementEvent;
 
+import com.therainbowville.minegasm.config.MinegasmConfig;
+
 public class VibrationStateAdvancement extends AbstractVibrationState
 {
     public VibrationStateAdvancement()
@@ -25,8 +27,8 @@ public class VibrationStateAdvancement extends AbstractVibrationState
             case CHALLENGE -> 10;
         };
 
-        vibrationCountdown = duration * 20;
-        vibrationFeedbackCountdown = 1.5f * 20;
+        vibrationCountdown = duration * MinegasmConfig.ticksPerSecond;
+        vibrationFeedbackCountdown = 1.5f * MinegasmConfig.ticksPerSecond;
     } catch (Throwable e) {
             LOGGER.throwing(e);
     }

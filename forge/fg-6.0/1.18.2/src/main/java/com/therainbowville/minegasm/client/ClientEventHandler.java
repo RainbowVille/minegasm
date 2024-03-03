@@ -119,10 +119,10 @@ public class ClientEventHandler {
         if (event.phase == TickEvent.Phase.END && isPlayer(event.player)) {
             Player player = event.player;
             
-            tickCounter = (tickCounter + 1) % (20 * (60 * 20));
+            tickCounter = (tickCounter + 1) % 100;
             
             
-            if (tickCounter % 1 == 0) // TODO: Add ticks per second config option (Default: Every tick)
+            if (tickCounter % MinegasmConfig.tickFrequency == 0) // TODO: Add ticks per second config option (Default: Every tick)
             {
                 tickAll();
                 

@@ -1,5 +1,7 @@
 package com.therainbowville.minegasm.common;
 
+import com.therainbowville.minegasm.config.MinegasmConfig;
+
 public class VibrationStateHurt extends AbstractVibrationState
 {
     public VibrationStateHurt()
@@ -14,10 +16,10 @@ public class VibrationStateHurt extends AbstractVibrationState
         {
             intensity = Math.min(100, intensity + 10);
             vibrationCountdown = streakCountdownAmount;
-            vibrationFeedbackCountdown = 1 * 20;
+            vibrationFeedbackCountdown = 1 * MinegasmConfig.ticksPerSecond;
         } else {
-            vibrationCountdown = 3 * 20;
-            vibrationFeedbackCountdown = 1 * 20;
+            vibrationCountdown = 3 * MinegasmConfig.ticksPerSecond;
+            vibrationFeedbackCountdown = 1 * MinegasmConfig.ticksPerSecond;
         }
 	}
     

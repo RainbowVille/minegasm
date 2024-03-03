@@ -1,5 +1,7 @@
 package com.therainbowville.minegasm.common;
 
+import com.therainbowville.minegasm.config.MinegasmConfig;
+
 public class VibrationStateXpChange extends AbstractVibrationState
 {
 	private int lastLevel;
@@ -29,11 +31,11 @@ public class VibrationStateXpChange extends AbstractVibrationState
         {
             intensity = Math.min(100, intensity + amount / 5);
             vibrationCountdown = streakCountdownAmount;
-            vibrationFeedbackCountdown = 1 * 20;
+            vibrationFeedbackCountdown = 1 * MinegasmConfig.ticksPerSecond;
         } else {
             int duration = Math.toIntExact( Math.round( Math.ceil( Math.log(amount + 0.5) ) ) );
-            vibrationCountdown = duration * 20;
-            vibrationFeedbackCountdown = 1 * 20;
+            vibrationCountdown = duration * MinegasmConfig.ticksPerSecond;
+            vibrationFeedbackCountdown = 1 * MinegasmConfig.ticksPerSecond;
         }
 	}
     

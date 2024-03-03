@@ -1,5 +1,7 @@
 package com.therainbowville.minegasm.common;
 
+import com.therainbowville.minegasm.config.MinegasmConfig;
+
 public class VibrationStateClient extends AbstractVibrationState
 {
     public VibrationStateClient()
@@ -10,7 +12,7 @@ public class VibrationStateClient extends AbstractVibrationState
     public void setVibration(int intensity, int durationSeconds)
     {
         intensity = intensity;
-        vibrationCountdown = durationSeconds * 20;
+        vibrationCountdown = durationSeconds * MinegasmConfig.ticksPerSecond;
     }
     
     public int getIntensity()

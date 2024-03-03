@@ -27,7 +27,7 @@ public class VibrationStateVitality extends AbstractVibrationState
 
             if (targetMet == false){
                 targetMet = true;
-                vibrationFeedbackCountdown = 3 * 20;
+                vibrationFeedbackCountdown = 3 * MinegasmConfig.ticksPerSecond;
             }
         } else
             targetMet = false;

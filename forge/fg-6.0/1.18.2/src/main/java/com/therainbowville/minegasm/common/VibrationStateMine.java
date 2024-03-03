@@ -2,6 +2,8 @@ package com.therainbowville.minegasm.common;
 
 import net.minecraft.world.level.block.state.BlockState;
 
+import com.therainbowville.minegasm.config.MinegasmConfig;
+
 public class VibrationStateMine extends AbstractVibrationState
 {
     public VibrationStateMine()
@@ -18,17 +20,17 @@ public class VibrationStateMine extends AbstractVibrationState
             if (blockName.contains("Ore")) {
                 intensity = Math.min(100, intensity + 1);
                 vibrationCountdown = streakCountdownAmount;
-                vibrationFeedbackCountdown = 1 * 20;
+                vibrationFeedbackCountdown = 1 * MinegasmConfig.ticksPerSecond;
             } else {
                 intensity = Math.min(100, intensity + .25f);
                 vibrationCountdown = streakCountdownAmount;
             }
         } else {
             if (blockName.contains("Ore")) {
-                vibrationCountdown = 3 * 20;
-                vibrationFeedbackCountdown = 1 * 20;
+                vibrationCountdown = 3 * MinegasmConfig.ticksPerSecond;
+                vibrationFeedbackCountdown = 1 * MinegasmConfig.ticksPerSecond;
             } else  
-                vibrationCountdown = 3 * 20;
+                vibrationCountdown = 3 * MinegasmConfig.ticksPerSecond;
         }
 	}
     

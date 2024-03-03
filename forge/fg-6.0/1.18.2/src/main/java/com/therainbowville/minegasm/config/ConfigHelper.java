@@ -14,6 +14,8 @@ public final class ConfigHelper {
         MinegasmConfig.vibrate = ConfigHolder.CLIENT.vibrate.get();
         MinegasmConfig.mode = ConfigHolder.CLIENT.mode.get();
         MinegasmConfig.stealth = ConfigHolder.CLIENT.stealth.get();
+        MinegasmConfig.tickFrequency = ConfigHolder.CLIENT.tickFrequency.get().getInt();
+        MinegasmConfig.ticksPerSecond = Math.max(1, Math.toIntExact(20 / MinegasmConfig.tickFrequency));
         
         MinegasmConfig.attackIntensity = ConfigHolder.CLIENT.attackIntensity.get();
         MinegasmConfig.hurtIntensity = ConfigHolder.CLIENT.hurtIntensity.get();
@@ -34,11 +36,12 @@ public final class ConfigHelper {
         try{
         
         MinegasmConfigBuffer buffer = new MinegasmConfigBuffer();
-            
+    
         ConfigHolder.CLIENT.serverUrl.set(buffer.serverUrl);
         ConfigHolder.CLIENT.vibrate.set(buffer.vibrate);
         ConfigHolder.CLIENT.mode.set(buffer.mode);
         ConfigHolder.CLIENT.stealth.set(buffer.stealth);
+        ConfigHolder.CLIENT.tickFrequency.set(ClientConfig.TickFrequencyOptions.fromInt(buffer.tickFrequency));
                 
         ConfigHolder.CLIENT.attackIntensity.set(buffer.attackIntensity);
         ConfigHolder.CLIENT.hurtIntensity.set(buffer.hurtIntensity);
