@@ -33,16 +33,16 @@ public abstract class AbstractVibrationState
         if (accumulationEnabled())
         {
             if (vibrationCountdown > 0)
-                vibrationCountdown--;
+                vibrationCountdown =- Math.max(0, vibrationCountdown - MinegasmConfig.tickFrequency);
             else if (intensity > 0) {
                 intensity = Math.max(0, intensity - 5);
                 vibrationCountdown = streakCountdownAmount * MinegasmConfig.ticksPerSecond;
             }
         } else {
-            vibrationCountdown = Math.max(0, vibrationCountdown - 1);        
+            vibrationCountdown = Math.max(0, vibrationCountdown - MinegasmConfig.tickFrequency);        
         }
         
-        vibrationFeedbackCountdown = Math.max(0, vibrationFeedbackCountdown - 1);
+        vibrationFeedbackCountdown = Math.max(0, vibrationFeedbackCountdown - MinegasmConfig.tickFrequency);
     }
     
     public void resetState()
