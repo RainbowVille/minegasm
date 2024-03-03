@@ -15,6 +15,8 @@ public final class ClientConfig {
     final ForgeConfigSpec.BooleanValue vibrate;
     final ForgeConfigSpec.EnumValue<GameplayMode> mode;
     final ForgeConfigSpec.BooleanValue stealth;
+    final ForgeConfigSpec.EnumValue<TickFrequencyOptions> tickFrequency;
+    
     final ForgeConfigSpec.IntValue attackIntensity;
     final ForgeConfigSpec.IntValue hurtIntensity;
     final ForgeConfigSpec.IntValue mineIntensity;
@@ -39,6 +41,7 @@ public final class ClientConfig {
     static final int DEFAULT_HARVEST_INTENSITY = 0;
     static final int DEFAULT_VITALITY_INTENSITY = 0;
     static final int DEFAULT_ADVANCEMENT_INTENSITY = 100;
+    
 
     ClientConfig(final ForgeConfigSpec.Builder builder) {
         builder.push("buttplug");
@@ -60,6 +63,10 @@ public final class ClientConfig {
         stealth = builder
                 .translation(Minegasm.MOD_ID + ".config.stealth")
                 .define("stealth", DEFAULT_STEALTH);
+                
+        tickFrequency = builder
+                .translation(Minegasm.MOD_ID + ".config.mode")
+                .defineEnum("tickFrequency", TickFrequencyOptions.EVERY_TICK);
 
         builder.push("intensity");
 
@@ -134,6 +141,7 @@ public final class ClientConfig {
         NORMAL("gui." + Minegasm.MOD_ID + ".config.mode.normal"),
         MASOCHIST("gui." + Minegasm.MOD_ID + ".config.mode.masochist"),
         HEDONIST("gui." + Minegasm.MOD_ID + ".config.mode.hedonist"),
+        ACCUMULATION("gui." + Minegasm.MOD_ID + ".config.mode.accumulation"),
         CUSTOM("gui." + Minegasm.MOD_ID + ".config.mode.custom");
 
         private final String translateKey;
@@ -148,5 +156,36 @@ public final class ClientConfig {
         }
     }
     
+    public enum TickFrequencyOptions {
+        EVERY_TICK(1), 
+        EVERY_OTHER_TICK(2), 
+        EVERY_5_TICKS(5), 
+        EVERY_10_TICKS(10), 
+        EVERY_20_TICKS(20), 
+        EVERY_30_TICKS(30), 
+        EVERY_40_TICKS(40), 
+        EVERY_50_TICKS(50);
+        
+        private int value;
+        
+        TickFrequencyOptions(int value) {
+            this.value = value;
+        }
+        
+        public int getInt()
+        {
+            return value;
+        }
+        
+        public static TickFrequencyOptions fromInt(int value)
+        {
+            for (TickFrequencyOptions type : values()) {
+                if (type.getInt() == value) {
+                    return type;
+                }
+            }
+            return null;
+        }
+    }
     
 }

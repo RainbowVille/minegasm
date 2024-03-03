@@ -34,6 +34,7 @@ import com.therainbowville.minegasm.config.MinegasmConfig;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+// Adapted from https://github.com/Creators-of-Create/Create/
 public class PauseMenuButton extends Button
 {
     private static final Logger LOGGER = LogManager.getLogger();

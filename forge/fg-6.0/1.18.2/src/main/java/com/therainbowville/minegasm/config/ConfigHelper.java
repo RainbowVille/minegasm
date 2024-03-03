@@ -14,6 +14,9 @@ public final class ConfigHelper {
         MinegasmConfig.vibrate = ConfigHolder.CLIENT.vibrate.get();
         MinegasmConfig.mode = ConfigHolder.CLIENT.mode.get();
         MinegasmConfig.stealth = ConfigHolder.CLIENT.stealth.get();
+        MinegasmConfig.tickFrequency = ConfigHolder.CLIENT.tickFrequency.get().getInt();
+        MinegasmConfig.ticksPerSecond = Math.max(1, Math.toIntExact(20 / MinegasmConfig.tickFrequency));
+        
         MinegasmConfig.attackIntensity = ConfigHolder.CLIENT.attackIntensity.get();
         MinegasmConfig.hurtIntensity = ConfigHolder.CLIENT.hurtIntensity.get();
         MinegasmConfig.mineIntensity = ConfigHolder.CLIENT.mineIntensity.get();
@@ -33,38 +36,28 @@ public final class ConfigHelper {
         try{
         
         MinegasmConfigBuffer buffer = new MinegasmConfigBuffer();
-        
-        // Needs to sleep inbetween, or it can get confused and reset the config
-
+    
         ConfigHolder.CLIENT.serverUrl.set(buffer.serverUrl);
-        Thread.sleep(5);
         ConfigHolder.CLIENT.vibrate.set(buffer.vibrate);
-        Thread.sleep(5);
         ConfigHolder.CLIENT.mode.set(buffer.mode);
-        Thread.sleep(5);
         ConfigHolder.CLIENT.stealth.set(buffer.stealth);
-        Thread.sleep(5);
+        ConfigHolder.CLIENT.tickFrequency.set(ClientConfig.TickFrequencyOptions.fromInt(buffer.tickFrequency));
+                
         ConfigHolder.CLIENT.attackIntensity.set(buffer.attackIntensity);
-        Thread.sleep(5);
         ConfigHolder.CLIENT.hurtIntensity.set(buffer.hurtIntensity);
-        Thread.sleep(5);
         ConfigHolder.CLIENT.mineIntensity.set(buffer.mineIntensity);
-        Thread.sleep(5);
         ConfigHolder.CLIENT.placeIntensity.set(buffer.placeIntensity);
-        Thread.sleep(5);
         ConfigHolder.CLIENT.xpChangeIntensity.set(buffer.xpChangeIntensity);
-        Thread.sleep(5);
         ConfigHolder.CLIENT.fishingIntensity.set(buffer.fishingIntensity);
-        Thread.sleep(5);
         ConfigHolder.CLIENT.harvestIntensity.set(buffer.harvestIntensity);
-        Thread.sleep(5);
         ConfigHolder.CLIENT.vitalityIntensity.set(buffer.vitalityIntensity);
-        Thread.sleep(5);
         ConfigHolder.CLIENT.advancementIntensity.set(buffer.advancementIntensity);
         } catch (Throwable e)
-        {}
+        {
+            LOGGER.info(e);
+        }
     }
-    
+
     public static ConfigGuiHandler.ConfigGuiFactory createConfigGuiFactory() {
         return new ConfigGuiHandler.ConfigGuiFactory((minecraft, screen) -> new ConfigScreen(screen));
     }

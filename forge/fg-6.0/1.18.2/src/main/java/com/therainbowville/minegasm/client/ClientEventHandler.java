@@ -1,24 +1,22 @@
 package com.therainbowville.minegasm.client;
 
 import com.therainbowville.minegasm.common.Minegasm;
+import com.therainbowville.minegasm.common.*;
 import com.therainbowville.minegasm.config.ClientConfig;
 import com.therainbowville.minegasm.config.MinegasmConfig;
 
-import net.minecraft.advancements.FrameType;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.util.FakePlayer;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.network.chat.TextComponent;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.common.ToolAction;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.EntityLeaveWorldEvent;
@@ -40,160 +38,103 @@ import java.lang.Thread;
 @Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ClientEventHandler {
     private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
-    private static final int TICKS_PER_SECOND = 20;
+
     private static int tickCounter = -1;
     private static int clientTickCounter = -1;
-    private static final double[] state = new double[1200];
     private static boolean paused = false;
     private static UUID playerId = null;
+    
+    private static Map<String, AbstractVibrationState> vibrationStates = new HashMap<String, AbstractVibrationState>();
+
+    static {
+        vibrationStates.put("advancement", new VibrationStateAdvancement());
+        vibrationStates.put("attack", new VibrationStateAttack());
+        vibrationStates.put("fish", new VibrationStateFish());
+        vibrationStates.put("hurt", new VibrationStateHurt());
+        vibrationStates.put("mine", new VibrationStateMine());
+        vibrationStates.put("place", new VibrationStatePlace());
+        vibrationStates.put("harvest", new VibrationStateHarvest((VibrationStateMine)vibrationStates.get("mine")));
+        vibrationStates.put("vitality", new VibrationStateVitality());
+        vibrationStates.put("xpChange", new VibrationStateXpChange());
+        vibrationStates.put("generic", new VibrationStateClient());
+    }
 
     public static void afterConnect()
     {
-        setState(getStateCounter(), 5);
+        //setState(getStateCounter(), 5);
+        ((VibrationStateClient)vibrationStates.get("generic")).setVibration(5, 1);
     }
     
+    private static double getIntensity()
+    {
+        double intensity = 0;
+        for (Map.Entry<String, AbstractVibrationState> state : vibrationStates.entrySet())
+        {
+            intensity = Math.max(intensity, state.getValue().getIntensity());
+//            LOGGER.info(state.getKey() + ": " + state.getValue().getIntensity());
+            
+        }
+        return intensity / 100;
+    }
+    
+    private static void tickAll()
+    {
+        for (AbstractVibrationState state : vibrationStates.values())
+        {
+            state.onTick();
+        }
+    }
+    
+    private static void resetAll()
+    {
+        for (AbstractVibrationState state : vibrationStates.values())
+        {
+            state.resetState();
+        }
+    }
+
+    private static boolean isPlayer(Entity entity){
+    try {
+        if (entity instanceof Player && !(entity instanceof FakePlayer)) {
+            Player player = (Player) entity;;
+            UUID uuid = player.getGameProfile().getId();
+            return uuid.equals(playerId);
+        }
+    } catch (Throwable e) {
+        LOGGER.throwing(e);
+    }
+        return false;
+    }
+
     private static void clearState() {
         tickCounter = -1;
         clientTickCounter = -1;
-        Arrays.fill(state, 0);
         paused = false;
-    }
-
-    private static int getStateCounter() {
-        return tickCounter / 20;
-    }
-
-    private static void setState(int start, int duration, int intensity, boolean decay) {
-        if (duration <= 0) {
-            return;
-        }
-
-        if (decay) {
-            int safeDuration = Math.max(0, duration - 2);
-            for (int i = 0; i < safeDuration; i++) {
-                setState(start+i, intensity);
-            }
-            setState(start+safeDuration, intensity/2);
-            setState(start+safeDuration+1, intensity/4);
-        } else {
-            for (int i = 0; i < duration; i++) {
-                setState(start+i, intensity);
-            }
-        }
-    }
-
-    private static void setState(int counter, int intensity) {
-        boolean accumulate = false; //XXX reserved for future use
-        setState(counter, intensity, accumulate);
-    }
-
-    private static void setState(int counter, int intensity, boolean accumulate) {
-        int safeCounter = counter % state.length;
-        if (accumulate) {
-            state[safeCounter] = Math.min(1.0, state[safeCounter] + (intensity / 100.0));
-        } else {
-            state[safeCounter] = Math.min(1.0, Math.max(state[safeCounter], (intensity / 100.0)));
-        }
-    }
-
-    private static int getIntensity(String type) {
-        Map<String, Integer> normal = new HashMap<>();
-        normal.put("attack", 60);
-        normal.put("hurt", 0);
-        normal.put("mine", 80);
-        normal.put("place", 20);
-        normal.put("xpChange", 100);
-        normal.put("harvest", 0);
-        normal.put("fishing", 50);
-        normal.put("vitality", 0);
-        normal.put("advancement", 100);
-
-
-        Map<String, Integer> masochist = new HashMap<>();
-        masochist.put("attack", 0);
-        masochist.put("hurt", 100);
-        masochist.put("mine", 0);
-        masochist.put("place", 0);
-        masochist.put("xpChange", 0);
-        masochist.put("fishing", 0);
-        masochist.put("harvest", 0);
-        masochist.put("vitality", 10);
-        masochist.put("advancement", 0);
-
-        Map<String, Integer> hedonist = new HashMap<>();
-        hedonist.put("attack", 60);
-        hedonist.put("hurt", 10);
-        hedonist.put("mine", 80);
-        hedonist.put("place", 20);
-        hedonist.put("xpChange", 100);
-        hedonist.put("fishing", 50);
-        hedonist.put("harvest", 20);
-        hedonist.put("vitality", 10);
-        hedonist.put("advancement", 100);
-
-        Map<String, Integer> custom = new HashMap<>();
-        custom.put("attack", MinegasmConfig.attackIntensity);
-        custom.put("hurt", MinegasmConfig.hurtIntensity);
-        custom.put("mine", MinegasmConfig.mineIntensity);
-        custom.put("place", MinegasmConfig.placeIntensity);
-        custom.put("xpChange", MinegasmConfig.xpChangeIntensity);
-        custom.put("fishing", MinegasmConfig.fishingIntensity);
-        custom.put("harvest", MinegasmConfig.harvestIntensity);
-        custom.put("vitality", MinegasmConfig.vitalityIntensity);
-        custom.put("advancement", MinegasmConfig.advancementIntensity);
-
-        if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
-            return masochist.get(type);
-        } else if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.HEDONIST)) {
-            return hedonist.get(type);
-        } else if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.CUSTOM)) {
-            return custom.get(type);
-        } else {
-            return normal.get(type);
-        }
+        resetAll();
     }
 
     @SubscribeEvent
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         try {
-        if (event.phase == TickEvent.Phase.END ) {
-            Player player = event.player;;
-            UUID uuid = player.getGameProfile().getId();
-
-            float playerHealth = player.getHealth();
-            float playerFoodLevel = player.getFoodData().getFoodLevel();
+        if (event.phase == TickEvent.Phase.END && isPlayer(event.player)) {
+            Player player = event.player;
             
-            onPlayerTickFishing(event);
+            tickCounter = (tickCounter + 1) % 100;
+            
+            
+            if (tickCounter % MinegasmConfig.tickFrequency == 0) // TODO: Add ticks per second config option (Default: Every tick)
+            {
+                tickAll();
+                
+                ((VibrationStateVitality)vibrationStates.get("vitality")).onTick(player);
+                ((VibrationStateFish)vibrationStates.get("fish")).onTick(player);
+     
+                double newVibrationLevel = getIntensity();
 
-            tickCounter = (tickCounter + 1) % (20 * (60 * TICKS_PER_SECOND)); // 20 min day cycle
-
-            if (tickCounter % TICKS_PER_SECOND == 0) { // every 1 sec
-                if (uuid.equals(playerId)) {                    
-                    int stateCounter = getStateCounter();
-
-                    if (MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST)) {
-                        if (playerHealth > 0 && playerHealth <= 1) {
-                            setState(stateCounter, getIntensity("vitality"));
-                        }
-                    } else if (playerHealth >= 20 && playerFoodLevel >= 20) {
-                        setState(stateCounter, getIntensity("vitality"));
-                    }
-
-                    double newVibrationLevel = state[stateCounter];
-                    state[stateCounter] = 0;
-
-                    LOGGER.trace("Tick " + stateCounter + ": " + newVibrationLevel);
-
-                    if (ToyController.currentVibrationLevel != newVibrationLevel) {
-                        ToyController.setVibrationLevel(newVibrationLevel);
-                    }
-                }
+                if (ToyController.currentVibrationLevel != newVibrationLevel)
+                    ToyController.setVibrationLevel(newVibrationLevel);
             }
 
-            if (tickCounter % (5 * TICKS_PER_SECOND) == 0) { // 5 secs
-                LOGGER.debug("Health: " + playerHealth);
-                LOGGER.debug("Food: " + playerFoodLevel);
-            }
         }
         } catch (Throwable e) {
             LOGGER.throwing(e);
@@ -225,19 +166,10 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onAttack(AttackEntityEvent event)
     {
-        try {
-        Entity entity = event.getEntityLiving();
-        if (entity instanceof Player) {
-            Player player = (Player) entity;;
-            UUID uuid = player.getGameProfile().getId();
-
-            if (uuid.equals(playerId)) {
-                setState(getStateCounter(), 3, getIntensity("attack"), true);
-            }
+        if (isPlayer(event.getEntityLiving()))
+        {
+            ((VibrationStateAttack)vibrationStates.get("attack")).onAttack();
         }
-    } catch (Throwable e) {
-        LOGGER.throwing(e);
-    }
     }
 
     @SubscribeEvent
@@ -249,118 +181,36 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onHurt(LivingHurtEvent event)
     {
-        try {
-        Entity entity = event.getEntityLiving();
-        if (entity instanceof Player) {
-            Player player = (Player) entity;;
-            UUID uuid = player.getGameProfile().getId();
-
-            if (uuid.equals(playerId)) {
-                setState(getStateCounter(), 3, getIntensity("hurt"), true);
-            }
-        }
-        } catch (Throwable e) {
-            LOGGER.throwing(e);
-        }
-    }
-
-    @SubscribeEvent
-    public static void onDeath(LivingDeathEvent event)
-    {
-        try {
-        Entity entity = event.getEntityLiving();
-        if (entity instanceof Player) {
-            Player player = (Player) entity;;
-            UUID uuid = player.getGameProfile().getId();
-
-            if (uuid.equals(playerId)) {
-                ToyController.setVibrationLevel(0);
-            }
-        }
-    } catch (Throwable e) {
-        LOGGER.throwing(e);
-    }
-    }
-
-    @SubscribeEvent
-    public static void onHarvest(PlayerEvent.HarvestCheck event)
-    {
-        try {
-        Player player = event.getPlayer();;
-            UUID uuid = player.getGameProfile().getId();
-
-            if (uuid.equals(playerId)) {
-            BlockState blockState = event.getTargetBlock();
-            Block block = blockState.getBlock();
-
-            // ToolType. AXE, HOE, PICKAXE, SHOVEL
-            @SuppressWarnings("ConstantConditions") float blockHardness = block.defaultBlockState().getDestroySpeed(null, null);
-            LOGGER.debug("Harvest: tool: " +
-                    "?" +
-                    " can harvest? " + event.canHarvest() + " hardness: " + blockHardness);
-
-            int intensity = Math.toIntExact(Math.round((getIntensity("harvest") / 100.0 * (blockHardness / 50.0)) * 100));
-
-            if (event.canHarvest()) {
-                setState(getStateCounter(), 1, intensity, false);
-            }
-        }
-        } catch (Throwable e) {
-            LOGGER.throwing(e);
+        if (isPlayer(event.getEntityLiving()))
+        {
+           ((VibrationStateHurt)vibrationStates.get("hurt")).onHurt();
         }
     }
 
     @SubscribeEvent
     public static void onBreak(BlockEvent.BreakEvent event)
     {
-        try {
-        Player player = event.getPlayer();;
-            UUID uuid = player.getGameProfile().getId();
-
-            if (uuid.equals(playerId)) {
-            BlockState blockState = event.getState();
-            Block block = blockState.getBlock();
-            @SuppressWarnings("ConstantConditions") float blockHardness = block.defaultBlockState().getDestroySpeed(null, null);
-
-            LOGGER.info("Breaking: " + block.toString());
-
-            ItemStack mainhandItem = event.getPlayer().getMainHandItem();
-            boolean usingAppropriateTool = mainhandItem.isCorrectToolForDrops(blockState);
-            List<ToolAction> toolCan = ToolAction.getActions().stream().filter(a -> mainhandItem.canPerformAction(a)).collect(Collectors.toList());
-            LOGGER.debug("mainhand: " + mainhandItem + " [" +  toolCan + "]");
-            LOGGER.debug("using pickaxe: " + mainhandItem.toString() + ", using appropriate tool: " + usingAppropriateTool);
-
-            if (toolCan.contains(ToolAction.get("AXE")) && usingAppropriateTool) {
-                int duration = Math.max(1, Math.min(5, Math.toIntExact(Math.round(Math.ceil(Math.log(blockHardness + 0.5))))));
-                int intensity = Math.toIntExact(Math.round((getIntensity("mine") / 100.0 * (blockHardness / 50.0)) * 100));
-                setState(getStateCounter(), duration, intensity, true);
-            }
-
-            LOGGER.info("XP to drop: " + event.getExpToDrop());
+        if (isPlayer(event.getPlayer()))
+        {
+            ((VibrationStateMine)vibrationStates.get("mine")).onBreak(event.getState());
         }
-    } catch (Throwable e) {
-        LOGGER.throwing(e);
     }
+    
+    // Triggers when player starts to break block
+    @SubscribeEvent
+    public static void onHarvest(PlayerEvent.HarvestCheck event)
+    {
+        if (isPlayer(event.getPlayer()))
+        {
+            ((VibrationStateHarvest)vibrationStates.get("harvest")).onHarvest();
+        }
     }
-
+    
     @SubscribeEvent
     public static void onPlace(BlockEvent.EntityPlaceEvent event){
-        try {
-            UUID uuid = event.getEntity().getUUID();
-
-            if (uuid.equals(playerId)) {
-                BlockState blockState = event.getState();
-                Block block = blockState.getBlock();
-                @SuppressWarnings("ConstantConditions") float blockHardness = block.defaultBlockState().getDestroySpeed(null, null);
-
-                LOGGER.info("Placing: " + block.toString());
-
-                int duration = Math.max(1, Math.min(5, Math.toIntExact(Math.round(Math.ceil(Math.log(blockHardness + 0.5))))));
-                int intensity = Math.toIntExact(Math.round((getIntensity("place") / 100.0 * (blockHardness / 50.0)) * 100));
-                setState(getStateCounter(), duration, intensity, true);
-            }
-        } catch (Throwable e) {
-            LOGGER.throwing(e);
+        if (isPlayer(event.getEntity()))
+        {
+            ((VibrationStatePlace)vibrationStates.get("place")).onPlace();
         }
     }
 
@@ -379,66 +229,19 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onXpChange(PlayerXpEvent.XpChange event)
     {
-        try {
-        Player player = event.getPlayer();;
-            UUID uuid = player.getGameProfile().getId();
-
-            if (uuid.equals(playerId)) {
-            int xpChange = event.getAmount();
-            long duration = Math.round(Math.ceil(Math.log(xpChange + 0.5)));
-
-            LOGGER.info("XP CHANGE: " + xpChange);
-            LOGGER.debug("duration: " + duration);
-
-            setState(getStateCounter(), Math.toIntExact(duration), getIntensity("xpChange"), true);
-        }
-    } catch (Throwable e) {
-        LOGGER.throwing(e);
-    }
-    }
-
-    public static void onPlayerTickFishing(TickEvent.PlayerTickEvent event) {
-        try {
-            Player player = event.player;
-            
-            // Vibrate on fish hook
-            if (player.fishing != null)
-            {
-                Vec3 vector = player.fishing.getDeltaMovement();
-                double x = vector.x();
-                double y = vector.y();
-                double z = vector.z();
-                if (y < -0.075 && !player.level.getFluidState(player.fishing.blockPosition()).isEmpty() && x == 0 && z == 0)
-                {
-                    setState(getStateCounter(), 1, getIntensity("fishing"), true);
-                    LOGGER.info("Fishing!");
-                }
-            }
-        } catch (Throwable e) {
-            LOGGER.throwing(e);
+        if (isPlayer(event.getEntityLiving()))
+        {
+            ((VibrationStateXpChange)vibrationStates.get("xpChange")).onXpChange(((Player)event.getEntityLiving()).totalExperience, event.getAmount());
         }
     }
+   
     
     @SubscribeEvent
     public static void onAdvancementEvent(AdvancementEvent event)
     {
-        
-        try {
-            Player player = event.getPlayer();;
-            UUID uuid = player.getGameProfile().getId();
-
-            if (uuid.equals(playerId)) {
-                LOGGER.info("Advancement Event: " + event);
-                FrameType type = event.getAdvancement().getDisplay().getFrame();
-                int duration = switch (type) {
-                    case TASK -> 5;
-                    case GOAL -> 7;
-                    case CHALLENGE -> 10;
-                };
-                setState(getStateCounter(), duration, getIntensity("advancement"), true);
-            }
-        } catch (Throwable e) {
-            LOGGER.throwing(e);
+        if (isPlayer(event.getEntityLiving()))
+        {
+            ((VibrationStateAdvancement)vibrationStates.get("advancement")).onAdvancement(event);
         }
     }
 
@@ -470,7 +273,6 @@ public class ClientEventHandler {
 
     }
 
-
     @SubscribeEvent
     public static void onWorldLoaded(WorldEvent.Load event) {
 
@@ -478,12 +280,15 @@ public class ClientEventHandler {
         LOGGER.info("World loaded: " + world.toString());
     }
 
+
     @SubscribeEvent
     public static void onWorldEntry(EntityJoinWorldEvent event) {
         Entity entity = event.getEntity();
         if( !entity.level.isClientSide() ) {
             return;
         }
+        
+        if (ToyController.isConnected) return;
 
         if (entity instanceof Player) {
             LOGGER.info("Player respawn world: " + entity.toString());
@@ -496,7 +301,7 @@ public class ClientEventHandler {
                     LOGGER.info("Player in: " + player.getGameProfile().getName() + " " + player.getGameProfile().getId().toString());
                     LOGGER.info("Stealth: " + MinegasmConfig.stealth);
                     if (ToyController.connectDevice()) {
-                        setState(getStateCounter(), 5);
+                        ((VibrationStateClient)vibrationStates.get("generic")).setVibration(5, 1);
                         if (!MinegasmConfig.stealth){
                             player.displayClientMessage(new TextComponent(String.format("Connected to " + ChatFormatting.GREEN + "%s" + ChatFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
                         }

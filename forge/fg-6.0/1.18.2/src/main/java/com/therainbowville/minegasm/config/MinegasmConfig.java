@@ -20,6 +20,9 @@ public class MinegasmConfig {
     public static boolean vibrate;
     public static ClientConfig.GameplayMode mode = ClientConfig.GameplayMode.NORMAL;
     public static boolean stealth;
+    public static int tickFrequency;
+    public static int ticksPerSecond;
+    
     public static int attackIntensity;
     public static int hurtIntensity;
     public static int mineIntensity;
@@ -50,7 +53,7 @@ public class MinegasmConfig {
     {
         ConfigHelper.saveClient();
     }
-   
+    
 }
 
 class MinegasmConfigBuffer
@@ -60,6 +63,8 @@ class MinegasmConfigBuffer
     public boolean vibrate;
     public ClientConfig.GameplayMode mode = ClientConfig.GameplayMode.NORMAL;
     public boolean stealth;
+    public int tickFrequency;
+    
     public int attackIntensity;
     public int hurtIntensity;
     public int mineIntensity;
@@ -76,6 +81,8 @@ class MinegasmConfigBuffer
         this.vibrate = MinegasmConfig.vibrate;
         this.mode = MinegasmConfig.mode;
         this.stealth = MinegasmConfig.stealth;
+        this.tickFrequency = MinegasmConfig.tickFrequency;
+        
         this.attackIntensity = MinegasmConfig.attackIntensity;
         this.hurtIntensity = MinegasmConfig.hurtIntensity;
         this.mineIntensity = MinegasmConfig.mineIntensity;

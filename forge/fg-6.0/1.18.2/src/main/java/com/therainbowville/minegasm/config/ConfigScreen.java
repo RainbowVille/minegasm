@@ -110,17 +110,41 @@ public class ConfigScreen extends Screen {
                     case NORMAL -> "Normal";
                     case MASOCHIST -> "Masochist";
                     case HEDONIST -> "Hedonist";
+                    case ACCUMULATION -> "Accumulation";
                     case CUSTOM -> "Custom";
                 }))
-                .withValues(ClientConfig.GameplayMode.NORMAL, ClientConfig.GameplayMode.MASOCHIST, ClientConfig.GameplayMode.HEDONIST, ClientConfig.GameplayMode.CUSTOM)
+                .withValues(ClientConfig.GameplayMode.NORMAL, ClientConfig.GameplayMode.MASOCHIST, ClientConfig.GameplayMode.HEDONIST, ClientConfig.GameplayMode.ACCUMULATION, ClientConfig.GameplayMode.CUSTOM)
                 .withInitialValue(MinegasmConfig.mode)
                 .create(this.width / 2 - 155, this.height / 6 + 25 * 4, 150, 20,
-                    new TextComponent("Mode"), (button, value) -> MinegasmConfig.mode = value)
+                    new TextComponent("Mode"), (button, value) -> {
+                        MinegasmConfig.mode = value;
+                    })
         );
 
         this.addRenderableWidget(new Button(
             this.width / 2 + 5, this.height / 6 + 25 * 4, 150, 20,
             new TextComponent("Edit Custom Settings"), button ->  minecraft.setScreen(new CustomModeConfigScreen(this, pauseMenu))));
+
+        this.addRenderableWidget(
+            CycleButton.builder((Integer tickFrequency) -> 
+                new TextComponent(switch (tickFrequency) {
+                    case 1 -> "Every Tick";
+                    case 2 -> "Every Other Tick";
+                    case 5 -> "Every 5 Ticks";
+                    case 10 -> "Every 10 Ticks";
+                    case 20 -> "Every Second";
+                    default -> "Every " + Float.toString(tickFrequency / 20f)+ " Seconds";
+                }))
+                .withValues(1, 2, 5, 10, 20, 30, 40, 50)
+                .withInitialValue(MinegasmConfig.tickFrequency)
+                .create(this.width / 2 - 100, this.height / 6 + 25 * 5, 200, 20,
+                    new TextComponent("Tick Frequency"), (button, value) -> {
+                        MinegasmConfig.tickFrequency = value;
+                        MinegasmConfig.ticksPerSecond = Math.max(1, Math.toIntExact(20 / MinegasmConfig.tickFrequency));
+                        LOGGER.info("TPS: " + MinegasmConfig.ticksPerSecond);
+                    }
+                )
+        );
 
         this.addRenderableWidget(new Button(
             this.width / 2 - 100, this.height - 27, 200, 20,
@@ -186,8 +210,8 @@ public class ConfigScreen extends Screen {
 //            Minecraft.getInstance().font.draw(poseStack, text.getString(), x, y, 0xFFFFFF);
             drawCenteredString(poseStack, Minecraft.getInstance().font, text.getString(), Minecraft.getInstance().screen.width / 2, this.y + this.height / 4, 0xFFFFFF);
         }
-
     }
+    
 }
 
 class CustomModeConfigScreen extends Screen {
