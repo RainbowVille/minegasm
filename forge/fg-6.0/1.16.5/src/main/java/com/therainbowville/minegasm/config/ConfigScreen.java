@@ -1,217 +1,349 @@
 package com.therainbowville.minegasm.config;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
-import com.therainbowville.minegasm.common.Minegasm;
-import net.minecraft.client.AbstractOption;
-import net.minecraft.client.GameSettings;
-import net.minecraft.client.gui.screen.IngameMenuScreen;
+import com.mojang.blaze3d.systems.RenderSystem;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.IngameMenuScreen;
+import net.minecraft.client.gui.widget.Widget;
 import net.minecraft.client.gui.widget.button.Button;
-import net.minecraft.client.gui.widget.list.OptionsRowList;
-import net.minecraft.client.settings.BooleanOption;
-import net.minecraft.client.settings.IteratableOption;
-import net.minecraft.client.settings.SliderPercentageOption;
-import net.minecraft.util.text.ITextComponent;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.DialogTexts;
+import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TranslationTextComponent;
+
+import net.minecraftforge.fml.client.gui.widget.ExtendedButton;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+import net.minecraftforge.client.gui.widget.ForgeSlider;
+
+import com.therainbowville.minegasm.common.Minegasm;
+import com.therainbowville.minegasm.client.ToyController;
+import com.therainbowville.minegasm.client.ClientEventHandler;
+import com.therainbowville.minegasm.config.ClientConfig;
+import com.therainbowville.minegasm.config.MinegasmConfig;
+
+
+import java.lang.reflect.Field;
+import java.lang.Thread;
+import java.util.ArrayList;
+import java.util.Objects;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Objects;
-
-public final class ConfigScreen extends Screen {
+public class ConfigScreen extends Screen {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final int TITLE_HEIGHT = 8;
-    private static final int OPTIONS_LIST_TOP_HEIGHT = 24; // top screen to top option list
-    private static final int OPTIONS_LIST_BOTTOM_OFFSET = 32; // bottom screen to bottom option list
-    private static final int OPTIONS_LIST_ITEM_HEIGHT = 25;
+    private final Screen previous;
+    private boolean pauseMenu;
+    TextFieldWidget wsHost = null;
 
-    private static final int BUTTON_WIDTH = 200;
-    private static final int BUTTON_HEIGHT = 20;
-    private static final int DONE_BUTTON_TOP_OFFSET = 26; // bottom screen to done button top
+    private ClientConfig.TickFrequencyOptions tickValue;
+    private PlainTextLabel connectResponse;
 
-    private final Screen lastScreen;
-    private OptionsRowList optionsRowList;
-
-    private static final ClientConfig clientConfig = ConfigHolder.getClientInstance();
-
-    public ConfigScreen(Screen parentScreen) {
-        super(new StringTextComponent(Minegasm.NAME));
-        this.lastScreen = parentScreen;
+    public ConfigScreen(Screen previous) {
+        super(new StringTextComponent("Minegasm Config"));
+        this.previous = previous;
+        pauseMenu = false;
+        tickValue = ClientConfig.TickFrequencyOptions.fromInt(MinegasmConfig.tickFrequency);
     }
-
-    private static boolean vibrate = false;
-    private static int mode = 0;
-    private static int attackIntensity = 0;
-    private static int hurtIntensity = 0;
-    private static int mineIntensity = 0;
-    private static int xpChangeIntensity = 0;
-    private static int harvestIntensity = 0;
-    private static int vitalityIntensity = 0;
+    
+    public ConfigScreen(Screen previous, boolean pause) {
+        super(new StringTextComponent("Minegasm Config"));
+        this.previous = previous;
+        pauseMenu = pause;
+        tickValue = ClientConfig.TickFrequencyOptions.fromInt(MinegasmConfig.tickFrequency);
+    }
 
     @Override
     protected void init() {
-        LOGGER.debug("Initializing config screen");
-
-        vibrate = MinegasmConfig.vibrate;
-        mode = MinegasmConfig.mode.ordinal();
-        attackIntensity = MinegasmConfig.attackIntensity;
-        hurtIntensity = MinegasmConfig.hurtIntensity;
-        mineIntensity = MinegasmConfig.mineIntensity;
-        xpChangeIntensity = MinegasmConfig.xpChangeIntensity;
-        harvestIntensity = MinegasmConfig.harvestIntensity;
-        vitalityIntensity = MinegasmConfig.vitalityIntensity;
-
-        this.optionsRowList = createOptions();
-        this.children.add(this.optionsRowList);
-
-        this.addButton(new Button(
-                (this.width - BUTTON_WIDTH) / 2,
-                this.height - DONE_BUTTON_TOP_OFFSET,
-                BUTTON_WIDTH, BUTTON_HEIGHT,
-                new StringTextComponent("Done"),
-                button -> this.onClose()
+        wsHost = new TextFieldWidget(Minecraft.getInstance().font, this.width / 2 - 100, this.height / 6, 200, 20, null);
+        wsHost.setValue(MinegasmConfig.serverUrl);
+        this.addButton(wsHost);
+        
+        wsHost.setResponder(s -> {
+            LOGGER.info(s);
+            MinegasmConfig.serverUrl = s;
+		});
+        
+        this.addButton(new ExtendedButton(
+            this.width / 2 - 155, this.height / 6 + 25, 150, 20,
+            new StringTextComponent("Reset Server Url"), button -> {
+                ConfigHolder.getClientInstance().resetConfigUrl();
+                MinegasmConfig.serverUrl = ConfigHolder.getClientInstance().serverUrl.get();
+                wsHost.setValue(MinegasmConfig.serverUrl);
+            }
         ));
+        
+        connectResponse = new PlainTextLabel(this.width / 2 - 155, this.height / 6 + 50, 310, 15, new StringTextComponent("" + TextFormatting.GREEN));
+
+        this.addButton(connectResponse);
+        
+        Button reconnectButton = new ExtendedButton(
+            this.width / 2 + 5, this.height / 6 + 25, 150, 20,
+            new StringTextComponent("Reconnect"), button -> {
+                button.active = false;
+                connectResponse.setValue("Connecting");
+                new Thread(() -> {
+                if (ToyController.connectDevice()) {
+                    ClientEventHandler.afterConnect();
+                    button.active = true;
+                    connectResponse.setValue(String.format("Connected to " + TextFormatting.GREEN + "%s" + TextFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId()));
+                } else {
+                    button.active = true;
+                    connectResponse.setValue(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start: %s", ToyController.getLastErrorMessage()));
+                }
+                    
+                }).start();
+            }
+        );
+        this.addButton(reconnectButton);
+        
+        reconnectButton.active = pauseMenu;
+        
+        this.addButton(new ExtendedButton(this.width / 2 - 155, this.height / 6 + 25 * 3, 150, 20,
+            new StringTextComponent("Vibration: " + (MinegasmConfig.vibrate ? "True" : "False")), (button) -> {
+                MinegasmConfig.vibrate = !MinegasmConfig.vibrate;
+                button.setMessage(new StringTextComponent("Vibration: " + (MinegasmConfig.vibrate ? "True" : "False")));
+            }));
+
+        this.addButton(new ExtendedButton(this.width / 2 + 5, this.height / 6 + 25 * 3, 150, 20,
+            new StringTextComponent("Stealth: " + (MinegasmConfig.stealth ? "True" : "False")), (button) -> {
+                MinegasmConfig.stealth = !MinegasmConfig.stealth;
+                button.setMessage(new StringTextComponent("Stealth: " + (MinegasmConfig.stealth ? "True" : "False")));
+            }));
+
+
+        this.addButton(new ExtendedButton(this.width / 2 - 155, this.height / 6 + 25 * 4, 150, 20,
+            new StringTextComponent("Mode: " + gameplayModeToString(MinegasmConfig.mode)), (button) -> {
+                MinegasmConfig.mode = MinegasmConfig.mode.next();
+                button.setMessage(new StringTextComponent("Mode: " + gameplayModeToString(MinegasmConfig.mode)));
+            }
+        ));
+
+        this.addButton(new ExtendedButton(
+            this.width / 2 + 5, this.height / 6 + 25 * 4, 150, 20,
+            new StringTextComponent("Edit Custom Settings"), button ->  minecraft.setScreen(new CustomModeConfigScreen(this, pauseMenu))));
+
+        this.addButton(new ExtendedButton(this.width / 2 - 100, this.height / 6 + 25 * 5, 200, 20,
+                    new StringTextComponent("Tick Frequency: " + tickFrequencyToString(MinegasmConfig.tickFrequency)), (button) -> {
+                        tickValue = tickValue.next();
+                        MinegasmConfig.tickFrequency = tickValue.getInt();
+                        MinegasmConfig.ticksPerSecond = Math.max(1, Math.toIntExact(20 / MinegasmConfig.tickFrequency));
+                        button.setMessage(new StringTextComponent("Tick Frequency: " + tickFrequencyToString(MinegasmConfig.tickFrequency)));
+                    }
+                )
+        );
+
+        this.addButton(new ExtendedButton(
+            this.width / 2 - 100, this.height - 27, 200, 20,
+            DialogTexts.GUI_DONE, button -> this.onClose()));
+        
+
+    }
+    
+    private String gameplayModeToString(ClientConfig.GameplayMode mode){
+        switch (mode) {
+            case NORMAL: return "Normal";
+            case MASOCHIST: return "Masochist";
+            case HEDONIST: return "Hedonist";
+            case ACCUMULATION: return "Accumulation";
+            case CUSTOM: return "Custom";
+            default: return "";
+        }
     }
 
-    private OptionsRowList createOptions() {
-        OptionsRowList optionsRowList = new OptionsRowList(
-                Objects.requireNonNull(this.minecraft), this.width, this.height,
-                OPTIONS_LIST_TOP_HEIGHT,
-                this.height - OPTIONS_LIST_BOTTOM_OFFSET,
-                OPTIONS_LIST_ITEM_HEIGHT
-        );
-
-        String VIBRATE = "gui.minegasm.config.vibrate";
-        AbstractOption vibrateOption = new BooleanOption(
-                VIBRATE,
-                (gameSettings) -> vibrate,
-                (gameSettings, newValue) -> vibrate = newValue
-        );
-
-        String MODE = "gui.minegasm.config.mode";
-        AbstractOption modeOption = new IteratableOption(
-                MODE,
-                (gameSettings, newValue) -> mode = (mode + newValue) % ClientConfig.GameplayMode.values().length,
-                (gameSettings, option) ->
-                        new TranslationTextComponent(MODE).append(": ")
-                                .append(new TranslationTextComponent(
-                                        ClientConfig.GameplayMode.values()[mode].getTranslateKey())));
-
-        // Intensity
-        String ATTACK_INTENSITY = "gui.minegasm.config.intensity.attack";
-        AbstractOption attackIntensityOption = new SliderPercentageOption(
-                ATTACK_INTENSITY,
-                0.0, 100, 10.0F,
-                (gameSettings) -> (double) attackIntensity,
-                (gameSettings, newValue) -> {
-                    attackIntensity = newValue.intValue();
-                    mode = ClientConfig.GameplayMode.CUSTOM.ordinal();
-                },
-                (gameSettings, option) -> getPercentValueComponent(ATTACK_INTENSITY, gameSettings, option)
-        );
-
-        String HURT_INTENSITY = "gui.minegasm.config.intensity.hurt";
-        AbstractOption hurtIntensityOption = new SliderPercentageOption(
-                HURT_INTENSITY,
-                0.0, 100, 10.0F,
-                (gameSettings) -> (double) hurtIntensity,
-                (gameSettings, newValue) -> {
-                    hurtIntensity = newValue.intValue();
-                    mode = ClientConfig.GameplayMode.CUSTOM.ordinal();
-                },
-                (gameSettings, option) -> getPercentValueComponent(HURT_INTENSITY, gameSettings, option)
-        );
-
-        String MINE_INTENSITY = "gui.minegasm.config.intensity.mine";
-        AbstractOption mineIntensityOption = new SliderPercentageOption(
-                MINE_INTENSITY,
-                0.0, 100, 10.0F,
-                (gameSettings) -> (double) mineIntensity,
-                (gameSettings, newValue) -> {
-                    mineIntensity = newValue.intValue();
-                    mode = ClientConfig.GameplayMode.CUSTOM.ordinal();
-                },
-                (gameSettings, option) -> getPercentValueComponent(MINE_INTENSITY, gameSettings, option)
-        );
-
-        String XP_CHANGE_INTENSITY = "gui.minegasm.config.intensity.xp";
-        AbstractOption xpChangeIntensityOption = new SliderPercentageOption(
-                XP_CHANGE_INTENSITY,
-                0.0, 100, 10.0F,
-                (gameSettings) -> (double) xpChangeIntensity,
-                (gameSettings, newValue) -> {
-                    xpChangeIntensity = newValue.intValue();
-                    mode = ClientConfig.GameplayMode.CUSTOM.ordinal();
-                },
-                (gameSettings, option) -> getPercentValueComponent(XP_CHANGE_INTENSITY, gameSettings, option)
-        );
-
-        String HARVEST_INTENSITY = "gui.minegasm.config.intensity.harvest";
-        AbstractOption harvestIntensityOption = new SliderPercentageOption(
-                HARVEST_INTENSITY,
-                0.0, 100, 10.0F,
-                (gameSettings) -> (double) harvestIntensity,
-                (gameSettings, newValue) -> {
-                    harvestIntensity = newValue.intValue();
-                    mode = ClientConfig.GameplayMode.CUSTOM.ordinal();
-                },
-                (gameSettings, option) -> getPercentValueComponent(HARVEST_INTENSITY, gameSettings, option)
-        );
-
-        String VITALITY_INTENSITY = "gui.minegasm.config.intensity.vitality";
-        AbstractOption vitalityIntensityOption = new SliderPercentageOption(
-                VITALITY_INTENSITY,
-                0.0, 100, 10.0F,
-                (gameSettings) -> (double) vitalityIntensity,
-                (gameSettings, newValue) -> {
-                    vitalityIntensity = newValue.intValue();
-                    mode = ClientConfig.GameplayMode.CUSTOM.ordinal();
-                },
-                (gameSettings, option) -> getPercentValueComponent(VITALITY_INTENSITY, gameSettings, option)
-        );
-
-        optionsRowList.addSmall(vibrateOption, modeOption);
-        optionsRowList.addSmall(attackIntensityOption, hurtIntensityOption);
-        optionsRowList.addSmall(mineIntensityOption, xpChangeIntensityOption);
-        optionsRowList.addSmall(harvestIntensityOption, vitalityIntensityOption);
-
-        return optionsRowList;
+    private String tickFrequencyToString(Integer frequency){
+        switch (frequency) {
+            case 1: return "Every Tick";
+            case 2: return "Every Other Tick";
+            case 5: return "Every 5 Ticks";
+            case 10: return "Every 10 Ticks";
+            case 20: return "Every Second";
+            default: return "Every " + Float.toString(frequency / 20f)+ " Seconds";
+        }
     }
-
-    private ITextComponent getPercentValueComponent(String translationKey, GameSettings gameSettings, SliderPercentageOption option) {
-        return new TranslationTextComponent(translationKey).append(": ").append(option.toPct(option.get(gameSettings)) == 0.0D ? "Off" : (int) option.get(gameSettings) + "%");
-    }
-
-    @SuppressWarnings("NullableProblems")
+    
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
-        this.renderBackground(matrixStack);
-        this.children.remove(this.optionsRowList);
-        this.optionsRowList = createOptions();
-        this.children.add(this.optionsRowList);
-        this.optionsRowList.render(matrixStack, mouseX, mouseY, partialTicks);
+    public void tick() {
+        super.tick();
 
-        //noinspection SuspiciousNameCombination
-        drawCenteredString(matrixStack, this.font, this.title,
-                this.width / 2, TITLE_HEIGHT, 0xFFFFFF);
-
-        super.render(matrixStack, mouseX, mouseY, partialTicks);
+        // Add ticking logic for TextFieldWidget in editBox
+        if (this.wsHost != null)
+            this.wsHost.tick();
     }
 
     @Override
     public void onClose() {
-        LOGGER.debug("saving...");
-        clientConfig.vibrate.set(vibrate);
-        clientConfig.mode.set(ClientConfig.GameplayMode.values()[mode]);
-        clientConfig.attackIntensity.set(attackIntensity);
-        clientConfig.hurtIntensity.set(hurtIntensity);
-        clientConfig.mineIntensity.set(mineIntensity);
-        clientConfig.xpChangeIntensity.set(xpChangeIntensity);
-        clientConfig.harvestIntensity.set(harvestIntensity);
-        clientConfig.vitalityIntensity.set(vitalityIntensity);
-        ConfigHolder.CLIENT_SPEC.save();
-        ConfigHelper.bakeClient();
-        Objects.requireNonNull(this.minecraft).setScreen(this.lastScreen instanceof IngameMenuScreen ? null : this.lastScreen);
+        connectResponse.setValue("");
+        this.minecraft.setScreen(this.previous);
+        MinegasmConfig.save();
+    }
+
+    @Override
+    public void render(MatrixStack poseStack, int i, int j, float f) {
+        if (pauseMenu)
+            this.renderBackground(poseStack);
+        else
+            this.renderDirtBackground(0);
+        drawCenteredString(poseStack, this.font, this.title, this.width / 2, 15, 0xFFFFFF);
+        super.render(poseStack, i, j, f);
+    }
+    
+    class PlainTextLabel extends Widget {
+        
+        private StringTextComponent text = new StringTextComponent("");
+        private int x;
+        private int y;
+
+        public PlainTextLabel(int x, int y, int width, int height, StringTextComponent text) {
+            super(x, y, width, height, text);
+            this.x = x;
+            this.y = y;
+        }
+
+        public void setValue(String value)
+        {
+            text = new StringTextComponent(value);
+        }
+
+        @Override
+        public void render(MatrixStack poseStack, int i, int j, float f) {
+            if (text == null || text.getString().isEmpty())
+                return;
+
+            drawCenteredString(poseStack, Minecraft.getInstance().font, text.getString(), Minecraft.getInstance().screen.width / 2, this.y + this.height / 4, 0xFFFFFF);
+        }
+    }
+    
+}
+
+class CustomModeConfigScreen extends Screen {
+    private static final Logger LOGGER = LogManager.getLogger();
+    private final Screen previous;
+    private boolean pauseMenu;
+
+    public CustomModeConfigScreen(Screen previous) {
+        super(new StringTextComponent("Minegasm Custom Config"));
+        this.previous = previous;
+        pauseMenu = false;
+    }
+    
+    public CustomModeConfigScreen(Screen previous, boolean pause) {
+        super(new StringTextComponent("Minegasm Custom Config"));
+        this.previous = previous;
+        pauseMenu = pause;
+    }
+
+    @Override
+    protected void init() {
+        try{
+        this.addButton(new ExtendedButton(
+                this.width / 2 + 5, this.height - 27, 150, 20,
+                DialogTexts.GUI_DONE, button -> this.onClose()));
+
+        IntensitiySliderBar.sliders.clear();
+
+        // Attack
+        this.addButton(new IntensitiySliderBar(this, "Attack: ", MinegasmConfig.class.getField("attackIntensity")));
+        
+        // Hurt
+        this.addButton(new IntensitiySliderBar(this, "Hurt: ", MinegasmConfig.class.getField("hurtIntensity")));
+        
+        // Mine
+        this.addButton(new IntensitiySliderBar(this, "Mine: ", MinegasmConfig.class.getField("mineIntensity")));
+
+        // Place
+        this.addButton(new IntensitiySliderBar(this, "Place: ", MinegasmConfig.class.getField("placeIntensity")));
+
+        // XP Change
+        this.addButton(new IntensitiySliderBar(this, "XP Change: ", MinegasmConfig.class.getField("xpChangeIntensity")));
+        
+        // Fishing
+        this.addButton(new IntensitiySliderBar(this, "Fishing: ", MinegasmConfig.class.getField("fishingIntensity")));
+        
+        // Harvest
+        this.addButton(new IntensitiySliderBar(this, "Harvest: ", MinegasmConfig.class.getField("harvestIntensity")));
+        
+        // Vitality
+        this.addButton(new IntensitiySliderBar(this, "Vitality: ", MinegasmConfig.class.getField("vitalityIntensity")));
+        
+        // Advancement
+        this.addButton(new IntensitiySliderBar(this, "Advancement: ", MinegasmConfig.class.getField("advancementIntensity")));
+        
+        this.addButton(new ExtendedButton(
+            this.width / 2 - 155, this.height - 27, 150, 20,
+            new StringTextComponent("Reset Values"), button -> {
+                ConfigHolder.getClientInstance().resetConfigCustom();
+                IntensitiySliderBar.refreshAllValues();
+            }
+        ));
+        
+        
+        } catch (Throwable e) {
+            LOGGER.throwing(e);
+        }
+    }
+
+    @Override
+    public void onClose() {
+        IntensitiySliderBar.sliders.clear();
+        this.minecraft.setScreen(this.previous);
+    }
+
+    @Override
+    public void render(MatrixStack poseStack, int i, int j, float f) {
+        if (pauseMenu)
+            this.renderBackground(poseStack);
+        else
+            this.renderDirtBackground(0);
+        drawCenteredString(poseStack, this.font, this.title, this.width / 2, 15, 0xFFFFFF);
+        super.render(poseStack, i, j, f);
+    }
+}
+
+class IntensitiySliderBar extends ForgeSlider
+{
+    private static final Logger LOGGER = LogManager.getLogger();
+    public static ArrayList<IntensitiySliderBar> sliders = new ArrayList<IntensitiySliderBar>();
+    private Field fieldReference;
+    
+    IntensitiySliderBar(CustomModeConfigScreen parent, String prefix, Field field) throws Exception
+    {
+        super(  parent.width / 2 + (sliders.size() % 2 == 1 ? 5 : -155), // x pos
+            parent.height / 6 + 25 * (int)Math.floor(sliders.size() / 2), // y pos 
+            150, 20, // Width, height
+            new StringTextComponent(prefix), // Prefix
+            new StringTextComponent(""), // Suffix
+            0, 100, field.getInt(null), 1, 1, true); // Min, Max, Default value, stepsize, percision, drawstring
+        fieldReference = field;
+        sliders.add(this);
+    }
+    
+    @Override
+    public void applyValue()
+    {
+        try {
+            fieldReference.set(null, this.getValueInt());
+        } catch (Throwable e) {
+            LOGGER.throwing(e);
+        }
+    }
+
+    public static void refreshAllValues()
+    {
+        for (IntensitiySliderBar slider : sliders)
+        {
+            slider.refreshValue();
+        }
+    }
+
+    private void refreshValue()
+    {
+        try {
+            this.setValue(fieldReference.getInt(null));
+        } catch (Throwable e) {
+            LOGGER.throwing(e);
+        }
     }
 }

@@ -29,4 +29,5 @@ public final class ConfigHolder {
     public static ServerConfig getServerInstance() {
         return SERVER;
     }
+
 }

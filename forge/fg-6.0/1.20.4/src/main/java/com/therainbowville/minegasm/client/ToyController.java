@@ -10,10 +10,16 @@ import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.Callable;
+import java.util.concurrent.TimeoutException;
+import java.util.concurrent.Executors;
 
 public class ToyController {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static final ButtplugClientWSClient client = new ButtplugClientWSClient("Minegasm");
+    private static ButtplugClientWSClient client = new ButtplugClientWSClient("Minegasm");
     private static ButtplugClientDevice device = null;
     private static boolean shutDownHookAdded = false;
     public static String lastErrorMessage = "";
@@ -24,9 +30,28 @@ public class ToyController {
         try {
             device = null;
             client.disconnect();
+
             LOGGER.info("URL: " + MinegasmConfig.serverUrl);
 
-            client.connect(new URI(MinegasmConfig.serverUrl));
+            ExecutorService executor = Executors.newSingleThreadExecutor();
+            Future future = executor.submit(new Callable<Void>() {
+                public Void call() throws Exception {
+                    client.connect(new URI(MinegasmConfig.serverUrl));
+                    return null;
+                }
+            });
+            
+            try 
+            {
+                future.get(3, TimeUnit.SECONDS);
+            } catch (TimeoutException e) {
+                future.cancel(true);
+                client = new ButtplugClientWSClient("Minegasm");
+                throw new TimeoutException("Could not find WebSocket");
+            } finally {
+                executor.shutdownNow();
+            }
+            
             client.startScanning();
 
             Thread.sleep(5000);
