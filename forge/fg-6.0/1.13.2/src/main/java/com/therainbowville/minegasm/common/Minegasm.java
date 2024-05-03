@@ -1,6 +1,7 @@
 package com.therainbowville.minegasm.common;
 
 import com.therainbowville.minegasm.config.ConfigHolder;
+import com.therainbowville.minegasm.config.ConfigScreen;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -15,7 +16,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(Minegasm.MOD_ID)
-public class Minegasm {
+public class Minegasm
+{
     public static final String MOD_ID = "minegasm";
     public static final String NAME = "Minegasm";
     private static final Logger LOGGER = LogManager.getLogger();
@@ -27,9 +29,13 @@ public class Minegasm {
         context.registerConfig(ModConfig.Type.CLIENT, ConfigHolder.CLIENT_SPEC);
         context.registerConfig(ModConfig.Type.SERVER, ConfigHolder.SERVER_SPEC);
 
+        context.registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> new ConfigScreen(screen));
+//        context.registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> ConfigScreen::new);
+
         IEventBus eventBus = FMLJavaModLoadingContext.get().getModEventBus();
         eventBus.addListener(this::setupCommon);
         eventBus.addListener(this::setupClient);
+
     }
 
     private void setupCommon(final FMLCommonSetupEvent event)

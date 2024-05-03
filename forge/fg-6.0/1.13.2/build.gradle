@@ -199,6 +199,7 @@ tasks.named('shadowJar', ShadowJar) {
     relocationPrefix "com.therainbowville.repack"
     archiveClassifier = "${minecraft_version}-Forge-${forge_version}"
     configurations = [project.configurations.shade]
+    exclude '**/META-INF/versions/**'
     mergeServiceFiles()
     finalizedBy 'reobfShadowJar'
 }
