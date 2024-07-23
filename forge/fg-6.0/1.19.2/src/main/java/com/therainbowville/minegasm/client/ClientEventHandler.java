@@ -33,7 +33,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.lang.Thread;
 
-@Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
+@Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE, value = Dist.CLIENT)
 public class ClientEventHandler {
     private static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
 
@@ -176,6 +176,7 @@ public class ClientEventHandler {
         LOGGER.debug("Critical: " + event.isVanillaCritical());
     }
 
+
     @SubscribeEvent
     public static void onHurt(LivingHurtEvent event)
     {
@@ -194,7 +195,6 @@ public class ClientEventHandler {
         }
     }
     
-    // Triggers when player starts to break block
     @SubscribeEvent
     public static void onHarvest(PlayerEvent.HarvestCheck event)
     {
@@ -210,6 +210,10 @@ public class ClientEventHandler {
         {
             ((VibrationStatePlace)vibrationStates.get("place")).onPlace();
         }
+    }
+    
+    public static void onPlace(){
+        ((VibrationStatePlace)vibrationStates.get("place")).onPlace();
     }
 
     @SubscribeEvent
@@ -233,7 +237,6 @@ public class ClientEventHandler {
         }
     }
    
-    
     @SubscribeEvent
     public static void onAdvancementEvent(AdvancementEvent event)
     {
