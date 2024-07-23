@@ -5,6 +5,7 @@ import net.minecraft.client.player.LocalPlayer;
 
 import net.minecraft.world.damagesource.DamageSource;
 
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerXpEvent.XpChange;
@@ -32,6 +33,8 @@ public class LocalPlayerMixin {
 
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     public void onHurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        if (Minecraft.getInstance().isLocalServer()) { return; }
+            
         if (amount > 0) {
             LivingHurtEvent event = new LivingHurtEvent((LocalPlayer) (Object) this, source, amount);
             ClientEventHandler.onHurt(event);
@@ -40,9 +43,13 @@ public class LocalPlayerMixin {
 
     @Inject(method = "setExperienceValues", at = @At("HEAD"), cancellable = true)
     public void onSetExperienceValues(float xpProgress, int totalXp, int experienceLevel, CallbackInfo ci) {
-        LOGGER.info("Experience changed");
-        int amount = (int) (xpProgress * 100);
-        XpChange event = new XpChange((LocalPlayer) (Object) this, amount);
-        ClientEventHandler.onXpChange(event);
+        if (Minecraft.getInstance().isLocalServer()) { return; }
+        
+        int amount = totalXp - ((LocalPlayer) (Object) this).totalExperience;
+        if (amount > 0)
+        {
+            XpChange event = new XpChange((LocalPlayer) (Object) this, amount);
+            ClientEventHandler.onXpChange(event);           
+        }
     }
 }

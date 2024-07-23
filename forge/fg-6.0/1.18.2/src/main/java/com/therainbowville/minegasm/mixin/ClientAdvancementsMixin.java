@@ -26,6 +26,7 @@ public class ClientAdvancementsMixin {
 
     @Inject(method = "update", at = @At("HEAD"), cancellable = true)
     public void onUpdate(ClientboundUpdateAdvancementsPacket advancementInfoPacket, CallbackInfo ci) {
+        if (Minecraft.getInstance().isLocalServer()) { return; }
         LOGGER.info("Advancement updated");
 
         for(Map.Entry<ResourceLocation, AdvancementProgress> entry : advancementInfoPacket.getProgress().entrySet()) {
