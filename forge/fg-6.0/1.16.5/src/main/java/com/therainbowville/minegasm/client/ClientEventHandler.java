@@ -210,6 +210,10 @@ public class ClientEventHandler {
         }
     }
 
+    public static void onPlace(){
+        ((VibrationStatePlace)vibrationStates.get("place")).onPlace();
+    }
+
     @SubscribeEvent
     public static void onItemPickup(EntityItemPickupEvent event)
     {
