@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.8.1",
+  "package": "com.therainbowville.minegasm.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "mixins.minegasm.refmap.json",
+  "mixins": [
+    "PlayerControllerMPMixin",
+    "ClientAdvancementManagerMixin",
+    "EntityPlayerSPMixin"
+  ]
+}

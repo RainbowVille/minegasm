@@ -43,22 +43,22 @@ public class PauseMenuButton extends Button
     int xPos;
     int yPos;
     
-	public PauseMenuButton(int x, int y) {
-		super(new Button.Builder(Component.literal(""), PauseMenuButton::clicked).pos(x, y).size(20, 20));
+    public PauseMenuButton(int x, int y) {
+        super(new Button.Builder(Component.literal(""), PauseMenuButton::clicked).pos(x, y).size(20, 20));
         xPos = x;
         yPos = y;
-	}
+    }
         
-	@Override
-	public void renderWidget(PoseStack mstack, int i, int j, float k) {
+    @Override
+    public void renderWidget(PoseStack mstack, int i, int j, float k) {
         super.renderWidget(mstack, i, j, k);
-		mstack.pushPose();
-		mstack.translate(xPos + width / 2 - (64 * 0.25f) / 2, yPos + height / 2 - (64 * 0.25f) / 2, 0); 
-		mstack.scale(0.25f, 0.25f, 1);
-		RenderSystem.setShaderTexture(0, LOGO);
-		GuiComponent.blit(mstack, 0, 0, 0, 0, 0, 64, 64, 64, 64);
-		mstack.popPose();
-	}
+        mstack.pushPose();
+        mstack.translate(xPos + width / 2 - (64 * 0.25f) / 2, yPos + height / 2 - (64 * 0.25f) / 2, 0); 
+        mstack.scale(0.25f, 0.25f, 1);
+        RenderSystem.setShaderTexture(0, LOGO);
+        GuiComponent.blit(mstack, 0, 0, 0, 0, 0, 64, 64, 64, 64);
+        mstack.popPose();
+    }
     
     public static void clicked(Button button)
     {
@@ -66,39 +66,39 @@ public class PauseMenuButton extends Button
     }
     
     public static class SingleMenuRow {
-		public final String left, right;
-		public SingleMenuRow(String left, String right) {
-			this.left = I18n.get(left);
-			this.right = I18n.get(right);
-		}
-		public SingleMenuRow(String center) {
-			this(center, center);
-		}
-	}
+        public final String left, right;
+        public SingleMenuRow(String left, String right) {
+            this.left = I18n.get(left);
+            this.right = I18n.get(right);
+        }
+        public SingleMenuRow(String center) {
+            this(center, center);
+        }
+    }
     
-	public static class MenuRows {
-		public static final MenuRows MAIN_MENU = new MenuRows(Arrays.asList(
-			new SingleMenuRow("menu.singleplayer"),
-			new SingleMenuRow("menu.multiplayer"),
-			new SingleMenuRow("fml.menu.mods", "menu.online"),
-			new SingleMenuRow("narrator.button.language", "narrator.button.accessibility")
-		));
+    public static class MenuRows {
+        public static final MenuRows MAIN_MENU = new MenuRows(Arrays.asList(
+            new SingleMenuRow("menu.singleplayer"),
+            new SingleMenuRow("menu.multiplayer"),
+            new SingleMenuRow("fml.menu.mods", "menu.online"),
+            new SingleMenuRow("narrator.button.language", "narrator.button.accessibility")
+        ));
 
-		public static final MenuRows INGAME_MENU = new MenuRows(Arrays.asList(
-			new SingleMenuRow("menu.returnToGame"),
-			new SingleMenuRow("gui.advancements", "gui.stats"),
-			new SingleMenuRow("menu.sendFeedback", "menu.reportBugs"),
-			new SingleMenuRow("menu.options", "menu.shareToLan"),
-			new SingleMenuRow("menu.returnToMenu")
-		));
+        public static final MenuRows INGAME_MENU = new MenuRows(Arrays.asList(
+            new SingleMenuRow("menu.returnToGame"),
+            new SingleMenuRow("gui.advancements", "gui.stats"),
+            new SingleMenuRow("menu.sendFeedback", "menu.reportBugs"),
+            new SingleMenuRow("menu.options", "menu.shareToLan"),
+            new SingleMenuRow("menu.returnToMenu")
+        ));
 
-		protected final List<String> leftButtons, rightButtons;
+        protected final List<String> leftButtons, rightButtons;
 
-		public MenuRows(List<SingleMenuRow> variants) {
-			leftButtons = variants.stream().map(r -> r.left).collect(Collectors.toList());
-			rightButtons = variants.stream().map(r -> r.right).collect(Collectors.toList());
-		}
-	}
+        public MenuRows(List<SingleMenuRow> variants) {
+            leftButtons = variants.stream().map(r -> r.left).collect(Collectors.toList());
+            rightButtons = variants.stream().map(r -> r.right).collect(Collectors.toList());
+        }
+    }
     
     @Mod.EventBusSubscriber(modid = Minegasm.MOD_ID, bus = Mod.EventBusSubscriber.Bus.FORGE)
     public class PauseMenuButtonScreen {

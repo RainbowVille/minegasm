@@ -211,6 +211,10 @@ public class ClientEventHandler {
             ((VibrationStatePlace)vibrationStates.get("place")).onPlace();
         }
     }
+    
+    public static void onPlace(){
+        ((VibrationStatePlace)vibrationStates.get("place")).onPlace();
+    }
 
     @SubscribeEvent
     public static void onItemPickup(EntityItemPickupEvent event)
@@ -235,7 +239,7 @@ public class ClientEventHandler {
    
     
     @SubscribeEvent
-    public static void onAdvancementEvent(AdvancementEvent event)
+    public static void onAdvancementEvent(AdvancementEvent.AdvancementEarnEvent event)
     {
         if (isPlayer(event.getEntity()))
         {

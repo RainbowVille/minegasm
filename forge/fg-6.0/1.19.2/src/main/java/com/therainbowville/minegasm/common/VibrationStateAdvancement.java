@@ -2,7 +2,7 @@ package com.therainbowville.minegasm.common;
 
 import net.minecraft.advancements.FrameType;
 import net.minecraft.advancements.Advancement;
-import net.minecraftforge.event.entity.player.AdvancementEvent;
+import net.minecraftforge.event.entity.player.AdvancementEvent.AdvancementEarnEvent;
 
 import com.therainbowville.minegasm.config.MinegasmConfig;
 
@@ -13,13 +13,12 @@ public class VibrationStateAdvancement extends AbstractVibrationState
         super(0);
     }
     
-    public void onAdvancement(AdvancementEvent event)
+    public void onAdvancement(AdvancementEarnEvent event)
     {
         if (getIntensity("advancement") == 0) return;
     try {
         LOGGER.info("Advancement Event: " + event);
         Advancement advancement = event.getAdvancement();
-        if (advancement == null) return;
         FrameType type = advancement.getDisplay().getFrame();
         int duration = switch (type) {
             case TASK -> 5;
