@@ -238,7 +238,7 @@ public class ClientEventHandler {
     }
    
     @SubscribeEvent
-    public static void onAdvancementEvent(AdvancementEvent event)
+    public static void onAdvancementEvent(AdvancementEvent.AdvancementEarnEvent event)
     {
         if (isPlayer(event.getEntity()))
         {

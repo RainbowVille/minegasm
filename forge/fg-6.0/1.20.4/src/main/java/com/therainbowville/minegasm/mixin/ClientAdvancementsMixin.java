@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.network.protocol.game.ClientboundUpdateAdvancementsPacket;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.entity.player.AdvancementEvent;
+import net.minecraftforge.event.entity.player.AdvancementEvent.AdvancementEarnEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
@@ -30,10 +30,12 @@ public class ClientAdvancementsMixin {
         LOGGER.info("Advancement updated");
 
         for(Map.Entry<ResourceLocation, AdvancementProgress> entry : advancementInfoPacket.getProgress().entrySet()) {
-            AdvancementHolder advancement = ((ClientAdvancements) (Object) this).get(entry.getKey());
-            Player player = minecraft.player;
-            AdvancementEvent event = new AdvancementEvent(player, advancement);
-            ClientEventHandler.onAdvancementEvent(event);
+            if (entry.getValue().isDone()) {
+                AdvancementHolder advancement = ((ClientAdvancements) (Object) this).get(entry.getKey());
+                Player player = minecraft.player;
+                AdvancementEarnEvent event = new AdvancementEarnEvent(player, advancement);
+                ClientEventHandler.onAdvancementEvent(event);
+            }
         }
     }
 }
