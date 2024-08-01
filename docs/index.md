@@ -47,6 +47,7 @@ It has been confirmed by the developers to work with:
 - [Lovense Hush](https://www.lovense.com/r/zrzb5e) (butt plug)
 - [Lovense Max 2](https://www.lovense.com/r/n4x2bh) (male masturbator)
 - [Lovense Domi 2](https://www.lovense.com/r/khhgol?t=m1) (wand)
+- Nintendo Joycon (game controller)
 
 Note that at the moment it doesn't work with any other devices that are not vibrators.
 
