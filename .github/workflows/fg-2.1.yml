@@ -30,6 +30,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
       with:
         gradle-version: 4.10.3
+        cache-disabled: true
     - name: Run Gradle build
       working-directory: forge/fg-2.1
       run: gradle :${{ inputs.version }}:build
