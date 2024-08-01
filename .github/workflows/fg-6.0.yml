@@ -32,7 +32,7 @@ jobs:
       uses: gradle/actions/setup-gradle@v3
     - name: Run Gradle build
       working-directory: forge/fg-6.0
-      run: gradlew :${{ inputs.version }}:build
+      run: ./gradlew :${{ inputs.version }}:build
     - uses: actions/upload-artifact@v4
       with:
         name: Minegasm-${{ inputs.version }}
