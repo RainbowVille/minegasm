@@ -48,15 +48,16 @@ public class PlayerControllerMixin {
     public void onUseItemOn(ClientPlayerEntity player, ClientWorld world, Hand hand, BlockRayTraceResult result, CallbackInfoReturnable<ActionResultType> cir) {
         if (Minecraft.getInstance().isLocalServer() ) { return; }
         
-        this.placedBlock = true;
-        
+        if (player.getItemInHand(hand).getItem() instanceof BlockItem){
+            this.placedBlock = true;
+        }
     }
     
     @Inject(method = "useItemOn", at = @At("RETURN"), cancellable = true)
     public void onUseItemOnReturn(ClientPlayerEntity player, ClientWorld world, Hand hand, BlockRayTraceResult result, CallbackInfoReturnable<ActionResultType> cir) {
         if (Minecraft.getInstance().isLocalServer() || !this.placedBlock) { return; }
         
-        if (player.getItemInHand(hand).getItem() instanceof BlockItem && cir.getReturnValue() == ActionResultType.SUCCESS) {
+        if (cir.getReturnValue() == ActionResultType.SUCCESS) {
             ClientEventHandler.onPlace();
         }
         this.placedBlock = false;

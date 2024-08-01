@@ -44,7 +44,9 @@ public class MultiPlayerGameModeMixin {
     public void onUseItemOn(LocalPlayer player, InteractionHand hand, BlockHitResult result, CallbackInfoReturnable<InteractionResult> cir) {
         if (Minecraft.getInstance().isLocalServer() ) { return; }
         
-        this.placedBlock = true;
+        if (player.getItemInHand(hand).getItem() instanceof BlockItem) {
+            this.placedBlock = true;            
+        }
         
     }
     
@@ -52,7 +54,7 @@ public class MultiPlayerGameModeMixin {
     public void onUseItemOnReturn(LocalPlayer player, InteractionHand hand, BlockHitResult result, CallbackInfoReturnable<InteractionResult> cir) {
         if (Minecraft.getInstance().isLocalServer() || !this.placedBlock) { return; }
         
-        if (player.getItemInHand(hand).getItem() instanceof BlockItem && cir.getReturnValue() == InteractionResult.SUCCESS) {
+        if (cir.getReturnValue() == InteractionResult.SUCCESS) {
             ClientEventHandler.onPlace();
         }
         this.placedBlock = false;

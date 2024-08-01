@@ -51,7 +51,9 @@ public class PlayerControllerMPMixin {
     public void onUseItemOn(EntityPlayerSP player, WorldClient worldIn, BlockPos pos, EnumFacing direction, Vec3d vec, EnumHand hand, CallbackInfoReturnable<EnumActionResult> cir) {
         if (Minecraft.getMinecraft().isIntegratedServerRunning() ) { return; }
         
-        this.placedBlock = true;
+        if (player.getHeldItem(hand).getItem() instanceof ItemBlock){
+            this.placedBlock = true;
+        }
         
     }
     
@@ -59,7 +61,7 @@ public class PlayerControllerMPMixin {
     public void onUseItemOnReturn(EntityPlayerSP player, WorldClient worldIn, BlockPos pos, EnumFacing direction, Vec3d vec, EnumHand hand, CallbackInfoReturnable<EnumActionResult> cir) {
         if (Minecraft.getMinecraft().isIntegratedServerRunning() || !this.placedBlock) { return; }
         
-        if (player.getHeldItem(hand).getItem() instanceof ItemBlock && cir.getReturnValue() == EnumActionResult.SUCCESS) {
+        if (cir.getReturnValue() == EnumActionResult.SUCCESS) {
             ClientEventHandler.onPlace();
         }
         this.placedBlock = false;
