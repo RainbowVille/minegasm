@@ -1,23 +1,21 @@
-Minegasm is a Minecraft (Java Edition) Forge mod that provides haptic feedback to enhance the gameplay experience. This mod is intended to be used only by consenting adults.
+Minegasm is a client-side Minecraft (Java Edition) Forge mod that provides haptic feedback to enhance the gameplay experience. This mod is intended to be used only by consenting adults.
 
 ## Download
 
 | Minecraft  | Forge                                                                                            | Java | JAR file                                                                                                                                                       |
 |------------|--------------------------------------------------------------------------------------------------|------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **1.20.4** | [49.1.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.20.4.html)       | 17   | [minegasm-0.4.2-1.20.4-Forge-49.0.26.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.20.4-Forge-49.0.26.jar)           |
-| **1.20.1** | [47.1.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.20.1.html)       | 17   | [minegasm-0.4.0-1.20.1-Forge-47.1.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.20.1-Forge-47.1.0.jar)             |
-| **1.19.4** | [45.3.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.19.4.html)       | 17   | [minegasm-0.4.2-1.19.4-Forge-45.2.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.19.4-Forge-45.2.0.jar)             |
-| **1.19.2** | [43.4.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.19.2.html)       | 17   | [minegasm-0.4.2-1.19.2-Forge-43.3.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.19.2-Forge-43.3.0.jar)             |
-| **1.18.2** | [40.2.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.18.2.html)       | 17   | [minegasm-0.4.0-1.18.2-Forge-40.2.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.18.2-Forge-40.2.0.jar)             |
-| **1.17.1** | [37.1.1](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.17.1.html)       | 17*  | [minegasm-0.4.0-1.17.1-Forge-37.1.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.17.1-Forge-37.1.1.jar)             |
-| **1.16.5** | [36.2.34](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html)      | 8    | [minegasm-0.4.2-1.16.5-Forge-36.2.34.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.16.5-Forge-36.2.34.jar)           |
-| **1.16.3** | [34.1.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.3.html)       | 8    | [minegasm-0.4.2-1.16.3-Forge-34.1.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.16.3-Forge-34.1.0.jar)             |
-| **1.15.2** | [31.2.57](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.15.2.html)      | 8    | [minegasm-0.4.2-1.15.2-Forge-31.2.57.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.15.2-Forge-31.2.57.jar)           |
-| **1.14.4** | [28.2.26](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.14.4.html)      | 8    | [minegasm-0.4.2-1.14.4-Forge-28.2.26.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.14.4-Forge-28.2.26.jar)           |
-| **1.13.2** | [25.0.223](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.13.2.html)     | 8    | [minegasm-0.4.2-1.13.2-Forge-25.0.223.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.13.2-Forge-25.0.223.jar)         |
-| **1.12.2** | [14.23.5.2859](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.12.2.html) | 8    | [minegasm-0.4.2-1.12.2-Forge-14.23.5.2859.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.12.2-Forge-14.23.5.2859.jar) |
+| **1.20.4** | [49.1.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.20.4.html)       | 17   | [minegasm-0.5.0-1.20.4-Forge-49.1.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.5.0/minegasm-0.5.0-1.20.4-Forge-49.1.0.jar)             |
+| **1.19.4** | [45.3.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.19.4.html)       | 17   | [minegasm-0.5.0-1.19.4-Forge-45.3.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.5.0/minegasm-0.5.0-1.19.4-Forge-45.3.0.jar)             |
+| **1.19.2** | [43.4.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.19.2.html)       | 17   | [minegasm-0.5.0-1.19.2-Forge-43.4.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.5.0/minegasm-0.5.0-1.19.2-Forge-43.4.0.jar)             |
+| **1.18.2** | [40.2.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.18.2.html)       | 17   | [minegasm-0.5.0-1.18.2-Forge-40.2.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.5.0/minegasm-0.5.0-1.18.2-Forge-40.2.0.jar)             |
+| **1.17.1** | [37.1.1](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.17.1.html)       | 17*  | [minegasm-0.5.0-1.17.1-Forge-37.1.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.5.0/minegasm-0.5.0-1.17.1-Forge-37.1.1.jar)             |
+| **1.16.5** | [36.2.34](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html)      | 8    | [minegasm-0.5.0-1.16.5-Forge-36.2.34.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.5.0/minegasm-0.5.0-1.16.5-Forge-36.2.34.jar)           |
+| **1.15.2** | [31.2.57](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.15.2.html)      | 8    | [minegasm-0.5.0-1.15.2-Forge-31.2.57.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.5.0/minegasm-0.5.0-1.15.2-Forge-31.2.57.jar)           |
+| **1.12.2** | [14.23.5.2859](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.12.2.html) | 8    | [minegasm-0.5.0-1.12.2-Forge-14.23.5.2859.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.5.0/minegasm-0.5.0-1.12.2-Forge-14.23.5.2859.jar) |
 
-While 1.17.1 can use both Java 16 or 17, we recommend 17.  Old releases can be found on the [release page](./releases).
+* Discontinued versions: 1.20.1, 1.16.3, 1.14.4, 1.13.2. Old releases that support those versions can be found on the [release page](./releases).
+* Deprecated versions (might be removed in future releases): 1.17.1, 1.18.2
+* While 1.17.1 can use both Java 16 or 17, we recommend Java 17.
 
 ### Dependencies
 1. Intiface Central: [https://intiface.com/central/](https://intiface.com/central/)
@@ -34,7 +32,7 @@ While 1.17.1 can use both Java 16 or 17, we recommend 17.  Old releases can be f
 For more detailed instructions, please see the [setup page](./setup).
 
 ## Known Issues
-* In-game config menu is missing for 1.13, 1.17, 1.18, 1.19, and 1.20. The mod can still be configured manually by editing the config file.
+* In-game config menu is missing for 1.17, 1.18, 1.19, and 1.20. The mod can still be configured manually by editing the config file.
 * The mod has only undergone limited testing in multiplayer mode and it might not work with some mods.
 
 Make sure to check out our [issue tracker](https://github.com/RainbowVille/minegasm/issues?q=is%3Aissue+is%3Aopen+label%3Abug) for all the known issues and their status. The [troubleshooting page](./troubleshoot) provides suggestions of things to do if you encounter any issues.
