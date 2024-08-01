@@ -20,4 +20,4 @@ jobs:
     uses: ./.github/workflows/fg-6.0.yml
     with:
       version: 1.17.1
-      java-version: 16
+      java-version: 17

@@ -9,7 +9,7 @@ Minegasm is a Minecraft (Java Edition) Forge mod that provides haptic feedback t
 | **1.19.4** | [45.3.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.19.4.html)       | 17   | [minegasm-0.4.2-1.19.4-Forge-45.2.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.19.4-Forge-45.2.0.jar)             |
 | **1.19.2** | [43.4.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.19.2.html)       | 17   | [minegasm-0.4.2-1.19.2-Forge-43.3.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.19.2-Forge-43.3.0.jar)             |
 | **1.18.2** | [40.2.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.18.2.html)       | 17   | [minegasm-0.4.0-1.18.2-Forge-40.2.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.18.2-Forge-40.2.0.jar)             |
-| **1.17.1** | [37.1.1](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.17.1.html)       | 16   | [minegasm-0.4.0-1.17.1-Forge-37.1.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.17.1-Forge-37.1.1.jar)             |
+| **1.17.1** | [37.1.1](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.17.1.html)       | 17*  | [minegasm-0.4.0-1.17.1-Forge-37.1.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.17.1-Forge-37.1.1.jar)             |
 | **1.16.5** | [36.2.34](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html)      | 8    | [minegasm-0.4.2-1.16.5-Forge-36.2.34.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.16.5-Forge-36.2.34.jar)           |
 | **1.16.3** | [34.1.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.3.html)       | 8    | [minegasm-0.4.2-1.16.3-Forge-34.1.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.16.3-Forge-34.1.0.jar)             |
 | **1.15.2** | [31.2.57](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.15.2.html)      | 8    | [minegasm-0.4.2-1.15.2-Forge-31.2.57.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.15.2-Forge-31.2.57.jar)           |
@@ -17,7 +17,7 @@ Minegasm is a Minecraft (Java Edition) Forge mod that provides haptic feedback t
 | **1.13.2** | [25.0.223](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.13.2.html)     | 8    | [minegasm-0.4.2-1.13.2-Forge-25.0.223.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.13.2-Forge-25.0.223.jar)         |
 | **1.12.2** | [14.23.5.2859](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.12.2.html) | 8    | [minegasm-0.4.2-1.12.2-Forge-14.23.5.2859.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.12.2-Forge-14.23.5.2859.jar) |
 
-Old releases can be found on the [release page](./releases).
+While 1.17.1 can use both Java 16 or 17, we recommend 17.  Old releases can be found on the [release page](./releases).
 
 ### Dependencies
 1. Intiface Central: [https://intiface.com/central/](https://intiface.com/central/)
