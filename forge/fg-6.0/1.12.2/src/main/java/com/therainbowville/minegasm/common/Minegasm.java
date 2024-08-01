@@ -1,6 +1,5 @@
 package com.therainbowville.minegasm.common;
 
-import com.therainbowville.minegasm.common.CommonProxy;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.SidedProxy;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -12,7 +11,7 @@ import org.apache.logging.log4j.Logger;
 public class Minegasm {
     public static final String MOD_ID = "minegasm";
     public static final String NAME = "Minegasm";
-    public static final String MODVERSION = "0.2.2";
+    public static final String MODVERSION = "0.5.0";
 
     @SidedProxy(clientSide = "com.therainbowville.minegasm.client.ClientProxy", serverSide = "com.therainbowville.minegasm.server.ServerProxy")
     public static CommonProxy proxy;
