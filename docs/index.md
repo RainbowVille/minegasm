@@ -1,13 +1,13 @@
-Minegasm is a Minecraft (Java Edition) Forge mod that uses connected sex toys to enhance the gameplay experience. This mod is intended to be used only by consenting adults.
+Minegasm is a Minecraft (Java Edition) Forge mod that provides haptic feedback to enhance the gameplay experience. This mod is intended to be used only by consenting adults.
 
 ## Download
 
 | Minecraft  | Forge                                                                                            | Java | JAR file                                                                                                                                                       |
 |------------|--------------------------------------------------------------------------------------------------|------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **1.20.4** | [49.0.26](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.20.4.html)      | 17   | [minegasm-0.4.2-1.20.4-Forge-49.0.26.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.20.4-Forge-49.0.26.jar)           |
+| **1.20.4** | [49.1.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.20.4.html)       | 17   | [minegasm-0.4.2-1.20.4-Forge-49.0.26.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.20.4-Forge-49.0.26.jar)           |
 | **1.20.1** | [47.1.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.20.1.html)       | 17   | [minegasm-0.4.0-1.20.1-Forge-47.1.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.20.1-Forge-47.1.0.jar)             |
-| **1.19.4** | [45.2.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.19.4.html)       | 17   | [minegasm-0.4.2-1.19.4-Forge-45.2.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.19.4-Forge-45.2.0.jar)             |
-| **1.19.2** | [43.3.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.19.2.html)       | 17   | [minegasm-0.4.2-1.19.2-Forge-43.3.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.19.2-Forge-43.3.0.jar)             |
+| **1.19.4** | [45.3.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.19.4.html)       | 17   | [minegasm-0.4.2-1.19.4-Forge-45.2.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.19.4-Forge-45.2.0.jar)             |
+| **1.19.2** | [43.4.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.19.2.html)       | 17   | [minegasm-0.4.2-1.19.2-Forge-43.3.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.19.2-Forge-43.3.0.jar)             |
 | **1.18.2** | [40.2.0](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.18.2.html)       | 17   | [minegasm-0.4.0-1.18.2-Forge-40.2.0.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.18.2-Forge-40.2.0.jar)             |
 | **1.17.1** | [37.1.1](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.17.1.html)       | 16   | [minegasm-0.4.0-1.17.1-Forge-37.1.1.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.0/minegasm-0.4.0-1.17.1-Forge-37.1.1.jar)             |
 | **1.16.5** | [36.2.34](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.16.5.html)      | 8    | [minegasm-0.4.2-1.16.5-Forge-36.2.34.jar](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.16.5-Forge-36.2.34.jar)           |
@@ -56,30 +56,20 @@ The [config page](./config) explains this in further details.
 
 ## Gameplay Modes
 
-| Mode      | Description                                                                                                                                                  |
-|-----------|--------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| NORMAL    | The toy will vibrate when you attack other entities, mine, or gain XP.                                                                                       |
-| MASOCHIST | The toy will vibrate when you're hurt or dying.                                                                                                              |
-| HEDONIST  | The toy will vibrate on all events defined in other modes, except dying (this is replaced, instead, by having the toy vibrate when you're full and healthy). |
-| CUSTOM    | The toy will vibrate depending on the intensity levels configured by the user.                                                                               |
+| Mode      | Description                                                                                                                                                     |
+|-----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| NORMAL    | The device will vibrate when you attack other entities, mine, or gain XP.                                                                                       |
+| MASOCHIST | The device will vibrate when you're hurt or dying.                                                                                                              |
+| HEDONIST  | The device will vibrate on all events defined in other modes, except dying (this is replaced, instead, by having the toy vibrate when you're full and healthy). |
+| CUSTOM    | The device will vibrate depending on the intensity levels configured by the user.                                                                               |
 
 ## Support
 In principle, we do not provide any dedicated (technical) supports. If you need any assistance, you can use the [discussion page](https://github.com/RainbowVille/minegasm/discussions).
-Alternatively, you can join `@RSwoop`'s [Discord server](https://discord.gg/Kc7ueWC) and ping him in the `#minegasm` channel, but please be advised that he might not always be able to help you.
-A dedicated server for Minegasm is planned to be set up in the future.
+Alternatively, you can join our [Discord server](https://discord.gg/GdgDD5QkNH) and ping `@RSwoop` in the appropriate channel in the **Minegasm Mod** section, but please be advised that he might not always be able to help you.
 
 If you have any suggestions or found any bugs, please post them to our [issue tracker](https://github.com/RainbowVille/minegasm/issues) on GitHub. Please try to be as descriptive as possible and include your `debug.log` (please remove any references to your username first if that matters). The `debug.log` file is typically under the `logs` directory of your minecraft instance. In the vanilla installation on Windows, it is typically on `<drive>:\Users\<username>\AppData\Roaming\.minecraft`.
 
 The status of confirmed bugs and planned future enhancements are available on our [project board](https://github.com/RainbowVille/minegasm/projects/1).
-
-## History
-The mod was conceived in 2020 by `RSwoop` amid the COVID-19 pandemic to combine his newly-found interest of connected intimate adult toys and Minecraft, that he played a lot during the lockdown.
-When researching about the idea, he found that something similar has been done 5 years prior, but [the project](https://old.reddit.com/r/SexToys/comments/3ja9uq/vibrating_egg_controlled_by_a_raspberry_pi_and/) was made for a specific toy and had not been developed further.
-He then decided to make his own mod that would work with more off-the-shelf devices using the [Buttplug.io](https://buttplug.io/) platform, that promised support for a wide range of hardware.
-
-Despite his minimal experience in Java and Minecraft modding, he finally managed to make a working prototype and released it to the public on October 24, 2020 with an open source license, allowing others interested to improve the mod, or even make their own based on it. The mod has since been downloaded thousands of times and has been forked and inspired a few other projects.
-
-The mod was originally designed for PvP duels, which significantly affects some design decisions, but it has since evolved to also support different game modes. The development of the project has slowed down considerably after the pandemic, but it is still being updated occasionally to fix bugs and support newer Minecraft versions.
 
 ## Related Projects
 Some (newer and generally more actively maintained) projects based on or inspired by Minegasm:
@@ -91,6 +81,15 @@ Some (newer and generally more actively maintained) projects based on or inspire
 
 Please check them out and see if they fit your needs better.
 
-## Credits
+*Did you create a fork and want to be listed here? Open a pull request!*
+
+## Acknowledgements
+Our thanks to the following people, whose assistance have been instrumental in the development of this mod.
+
+### Contributors
+- `Sour-o7`
+- `BlackSphereFollower`
+
+### Credits
+- `qdot` for the buttplug library
 - `Lone_Destroyer` for the original logo
-- `qdot` and `BlackSphereFollower` for the buttplug library
