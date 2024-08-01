@@ -206,6 +206,10 @@ public class ClientEventHandler {
         {
             ((VibrationStatePlace)vibrationStates.get("place")).onPlace();
         }
+    }    
+    
+    public static void onPlace(){
+        ((VibrationStatePlace)vibrationStates.get("place")).onPlace();
     }
 
     @SubscribeEvent

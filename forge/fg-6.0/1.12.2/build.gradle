@@ -6,7 +6,10 @@ plugins {
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'org.spongepowered.mixin' version '0.7.+'                                            
 }
+
+apply plugin: 'org.spongepowered.mixin'                                      
 
 version = mod_version
 group = mod_group_id
@@ -122,11 +125,16 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
+    
+    maven {
+        url = 'https://repo.spongepowered.org/maven'
+                     
+    }
 }
 
 configurations {
     shade
-    implementation.extendsFrom shade
+    implementation.extendsFrom shade              
 }
 
 dependencies {
@@ -136,6 +144,8 @@ dependencies {
     // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+	shade 'org.spongepowered:mixin:0.8.5'
+	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'                                                  
     shade 'io.github.blackspherefollower:buttplug4j.connectors.jetty.websocket.client:3.1.105'
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
@@ -175,6 +185,12 @@ tasks.named('processResources', ProcessResources).configure {
     }
 }
 
+mixin {
+    // MixinGradle Settings
+    add sourceSets.main, "mixins.${mod_id}.refmap.json"
+    config "mixins.${mod_id}.json"
+}                       
+ 
 // Example for how to get properties into the manifest for reading at runtime.
 tasks.named('jar', Jar).configure {
     archiveClassifier = 'slim'
@@ -186,7 +202,11 @@ tasks.named('jar', Jar).configure {
                 'Implementation-Title'    : project.name,
                 'Implementation-Version'  : project.jar.archiveVersion,
                 'Implementation-Vendor'   : mod_authors,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                "FMLCorePluginContainsFMLMod": "true",
+                "ForceLoadAsMod": "true", //Seems to do the opposite of what it claims to do while in dev enviroment, uncomment for build
+                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
+                'TweakOrder': '0'         
         ])
     }
 
@@ -195,8 +215,14 @@ tasks.named('jar', Jar).configure {
 }
 
 tasks.named('shadowJar', ShadowJar) {
-    enableRelocation true
-    relocationPrefix "com.therainbowville.repack"
+//    enableRelocation true
+//    relocationPrefix "com.therainbowville.repack"
+
+    relocate "com.fasterxml", "com.therainbowville.repack.com.fasterxml"
+    relocate ("org.eclipse", "com.therainbowville.repack.org.eclipse") {
+        exclude "org/eclipse/jetty/version/**"
+    }
+    relocate "io", "com.therainbowville.repack.io"
     archiveClassifier = "${minecraft_version}-Forge-${forge_version}"
     configurations = [project.configurations.shade]
     exclude '**/META-INF/versions/**'
