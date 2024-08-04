@@ -1,0 +1,23 @@
+name: Build 1.21
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ main ]
+    paths:
+      - 'forge/ng-7.0/1.21/**'
+      - '.github/workflows/ng-7.0.yml'
+      - '.github/workflows/gradle-neoforge-1.21.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'forge/ng-7.0/1.21/**'
+      - '.github/workflows/ng-7.0.yml'
+      - '.github/workflows/gradle-neoforge-1.21.yml'
+
+jobs:
+  build:
+    uses: ./.github/workflows/ng-7.0.yml
+    with:
+      version: 1.21
+      java-version: 21
