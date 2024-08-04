@@ -15,10 +15,10 @@ User Guide: https://www.minegasm.net/
 
 Work in progress:
 
-| Minecraft  | (Neo)Forge MDK | JDK | FG/NG | Gradle | Status                                                                                                                                                                                     |
-|------------|----------------|-----|-------|--------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| **1.21**   | 21.0.148       | 21  | 7.0   | 8.9    | [![1.21](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-forge-1.21.yml/badge.svg)](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-forge-1.21.yml)    |
-| **1. 8.9** | 11.15.1.2318   | 8   | 2.1   | 4.10.3 | [![1.8.9](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-forge-1.8.9.yml/badge.svg)](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-forge-1.8.9.yml) |
+| Minecraft  | (Neo)Forge MDK | JDK | FG/NG | Gradle | Status                                                                                                                                                                                        |
+|------------|----------------|-----|-------|--------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **1.21**   | 21.0.148       | 21  | 7.0   | 8.9    | [![1.21](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-neoforge-1.21.yml/badge.svg)](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-neoforge-1.21.yml) |
+| **1. 8.9** | 11.15.1.2318   | 8   | 2.1   | 4.10.3 | [![1.8.9](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-forge-1.8.9.yml/badge.svg)](https://github.com/RainbowVille/minegasm/actions/workflows/gradle-forge-1.8.9.yml)    |
 
 Removed versions (might be reinstated upon request):
 
