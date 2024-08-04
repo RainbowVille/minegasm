@@ -1,4 +1,8 @@
-[⬅️ Home](./)
+---
+layout: default
+title: Config
+nav_order: 3
+---
 
 # Config
 

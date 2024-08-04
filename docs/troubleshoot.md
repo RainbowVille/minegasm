@@ -1,4 +1,8 @@
-[⬅️ Home](./)
+---
+layout: default
+title: Troubleshoot
+nav_order: 5
+---
 
 # Troubleshooting
 

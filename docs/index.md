@@ -1,3 +1,9 @@
+---
+layout: default
+title: Home
+nav_order: 1
+---
+
 Minegasm is a client-side Minecraft (Java Edition) Forge mod that provides haptic feedback to enhance the gameplay experience. This mod is intended to be used only by consenting adults.
 
 ## Download
@@ -86,8 +92,13 @@ Please check them out and see if they fit your needs better.
 Our thanks to the following people, whose assistance have been instrumental in the development of this mod.
 
 ### Contributors
-- `Sour-o7`
-- `BlackSphereFollower`
+<ul class="list-style-none">
+{% for contributor in site.github.contributors %}
+  <li class="d-inline-block mr-1">
+     <a href="{{ contributor.html_url }}"><img src="{{ contributor.avatar_url }}" width="32" height="32" alt="{{ contributor.login }}"></a>
+  </li>
+{% endfor %}
+</ul>
 
 ### Credits
 - `qdot` for the buttplug library
