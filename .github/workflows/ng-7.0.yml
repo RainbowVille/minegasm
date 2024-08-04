@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: forge/ng-7.0
+        working-directory: neoforge/ng-7.0
     steps:
     - uses: actions/checkout@v4
     - name: Set up JDK
@@ -32,9 +32,9 @@ jobs:
       with:
         gradle-version: 8.9
     - name: Run Gradle build
-      working-directory: forge/ng-7.0
+      working-directory: neoforge/ng-7.0
       run: gradle :${{ inputs.version }}:build
     - uses: actions/upload-artifact@v4
       with:
         name: Minegasm-${{ inputs.version }}
-        path: forge/ng-7.0/${{ inputs.version }}/build/libs/*-${{ inputs.version }}*
+        path: neoforge/ng-7.0/${{ inputs.version }}/build/libs/*-${{ inputs.version }}*
