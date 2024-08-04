@@ -74,8 +74,6 @@ Alternatively, you can join our [Discord server](https://discord.gg/GdgDD5QkNH) 
 
 If you have any suggestions or found any bugs, please post them to our [issue tracker](https://github.com/RainbowVille/minegasm/issues) on GitHub. Please try to be as descriptive as possible and include your `debug.log` (please remove any references to your username first if that matters). The `debug.log` file is typically under the `logs` directory of your minecraft instance. In the vanilla installation on Windows, it is typically on `<drive>:\Users\<username>\AppData\Roaming\.minecraft`.
 
-The status of confirmed bugs and planned future enhancements are available on our [project board](https://github.com/RainbowVille/minegasm/projects/1).
-
 ## Related Projects
 Some (newer and generally more actively maintained) projects based on or inspired by Minegasm:
 
