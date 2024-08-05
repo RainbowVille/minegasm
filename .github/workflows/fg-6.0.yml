@@ -29,10 +29,11 @@ jobs:
           8
           16
           17
+          21
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        gradle-version: 8.1.1
+        gradle-version: 8.9
     - name: Run Gradle build
       working-directory: forge/fg-6.0
       run: gradle :${{ inputs.version }}:build
