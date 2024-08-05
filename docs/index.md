@@ -4,7 +4,10 @@ title: Home
 nav_order: 1
 ---
 
-Minegasm is a client-side Minecraft (Java Edition) Forge mod that provides haptic feedback to enhance the gameplay experience. This mod is intended to be used only by consenting adults.
+Minegasm is a client-side Minecraft (Java Edition) Forge mod that provides haptic feedback to enhance the gameplay experience.
+
+{: .warning }
+This mod is intended for adults only. By downloading and using this mod, you agree that you are of legal age in your country.
 
 ## Download
 
@@ -22,6 +25,9 @@ Minegasm is a client-side Minecraft (Java Edition) Forge mod that provides hapti
 * Discontinued versions: 1.20.1, 1.16.3, 1.14.4, 1.13.2. Old releases that support those versions can be found on the [release page](./releases).
 * Deprecated versions (might be removed in future releases): 1.17.1, 1.18.2
 * While 1.17.1 can use both Java 16 or 17, we recommend Java 17.
+
+{: .highlight }
+We will be switching to NeoForge from 1.21 onwards. Please stay tuned for updates.
 
 ### Dependencies
 1. Intiface Central: [https://intiface.com/central/](https://intiface.com/central/)

@@ -1,8 +1,13 @@
 title: Minegasm
-logo: minegasm.png
+logo: /minegasm.png
 repository: RainbowVille/minegasm
-description: A haptics Minecraft Forge mod
+description: A haptics Minecraft (Neo)Forge mod
 theme: just-the-docs
 color_scheme: minegasm
+callouts:
+  warning:
+    color: red
+  highlight:
+    color: blue
 plugins:
 - jemoji

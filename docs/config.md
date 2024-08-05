@@ -1,10 +1,10 @@
 ---
 layout: default
-title: Config
+title: Configure
 nav_order: 3
 ---
 
-# Config
+# Configuration
 
 Since `v0.2`, it is possible to customize the behaviors of the mod to certain extent. It might be done through the mod config screen (when available) or by editing the `minegasm-client.toml` config file manually with a text editor. The file should typically reside in the minecraft's config directory (usually `.minecraft/config`).
 

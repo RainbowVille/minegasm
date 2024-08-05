@@ -1,7 +1,7 @@
 ---
 layout: default
-title: Releases
-nav_order: 4
+title: Past Releases
+nav_order: 5
 ---
 
 # Releases
@@ -46,39 +46,5 @@ Click on the ✅ buttons to download the JARs.
 | **1.12.2** | JAR      | [✅](https://github.com/RainbowVille/minegasm/releases/download/v0.5.0/minegasm-0.5.0-1.12.2-Forge-14.23.5.2859.jar) | [✅](https://github.com/RainbowVille/minegasm/releases/download/v0.4.2/minegasm-0.4.2-1.12.2-Forge-14.23.5.2859.jar) | [✅](https://github.com/RainbowVille/minegasm/releases/download/v0.2.2-1.12.2-beta/minegasm-0.2.2-beta1.jar)️ | ️                                                                                                 |
 |            | Forge    | [14.23.5.2859](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.12.2.html)                    | [14.23.5.2859](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.12.2.html)                    | [14.23.5.2855](http://files.minecraftforge.net/maven/net/minecraftforge/forge/index_1.12.2.html)             |                                                                                                   |
 |            | Java     | 8                                                                                                                   | 8                                                                                                                   | 8                                                                                                            |                                                                                                   |
-
-## Release Notes
-
-### v0.5
-* Added multiplayer support
-* Vibration intensity calculation is readjusted
-* Various fixes and stability improvements
-* Removed some unpopular versions: 1.13.2, 1.14.4, 1.16.3
-* 1.12.2&ndash;1.16.5 now uses proper Java 8 version
-
-### v0.4
-* Now covers Minecraft 1.12 to 1.20
-* Migrated hardware control library to [`buttplug4j`](https://github.com/blackspherefollower/buttplug4j) (this supersedes v0.3)
-* Java 11 is required for 1.12.2&ndash;1.16.5 because of the `buttplug4j` library.
-
-#### Known Issues
-* The mod for 1.12.2 is reported to be broken.
-* There is currently a bug in some versions of the Minecraft launcher that prevents the use of newer Java runtimes: [https://bugs.mojang.com/browse/MCL-18306](https://bugs.mojang.com/browse/MCL-18306). This affects the mods for the Minecraft versions before 1.17 as Minegasm requires at least Java 11. If you encounter this issue, a workaround is to delete `JavaCheck.jar` shipped with the launcher.
-* In-game config menu is missing for 1.13.2, 1.17.1, 1.18.2, 1.19.4, and 1.20.1. The mod can still be configured manually by editing the config file.
-
-### v0.3
-*Internal only*. Switched the hardware control library to [`buttplug-rs-ffi`](https://github.com/buttplugio/buttplug-rs-ffi). Abandoned in favor of v0.4.
-
-### v0.2
-The mod is now configurable. From the mod config menu, you can choose between 3 predefined modes:
-
-* NORMAL: the toy will vibrate when you attack other entities, mine, or gain XP.
-* MASOCHIST: the toy will vibrate when you're hurt or dying.
-* HEDONIST: the toy will vibrate on all events defined in other modes, except dying (this is replaced, instead, by having the toy vibrate when you're full and healthy).
-
-The fourth CUSTOM mode allows you to set your own preferences by defining the intensity of the vibration on various events.
-
-### v0.1
-Initial release with very basic functionalities. The mod will connect to the toy upon starting and issue a vibrate command with a random intensity and duration whenever the player is hurt.
 
 Other outdated minor releases can be found on: <https://github.com/RainbowVille/minegasm/releases>
