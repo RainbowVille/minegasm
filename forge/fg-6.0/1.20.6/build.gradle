@@ -206,6 +206,16 @@ tasks.named('jar', Jar).configure {
     }
 }
 
+shadowJar {
+    dependsOn('compileJava')
+    from sourceSets.main.output
+    configurations = [project.configurations.runtimeClasspath]
+    exclude 'META-INF/MANIFEST.MF'
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+}
+
 tasks.named('shadowJar', ShadowJar) {
     enableRelocation true
     relocationPrefix "com.therainbowville.repack"
@@ -226,8 +236,8 @@ tasks.register("prepareKotlinBuildScriptModel") {}
 // This is done because java expects modules to be in a single directory.
 // And if we have it in multiple we have to do performance intensive hacks like having the UnionFileSystem
 // This will eventually be migrated to ForgeGradle so modders don't need to manually do it. But that is later.
-/*sourceSets.each {
+sourceSets.each {
     def dir = layout.buildDirectory.dir("sourcesSets/$it.name")
     it.output.resourcesDir = dir
     it.java.destinationDirectory = dir
-}*/
+}
