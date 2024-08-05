@@ -9,22 +9,16 @@ import org.apache.logging.log4j.Logger;
 import java.net.URI;
 import java.util.List;
 import java.util.Objects;
-
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
-import java.util.concurrent.Callable;
-import java.util.concurrent.TimeoutException;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 public class ToyController {
     private static final Logger LOGGER = LogManager.getLogger();
-    private static ButtplugClientWSClient client = new ButtplugClientWSClient("Minegasm");
-    private static ButtplugClientDevice device = null;
-    private static boolean shutDownHookAdded = false;
     public static String lastErrorMessage = "";
     public static boolean isConnected = false;
     public static double currentVibrationLevel = 0;
+    private static ButtplugClientWSClient client = new ButtplugClientWSClient("Minegasm");
+    private static ButtplugClientDevice device = null;
+    private static boolean shutDownHookAdded = false;
 
     public static boolean connectDevice() {
         try {
@@ -40,9 +34,8 @@ public class ToyController {
                     return null;
                 }
             });
-            
-            try 
-            {
+
+            try {
                 future.get(3, TimeUnit.SECONDS);
             } catch (TimeoutException e) {
                 future.cancel(true);
@@ -51,7 +44,7 @@ public class ToyController {
             } finally {
                 executor.shutdownNow();
             }
-            
+
             client.startScanning();
 
             Thread.sleep(5000);

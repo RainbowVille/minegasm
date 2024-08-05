@@ -9,6 +9,7 @@ public final class ConfigHolder {
     public static final ModConfigSpec SERVER_SPEC;
     static final ClientConfig CLIENT;
     static final ServerConfig SERVER;
+
     static {
         {
             final Pair<ClientConfig, ModConfigSpec> specPair = new ModConfigSpec.Builder().configure(ClientConfig::new);

@@ -6,10 +6,10 @@ plugins {
     id 'maven-publish'
     id 'net.minecraftforge.gradle' version '[6.0,6.2)'
     id 'com.github.johnrengelman.shadow' version '8.1.1'
-    id 'org.spongepowered.mixin' version '0.7.+'                                            
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
-apply plugin: 'org.spongepowered.mixin'                                      
+apply plugin: 'org.spongepowered.mixin'
 
 version = mod_version
 group = mod_group_id
@@ -125,16 +125,16 @@ repositories {
     // flatDir {
     //     dir 'libs'
     // }
-    
+
     maven {
         url = 'https://repo.spongepowered.org/maven'
-                     
+
     }
 }
 
 configurations {
     shade
-    implementation.extendsFrom shade              
+    implementation.extendsFrom shade
 }
 
 dependencies {
@@ -144,8 +144,8 @@ dependencies {
     // If the group id is "net.minecraft" and the artifact id is one of ["client", "server", "joined"],
     // then special handling is done to allow a setup of a vanilla dependency without the use of an external repository.
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
-	shade 'org.spongepowered:mixin:0.8.5'
-	annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+    shade 'org.spongepowered:mixin:0.8.5'
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
     shade 'io.github.blackspherefollower:buttplug4j.connectors.jetty.websocket.client:3.1.105'
 
     // Example mod dependency with JEI - using fg.deobf() ensures the dependency is remapped to your development mappings
@@ -170,13 +170,13 @@ dependencies {
 // See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
 tasks.named('processResources', ProcessResources).configure {
     var replaceProperties = [
-            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
-            forge_version: forge_version, forge_version_range: forge_version_range,
-            loader_version_range: loader_version_range,
-            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
-            mod_authors: mod_authors, mod_description: mod_description,
+            minecraft_version    : minecraft_version, minecraft_version_range: minecraft_version_range,
+            forge_version        : forge_version, forge_version_range: forge_version_range,
+            loader_version_range : loader_version_range,
+            mod_id               : mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors          : mod_authors, mod_description: mod_description,
             mod_issue_tracker_url: mod_issue_tracker_url, mod_update_json_url: mod_update_json_url,
-            mod_display_url: mod_display_url, mod_logo_file: mod_logo_file
+            mod_display_url      : mod_display_url, mod_logo_file: mod_logo_file
     ]
     inputs.properties replaceProperties
 
@@ -189,24 +189,24 @@ mixin {
     // MixinGradle Settings
     add sourceSets.main, "mixins.${mod_id}.refmap.json"
     config "mixins.${mod_id}.json"
-}                       
- 
+}
+
 // Example for how to get properties into the manifest for reading at runtime.
 tasks.named('jar', Jar).configure {
     archiveClassifier = 'slim'
     manifest {
         attributes([
-                'Specification-Title'     : mod_id,
-                'Specification-Vendor'    : mod_authors,
-                'Specification-Version'   : '1', // We are version 1 of ourselves
-                'Implementation-Title'    : project.name,
-                'Implementation-Version'  : project.jar.archiveVersion,
-                'Implementation-Vendor'   : mod_authors,
-                'Implementation-Timestamp': new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+                'Specification-Title'        : mod_id,
+                'Specification-Vendor'       : mod_authors,
+                'Specification-Version'      : '1', // We are version 1 of ourselves
+                'Implementation-Title'       : project.name,
+                'Implementation-Version'     : project.jar.archiveVersion,
+                'Implementation-Vendor'      : mod_authors,
+                'Implementation-Timestamp'   : new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
                 "FMLCorePluginContainsFMLMod": "true",
-                "ForceLoadAsMod": "true", //Seems to do the opposite of what it claims to do while in dev enviroment, uncomment for build
-                "TweakClass": "org.spongepowered.asm.launch.MixinTweaker",
-                'TweakOrder': '0'         
+                "ForceLoadAsMod"             : "true", //Seems to do the opposite of what it claims to do while in dev enviroment, uncomment for build
+                "TweakClass"                 : "org.spongepowered.asm.launch.MixinTweaker",
+                'TweakOrder'                 : '0'
         ])
     }
 
@@ -219,7 +219,7 @@ tasks.named('shadowJar', ShadowJar) {
 //    relocationPrefix "com.therainbowville.repack"
 
     relocate "com.fasterxml", "com.therainbowville.repack.com.fasterxml"
-    relocate ("org.eclipse", "com.therainbowville.repack.org.eclipse") {
+    relocate("org.eclipse", "com.therainbowville.repack.org.eclipse") {
         exclude "org/eclipse/jetty/version/**"
     }
     relocate "io", "com.therainbowville.repack.io"
@@ -240,4 +240,4 @@ tasks.withType(JavaCompile).configureEach {
     options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
 }
 
-tasks.register("prepareKotlinBuildScriptModel") { }
+tasks.register("prepareKotlinBuildScriptModel") {}

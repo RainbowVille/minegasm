@@ -10,4 +10,4 @@ callouts:
   highlight:
     color: blue
 plugins:
-- jemoji
+  - jemoji

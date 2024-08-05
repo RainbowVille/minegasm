@@ -2,21 +2,18 @@ package com.therainbowville.minegasm.client;
 
 //import io.github.blackspherefollower.buttplug4j.client.ButtplugClientDevice;
 //import io.github.blackspherefollower.buttplug4j.connectors.jetty.websocket.client.ButtplugClientWSClient;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.net.URI;
-import java.util.List;
-import java.util.Objects;
-
 public class ToyController {
     private static final Logger LOGGER = LogManager.getLogger();
-    //private static final ButtplugClientWSClient client = new ButtplugClientWSClient("Minegasm");
-    //private static ButtplugClientDevice device = null;
-    private static boolean shutDownHookAdded = false;
     public static String lastErrorMessage = "";
     public static boolean isConnected = false;
     public static double currentVibrationLevel = 0;
+    //private static final ButtplugClientWSClient client = new ButtplugClientWSClient("Minegasm");
+    //private static ButtplugClientDevice device = null;
+    private static boolean shutDownHookAdded = false;
 
     public static boolean connectDevice() {
         /*try {

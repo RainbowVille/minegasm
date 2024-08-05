@@ -1,84 +1,84 @@
 {
-	"homepage": "https://www.minegasm.net",
-	"promos": {
-		"1.20.4-latest": "0.5.0",
-		"1.20.4-recommended": "0.5.0",
-		"1.20.1-latest": "0.4.0",
-		"1.20.1-recommended": "0.4.0",
-		"1.19.4-latest": "0.5.0",
-		"1.19.4-recommended": "0.5.0",
-		"1.19.2-latest": "0.5.0",
-		"1.19.2-recommended": "0.5.0",
-		"1.18.2-latest": "0.5.0",
-		"1.18.2-recommended": "0.5.0",
-		"1.17.1-latest": "0.5.0",
-		"1.17.1-recommended": "0.5.0",
-		"1.16.5-latest": "0.5.0",
-		"1.16.5-recommended": "0.5.0",
-		"1.16.3-latest": "0.4.2",
-		"1.16.3-recommended": "0.4.2",
-		"1.15.2-latest": "0.5.0",
-		"1.15.2-recommended": "0.5.0",
-		"1.14.4-latest": "0.4.2",
-		"1.14.4-recommended": "0.4.2",
-		"1.13.2-latest": "0.4.2",
-		"1.13.2-recommended": "0.4.2",
-		"1.12.2-latest": "0.5.0",
-		"1.12.2-recommended": "0.5.0"
-	},
-	"1.20.4": {
-		"0.5.0": "multiplayer support",
-		"0.4.2": "update to 1.20.4"
-	},
-	"1.20.1": {
-		"0.4.0": "add support for 1.20"
-	},
-	"1.19.4": {
-		"0.5.0": "multiplayer support",
-		"0.4.2": "update forge to 45.2.0",
-		"0.4.0": "add support for 1.19"
-	},
-	"1.19.2": {
-		"0.5.0": "multiplayer support",
-		"0.4.2": "add support for 1.19.2"
-	},
-	"1.18.2": {
-		"0.5.0": "multiplayer support",
-		"0.4.0": "add support for 1.18"
-	},
-	"1.17.1": {
-		"0.5.0": "multiplayer support",
-		"0.4.0": "add support for 1.17"
-	},
-	"1.16.5": {
-		"0.5.0": "multiplayer support",
-		"0.4.2": "fix crashes",
-		"0.4.0": "update dependencies",
-		"0.2.1": "fix crashes when harvesting",
-		"0.2.0": "update to 1.16.5, add new gameplay modes, now configurable"
-	},
-	"1.16.3": {
-		"0.4.2": "re-add support for 1.16.3",
-		"0.1.1": "bug fixes and performance improvements",
-		"0.1.0": "initial MVP version"
-	},
-	"1.15.2": {
-		"0.5.0": "multiplayer support",
-		"0.4.2": "fix crashes",
-		"0.4.0": "add support for 1.15"
-	},
-	"1.14.4": {
-		"0.4.2": "fix crashes",
-		"0.4.0": "add support for 1.14"
-	},
-	"1.13.2": {
-		"0.4.2": "fix crashes",
-		"0.4.0": "add support for 1.13"
-	},
-	"1.12.2": {
-		"0.5.0": "multiplayer support",
-		"0.4.2": "fix crashes",
-		"0.4.0": "update dependencies",
-		"0.2.2": "add support for 1.12.2"
-	}
+  "homepage": "https://www.minegasm.net",
+  "promos": {
+    "1.20.4-latest": "0.5.0",
+    "1.20.4-recommended": "0.5.0",
+    "1.20.1-latest": "0.4.0",
+    "1.20.1-recommended": "0.4.0",
+    "1.19.4-latest": "0.5.0",
+    "1.19.4-recommended": "0.5.0",
+    "1.19.2-latest": "0.5.0",
+    "1.19.2-recommended": "0.5.0",
+    "1.18.2-latest": "0.5.0",
+    "1.18.2-recommended": "0.5.0",
+    "1.17.1-latest": "0.5.0",
+    "1.17.1-recommended": "0.5.0",
+    "1.16.5-latest": "0.5.0",
+    "1.16.5-recommended": "0.5.0",
+    "1.16.3-latest": "0.4.2",
+    "1.16.3-recommended": "0.4.2",
+    "1.15.2-latest": "0.5.0",
+    "1.15.2-recommended": "0.5.0",
+    "1.14.4-latest": "0.4.2",
+    "1.14.4-recommended": "0.4.2",
+    "1.13.2-latest": "0.4.2",
+    "1.13.2-recommended": "0.4.2",
+    "1.12.2-latest": "0.5.0",
+    "1.12.2-recommended": "0.5.0"
+  },
+  "1.20.4": {
+    "0.5.0": "multiplayer support",
+    "0.4.2": "update to 1.20.4"
+  },
+  "1.20.1": {
+    "0.4.0": "add support for 1.20"
+  },
+  "1.19.4": {
+    "0.5.0": "multiplayer support",
+    "0.4.2": "update forge to 45.2.0",
+    "0.4.0": "add support for 1.19"
+  },
+  "1.19.2": {
+    "0.5.0": "multiplayer support",
+    "0.4.2": "add support for 1.19.2"
+  },
+  "1.18.2": {
+    "0.5.0": "multiplayer support",
+    "0.4.0": "add support for 1.18"
+  },
+  "1.17.1": {
+    "0.5.0": "multiplayer support",
+    "0.4.0": "add support for 1.17"
+  },
+  "1.16.5": {
+    "0.5.0": "multiplayer support",
+    "0.4.2": "fix crashes",
+    "0.4.0": "update dependencies",
+    "0.2.1": "fix crashes when harvesting",
+    "0.2.0": "update to 1.16.5, add new gameplay modes, now configurable"
+  },
+  "1.16.3": {
+    "0.4.2": "re-add support for 1.16.3",
+    "0.1.1": "bug fixes and performance improvements",
+    "0.1.0": "initial MVP version"
+  },
+  "1.15.2": {
+    "0.5.0": "multiplayer support",
+    "0.4.2": "fix crashes",
+    "0.4.0": "add support for 1.15"
+  },
+  "1.14.4": {
+    "0.4.2": "fix crashes",
+    "0.4.0": "add support for 1.14"
+  },
+  "1.13.2": {
+    "0.4.2": "fix crashes",
+    "0.4.0": "add support for 1.13"
+  },
+  "1.12.2": {
+    "0.5.0": "multiplayer support",
+    "0.4.2": "fix crashes",
+    "0.4.0": "update dependencies",
+    "0.2.2": "add support for 1.12.2"
+  }
 }

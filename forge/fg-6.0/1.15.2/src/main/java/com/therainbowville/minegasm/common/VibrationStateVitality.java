@@ -1,31 +1,27 @@
 package com.therainbowville.minegasm.common;
 
+import com.therainbowville.minegasm.config.ClientConfig;
+import com.therainbowville.minegasm.config.MinegasmConfig;
 import net.minecraft.entity.player.PlayerEntity;
 
-import com.therainbowville.minegasm.config.MinegasmConfig;
-import com.therainbowville.minegasm.config.ClientConfig;
-
-public class VibrationStateVitality extends AbstractVibrationState
-{
+public class VibrationStateVitality extends AbstractVibrationState {
     private int intensityCooldown;
     private boolean targetMet;
-    
-    public VibrationStateVitality()
-    {
+
+    public VibrationStateVitality() {
         super(1);
         intensityCooldown = 0;
         targetMet = false;
     }
-    
-    public void onTick(PlayerEntity player)
-    {
+
+    public void onTick(PlayerEntity player) {
         float playerHealth = player.getHealth();
         float playerFoodLevel = player.getFoodData().getFoodLevel();
-        
-        if ((MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST) && playerHealth > 0 && playerHealth <= 1 ) 
-          || (!MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST) && playerHealth >= 20 && playerFoodLevel >= 20) ){
 
-            if (targetMet == false){
+        if ((MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST) && playerHealth > 0 && playerHealth <= 1)
+                || (!MinegasmConfig.mode.equals(ClientConfig.GameplayMode.MASOCHIST) && playerHealth >= 20 && playerFoodLevel >= 20)) {
+
+            if (targetMet == false) {
                 targetMet = true;
                 vibrationFeedbackCountdown = 3 * MinegasmConfig.ticksPerSecond;
             }
@@ -45,13 +41,12 @@ public class VibrationStateVitality extends AbstractVibrationState
             vibrationCountdown = 1;
         }
     }
-    
-    public int getIntensity()
-    {
+
+    public int getIntensity() {
         if (getIntensity("vitality") == 0) return 0;
-        
+
         //if (accumulationEnabled())
-            //return Math.toIntExact(Math.round(intensity));
+        //return Math.toIntExact(Math.round(intensity));
         //else 
         if (vibrationFeedbackCountdown > 0)
             return Math.min(100, getIntensity("vitality") + 20);

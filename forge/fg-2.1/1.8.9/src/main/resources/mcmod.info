@@ -1,16 +1,18 @@
 [
-{
-  "modid": "minegasm",
-  "name": "Minegasm",
-  "description": "Just a simple mod to bring some gasm into Minecraft. ;)",
-  "version": "0.5.0",
-  "mcversion": "${mcversion}",
-  "url": "https://minegasm.therainbowville.com/",
-  "updateUrl": "https://minegasm.therainbowville.com/updates.json",
-  "authorList": ["RSwoop"],
-  "credits": "",
-  "logoFile": "minegasm.png",
-  "screenshots": [],
-  "dependencies": []
-}
+  {
+    "modid": "minegasm",
+    "name": "Minegasm",
+    "description": "Just a simple mod to bring some gasm into Minecraft. ;)",
+    "version": "0.5.0",
+    "mcversion": "${mcversion}",
+    "url": "https://minegasm.therainbowville.com/",
+    "updateUrl": "https://minegasm.therainbowville.com/updates.json",
+    "authorList": [
+      "RSwoop"
+    ],
+    "credits": "",
+    "logoFile": "minegasm.png",
+    "screenshots": [],
+    "dependencies": []
+  }
 ]

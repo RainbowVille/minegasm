@@ -16,8 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(Minegasm.MOD_ID)
-public class Minegasm
-{
+public class Minegasm {
     public static final String MOD_ID = "minegasm";
     public static final String NAME = "Minegasm";
     private static final Logger LOGGER = LogManager.getLogger();
@@ -36,8 +35,7 @@ public class Minegasm
         context.registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> new ConfigScreen(screen));
     }
 
-    private void setupCommon(final FMLCommonSetupEvent event)
-    {
+    private void setupCommon(final FMLCommonSetupEvent event) {
         LOGGER.info("Common setup...");
     }
 

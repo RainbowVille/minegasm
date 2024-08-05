@@ -1,20 +1,14 @@
 package com.therainbowville.minegasm.mixin;
-import com.therainbowville.minegasm.client.ClientEventHandler;
 
+import com.therainbowville.minegasm.client.ClientEventHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.item.EntityXPOrb;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.DamageSource;
-import net.minecraft.world.World;
-
-import net.minecraftforge.event.entity.living.LivingHealEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerPickupXpEvent;
-
-
-import net.minecraftforge.common.MinecraftForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
@@ -22,7 +16,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-import org.spongepowered.asm.mixin.Shadow;
 
 @Mixin(EntityPlayerSP.class)
 public class EntityPlayerSPMixin {
@@ -38,8 +31,10 @@ public class EntityPlayerSPMixin {
 
     @Inject(method = "attackEntityFrom", at = @At("HEAD"), cancellable = true)
     public void onHurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (Minecraft.getMinecraft().isIntegratedServerRunning()) { return; }   
-        
+        if (Minecraft.getMinecraft().isIntegratedServerRunning()) {
+            return;
+        }
+
         if (amount > 0) {
             LivingHurtEvent event = new LivingHurtEvent((EntityLivingBase) (Object) this, source, amount);
             ClientEventHandler.onHurt(event);
@@ -48,19 +43,21 @@ public class EntityPlayerSPMixin {
 
     @Inject(method = "setXPStats", at = @At("HEAD"), cancellable = true)
     public void onSetXPStats(float currentXp, int totalXp, int level, CallbackInfo ci) {
-        if (Minecraft.getMinecraft().isIntegratedServerRunning()) { return; }   
-        
+        if (Minecraft.getMinecraft().isIntegratedServerRunning()) {
+            return;
+        }
+
         int amount = totalXp - ((EntityPlayerSP) (Object) this).experienceTotal;
-        
+
         if (amount > 0) {
-           
+
             EntityXPOrb orb = new EntityXPOrb(((EntityPlayer) (Object) this).world);
             orb.xpValue = amount;
 
             LOGGER.info("Experience changed");
             PlayerPickupXpEvent event = new PlayerPickupXpEvent((EntityPlayer) (Object) this, orb);
             ClientEventHandler.onXpChange(event);
-        
+
         }
     }
 }

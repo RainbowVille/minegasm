@@ -12,29 +12,23 @@ public class Minegasm {
     public static final String MOD_ID = "minegasm";
     public static final String NAME = "Minegasm";
     public static final String MODVERSION = "0.2.2";
-
+    @Mod.Instance
+    public static Minegasm instance;
     @SidedProxy(clientSide = "com.therainbowville.minegasm.client.ClientProxy")
     private static CommonProxy proxy;
 
-
-    @Mod.Instance
-    public static Minegasm instance;
-
     @Mod.EventHandler
-    public void preInit(FMLPreInitializationEvent event)
-    {
+    public void preInit(FMLPreInitializationEvent event) {
         proxy.preInit(event);
     }
 
     @Mod.EventHandler
-    public void init(FMLInitializationEvent event)
-    {
+    public void init(FMLInitializationEvent event) {
         proxy.init(event);
     }
 
     @Mod.EventHandler
-    public void postInit(FMLPostInitializationEvent event)
-    {
+    public void postInit(FMLPostInitializationEvent event) {
         proxy.postInit(event);
     }
 }

@@ -6,28 +6,10 @@ import net.neoforged.neoforge.common.ModConfigSpec;
 import java.util.Objects;
 
 public final class ClientConfig {
-    final ModConfigSpec.ConfigValue<String> serverUrl;
-
-    final ModConfigSpec.BooleanValue vibrate;
-    final ModConfigSpec.EnumValue<GameplayMode> mode;
-    final ModConfigSpec.BooleanValue stealth;
-    final ModConfigSpec.EnumValue<TickFrequencyOptions> tickFrequency;
-    
-    final ModConfigSpec.IntValue attackIntensity;
-    final ModConfigSpec.IntValue hurtIntensity;
-    final ModConfigSpec.IntValue mineIntensity;
-    final ModConfigSpec.IntValue placeIntensity;
-    final ModConfigSpec.IntValue xpChangeIntensity;
-    final ModConfigSpec.IntValue fishingIntensity;
-    final ModConfigSpec.IntValue harvestIntensity;
-    final ModConfigSpec.IntValue vitalityIntensity;
-    final ModConfigSpec.IntValue advancementIntensity;
-    
     static final String DEFAULT_SERVER_URL = "ws://localhost:12345/buttplug";
     static final boolean DEFAULT_VIBRATE = true;
     static final GameplayMode DEFAULT_MODE = GameplayMode.NORMAL;
     static final boolean DEFAULT_STEALTH = false;
-    
     static final int DEFAULT_ATTACK_INTENSITY = 60;
     static final int DEFAULT_HURT_INTENSITY = 0;
     static final int DEFAULT_MINE_INTENSITY = 80;
@@ -37,7 +19,21 @@ public final class ClientConfig {
     static final int DEFAULT_HARVEST_INTENSITY = 0;
     static final int DEFAULT_VITALITY_INTENSITY = 0;
     static final int DEFAULT_ADVANCEMENT_INTENSITY = 100;
-    
+    final ModConfigSpec.ConfigValue<String> serverUrl;
+    final ModConfigSpec.BooleanValue vibrate;
+    final ModConfigSpec.EnumValue<GameplayMode> mode;
+    final ModConfigSpec.BooleanValue stealth;
+    final ModConfigSpec.EnumValue<TickFrequencyOptions> tickFrequency;
+    final ModConfigSpec.IntValue attackIntensity;
+    final ModConfigSpec.IntValue hurtIntensity;
+    final ModConfigSpec.IntValue mineIntensity;
+    final ModConfigSpec.IntValue placeIntensity;
+    final ModConfigSpec.IntValue xpChangeIntensity;
+    final ModConfigSpec.IntValue fishingIntensity;
+    final ModConfigSpec.IntValue harvestIntensity;
+    final ModConfigSpec.IntValue vitalityIntensity;
+    final ModConfigSpec.IntValue advancementIntensity;
+
 
     ClientConfig(final ModConfigSpec.Builder builder) {
         builder.push("buttplug");
@@ -59,7 +55,7 @@ public final class ClientConfig {
         stealth = builder
                 .translation(Minegasm.MOD_ID + ".config.stealth")
                 .define("stealth", DEFAULT_STEALTH);
-                
+
         tickFrequency = builder
                 .translation(Minegasm.MOD_ID + ".config.mode")
                 .defineEnum("tickFrequency", TickFrequencyOptions.EVERY_TICK);
@@ -80,7 +76,7 @@ public final class ClientConfig {
                 .comment("Vibration intensity when mining on custom mode")
                 .translation(Minegasm.MOD_ID + ".config.intensity.mine")
                 .defineInRange("mineIntensity", DEFAULT_MINE_INTENSITY, 0, 100);
-                
+
         placeIntensity = builder
                 .comment("Vibration intensity when placing blocks on custom mode")
                 .translation(Minegasm.MOD_ID + ".config.intensity.place")
@@ -90,7 +86,7 @@ public final class ClientConfig {
                 .comment("Vibration intensity when gaining XP on custom mode")
                 .translation(Minegasm.MOD_ID + ".config.intensity.xp_change")
                 .defineInRange("xpChangeIntensity", DEFAULT_XP_CHANGE_INTENSITY, 0, 100);
-                
+
         fishingIntensity = builder
                 .comment("Vibration intensity when fishing on custom mode")
                 .translation(Minegasm.MOD_ID + ".config.intensity.fishing")
@@ -105,7 +101,7 @@ public final class ClientConfig {
                 .comment("Vibration intensity on high level of player's vitality on custom mode")
                 .translation(Minegasm.MOD_ID + ".config.intensity.vitality")
                 .defineInRange("vitalityIntensity", DEFAULT_VITALITY_INTENSITY, 0, 100);
-                
+
         advancementIntensity = builder
                 .comment("Vibration intensity on achieving advancement on custom mode")
                 .translation(Minegasm.MOD_ID + ".config.intensity.advancement")
@@ -114,14 +110,12 @@ public final class ClientConfig {
         builder.pop();
         builder.pop();
     }
-    
-    public void resetConfigUrl()
-    {
+
+    public void resetConfigUrl() {
         ConfigHolder.CLIENT.serverUrl.set(DEFAULT_SERVER_URL);
     }
-    
-    public void resetConfigCustom()
-    {
+
+    public void resetConfigCustom() {
         ConfigHolder.CLIENT.attackIntensity.set(DEFAULT_ATTACK_INTENSITY);
         ConfigHolder.CLIENT.hurtIntensity.set(DEFAULT_HURT_INTENSITY);
         ConfigHolder.CLIENT.mineIntensity.set(DEFAULT_MINE_INTENSITY);
@@ -132,7 +126,7 @@ public final class ClientConfig {
         ConfigHolder.CLIENT.vitalityIntensity.set(DEFAULT_VITALITY_INTENSITY);
         ConfigHolder.CLIENT.advancementIntensity.set(DEFAULT_ADVANCEMENT_INTENSITY);
     }
-    
+
     public enum GameplayMode {
         NORMAL("gui." + Minegasm.MOD_ID + ".config.mode.normal"),
         MASOCHIST("gui." + Minegasm.MOD_ID + ".config.mode.masochist"),
@@ -151,30 +145,24 @@ public final class ClientConfig {
             return this.translateKey;
         }
     }
-    
+
     public enum TickFrequencyOptions {
-        EVERY_TICK(1), 
-        EVERY_OTHER_TICK(2), 
-        EVERY_5_TICKS(5), 
-        EVERY_10_TICKS(10), 
-        EVERY_20_TICKS(20), 
-        EVERY_30_TICKS(30), 
-        EVERY_40_TICKS(40), 
+        EVERY_TICK(1),
+        EVERY_OTHER_TICK(2),
+        EVERY_5_TICKS(5),
+        EVERY_10_TICKS(10),
+        EVERY_20_TICKS(20),
+        EVERY_30_TICKS(30),
+        EVERY_40_TICKS(40),
         EVERY_50_TICKS(50);
-        
+
         private int value;
-        
+
         TickFrequencyOptions(int value) {
             this.value = value;
         }
-        
-        public int getInt()
-        {
-            return value;
-        }
-        
-        public static TickFrequencyOptions fromInt(int value)
-        {
+
+        public static TickFrequencyOptions fromInt(int value) {
             for (TickFrequencyOptions type : values()) {
                 if (type.getInt() == value) {
                     return type;
@@ -182,6 +170,10 @@ public final class ClientConfig {
             }
             return null;
         }
+
+        public int getInt() {
+            return value;
+        }
     }
-    
+
 }

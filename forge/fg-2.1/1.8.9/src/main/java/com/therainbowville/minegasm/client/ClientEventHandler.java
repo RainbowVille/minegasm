@@ -1,7 +1,6 @@
 package com.therainbowville.minegasm.client;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -9,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.world.WorldEvent;
-import net.minecraftforge.fml.common.FMLCommonHandler;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,13 +20,13 @@ import java.util.UUID;
 public final class ClientEventHandler {
 
     private static final Logger LOGGER = LogManager.getLogger();
-    private static String playerName = null;
-    private static UUID playerID = null;
     private static final int TICKS_PER_SECOND = 20;
     private static final int DAY_CYCLE = 20 * 60; // 20 minutes
+    private static final double[] state = new double[DAY_CYCLE];
+    private static String playerName = null;
+    private static UUID playerID = null;
     private static int tickCounter = -1;
     private static int clientTickCounter = -1;
-    private static final double[] state = new double[DAY_CYCLE];
     private static boolean paused = false;
     private static boolean motdDisplayed = false;
 
@@ -138,7 +136,7 @@ public final class ClientEventHandler {
                         //player.sendStatusMessage(new TextComponentString(String.format("Connected to " + TextFormatting.GREEN + "%s" + TextFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
                     } else {
                         LOGGER.debug("Failed to connect");
-                       // player.sendStatusMessage(new TextComponentString(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
+                        // player.sendStatusMessage(new TextComponentString(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
                     }
                 } else {
                     clearState();

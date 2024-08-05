@@ -14,6 +14,16 @@ import org.apache.logging.log4j.Logger;
 public class CommonProxy {
     public static Logger logger;
 
+    @SubscribeEvent
+    public static void registerBlocks(RegistryEvent.Register<Block> event) {
+        logger.info("Common RegisterBlocks...");
+    }
+
+    @SubscribeEvent
+    public static void registerItems(RegistryEvent.Register<Item> event) {
+        logger.info("Common RegisterItems...");
+    }
+
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
         logger.info("Common PreInit...");
@@ -25,15 +35,5 @@ public class CommonProxy {
 
     public void postInit(FMLPostInitializationEvent event) {
         logger.info("Common PostInit...");
-    }
-
-    @SubscribeEvent
-    public static void registerBlocks(RegistryEvent.Register<Block> event) {
-        logger.info("Common RegisterBlocks...");
-    }
-
-    @SubscribeEvent
-    public static void registerItems(RegistryEvent.Register<Item> event) {
-        logger.info("Common RegisterItems...");
     }
 }

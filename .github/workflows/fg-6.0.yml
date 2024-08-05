@@ -20,24 +20,24 @@ jobs:
       run:
         working-directory: forge/fg-6.0
     steps:
-    - uses: actions/checkout@v4
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        distribution: 'zulu'
-        java-version: |
-          8
-          16
-          17
-          21
-    - name: Setup Gradle
-      uses: gradle/actions/setup-gradle@v3
-      with:
-        gradle-version: 8.9
-    - name: Run Gradle build
-      working-directory: forge/fg-6.0
-      run: gradle :${{ inputs.version }}:build
-    - uses: actions/upload-artifact@v4
-      with:
-        name: Minegasm-${{ inputs.version }}
-        path: forge/fg-6.0/${{ inputs.version }}/build/libs/*-${{ inputs.version }}*
+      - uses: actions/checkout@v4
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: |
+            8
+            16
+            17
+            21
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+        with:
+          gradle-version: 8.9
+      - name: Run Gradle build
+        working-directory: forge/fg-6.0
+        run: gradle :${{ inputs.version }}:build
+      - uses: actions/upload-artifact@v4
+        with:
+          name: Minegasm-${{ inputs.version }}
+          path: forge/fg-6.0/${{ inputs.version }}/build/libs/*-${{ inputs.version }}*

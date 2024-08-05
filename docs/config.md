@@ -6,9 +6,12 @@ nav_order: 3
 
 # Configuration
 
-Since `v0.2`, it is possible to customize the behaviors of the mod to certain extent. It might be done through the mod config screen (when available) or by editing the `minegasm-client.toml` config file manually with a text editor. The file should typically reside in the minecraft's config directory (usually `.minecraft/config`).
+Since `v0.2`, it is possible to customize the behaviors of the mod to certain extent. It might be done through the mod
+config screen (when available) or by editing the `minegasm-client.toml` config file manually with a text editor. The
+file should typically reside in the minecraft's config directory (usually `.minecraft/config`).
 
 There are a few tables (collections of key/value pairs) in the config file:
+
 * `buttplug`: to configure the connection to the buttplug server
 * `minegasm`: to configure the in-game behaviors of the mod
 
@@ -22,12 +25,13 @@ At the moment, there is only one option:
 
 ## minegasm
 
-| Config   | Key                           | Description                                                           |
-|----------|-------------------------------|-----------------------------------------------------------------------|
-| Vibrate  | `vibrate`                     | Enable/disable vibration                                              |
-| Mode     | `mode`                        | Select gameplay mode: NORMAL, MASOCHIST, HEDONIST, or CUSTOM          |
+| Config  | Key       | Description                                                  |
+|---------|-----------|--------------------------------------------------------------|
+| Vibrate | `vibrate` | Enable/disable vibration                                     |
+| Mode    | `mode`    | Select gameplay mode: NORMAL, MASOCHIST, HEDONIST, or CUSTOM |
 
 Furthermore, it contains the following table(s):
+
 * intensity
 
 ### intensity

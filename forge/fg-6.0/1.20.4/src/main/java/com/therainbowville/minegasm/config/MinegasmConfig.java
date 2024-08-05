@@ -22,7 +22,7 @@ public class MinegasmConfig {
     public static boolean stealth;
     public static int tickFrequency;
     public static float ticksPerSecond;
-    
+
     public static int attackIntensity;
     public static int hurtIntensity;
     public static int mineIntensity;
@@ -48,23 +48,21 @@ public class MinegasmConfig {
             LOGGER.debug("Baked server config");
         }
     }
-    
-    public static void save()
-    {
+
+    public static void save() {
         ConfigHelper.saveClient();
     }
-    
+
 }
 
-class MinegasmConfigBuffer
-{
+class MinegasmConfigBuffer {
     public String serverUrl;
 
     public boolean vibrate;
     public ClientConfig.GameplayMode mode = ClientConfig.GameplayMode.NORMAL;
     public boolean stealth;
     public int tickFrequency;
-    
+
     public int attackIntensity;
     public int hurtIntensity;
     public int mineIntensity;
@@ -74,15 +72,14 @@ class MinegasmConfigBuffer
     public int harvestIntensity;
     public int vitalityIntensity;
     public int advancementIntensity;
-    
-    MinegasmConfigBuffer()
-    {
+
+    MinegasmConfigBuffer() {
         this.serverUrl = MinegasmConfig.serverUrl;
         this.vibrate = MinegasmConfig.vibrate;
         this.mode = MinegasmConfig.mode;
         this.stealth = MinegasmConfig.stealth;
         this.tickFrequency = MinegasmConfig.tickFrequency;
-        
+
         this.attackIntensity = MinegasmConfig.attackIntensity;
         this.hurtIntensity = MinegasmConfig.hurtIntensity;
         this.mineIntensity = MinegasmConfig.mineIntensity;

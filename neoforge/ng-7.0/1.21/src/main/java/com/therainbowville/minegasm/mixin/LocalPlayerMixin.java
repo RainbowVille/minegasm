@@ -1,16 +1,12 @@
 package com.therainbowville.minegasm.mixin;
-import com.therainbowville.minegasm.client.ClientEventHandler;
 
+import com.therainbowville.minegasm.client.ClientEventHandler;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.world.damagesource.DamageSource;
-
 import net.neoforged.neoforge.common.damagesource.DamageContainer;
-import net.neoforged.neoforge.event.entity.living.LivingHealEvent;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerXpEvent.XpChange;
-
-import net.neoforged.neoforge.common.NeoForge;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,8 +29,10 @@ public class LocalPlayerMixin {
 
     @Inject(method = "hurt", at = @At("HEAD"), cancellable = true)
     public void onHurt(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
-        if (Minecraft.getInstance().isLocalServer()) { return; }
-        
+        if (Minecraft.getInstance().isLocalServer()) {
+            return;
+        }
+
         if (amount > 0) {
             LivingDamageEvent event = new LivingDamageEvent.Post((LocalPlayer) (Object) this, new DamageContainer(source, amount));
             ClientEventHandler.onHurt(event);
@@ -42,14 +40,15 @@ public class LocalPlayerMixin {
     }
 
     @Inject(method = "setExperienceValues", at = @At("HEAD"), cancellable = true)
-    public void onSetExperienceValues(float xpProgress, int totalXp, int experienceLevel, CallbackInfo ci) {       
-        if (Minecraft.getInstance().isLocalServer()) { return; }
-        
+    public void onSetExperienceValues(float xpProgress, int totalXp, int experienceLevel, CallbackInfo ci) {
+        if (Minecraft.getInstance().isLocalServer()) {
+            return;
+        }
+
         int amount = totalXp - ((LocalPlayer) (Object) this).totalExperience;
-        if (amount > 0)
-        {
+        if (amount > 0) {
             XpChange event = new XpChange((LocalPlayer) (Object) this, amount);
-            ClientEventHandler.onXpChange(event);           
+            ClientEventHandler.onXpChange(event);
         }
     }
 }

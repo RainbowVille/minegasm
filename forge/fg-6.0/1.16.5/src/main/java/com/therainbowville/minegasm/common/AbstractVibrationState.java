@@ -1,62 +1,33 @@
 package com.therainbowville.minegasm.common;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import com.therainbowville.minegasm.config.ClientConfig;
 import com.therainbowville.minegasm.config.MinegasmConfig;
-
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+
+import java.util.HashMap;
+import java.util.Map;
 
 // Architecture inspired from https://github.com/Fyustorm/mInetiface
-public abstract class AbstractVibrationState
-{
-    
+public abstract class AbstractVibrationState {
+
     protected static final org.apache.logging.log4j.Logger LOGGER = LogManager.getLogger();
     protected final float streakCountdownAmount;
     protected float intensity;
 
     protected float vibrationCountdown;
     protected float vibrationFeedbackCountdown;
-    
-    protected AbstractVibrationState(float streakSeconds)
-    {
+
+    protected AbstractVibrationState(float streakSeconds) {
         streakCountdownAmount = streakSeconds;
         vibrationCountdown = 0;
         vibrationFeedbackCountdown = 0;
         intensity = 0;
     }
-    
-    public void onTick()
-    {
-        if (accumulationEnabled())
-        {
-            if (vibrationCountdown > 0)
-                vibrationCountdown--;
-            else if (intensity > 0) {
-                intensity = Math.max(0, intensity - 5);
-                vibrationCountdown = streakCountdownAmount * MinegasmConfig.ticksPerSecond;
-            }
-        } else {
-            vibrationCountdown = Math.max(0, vibrationCountdown - 1);        
-        }
-        
-        vibrationFeedbackCountdown = Math.max(0, vibrationFeedbackCountdown - 1);
-    }
-    
-    public void resetState()
-    {
-        vibrationCountdown = 0;
-        vibrationFeedbackCountdown = 0;
-        intensity = 0;
-    }
-    
-    protected static boolean accumulationEnabled()
-    {
+
+    protected static boolean accumulationEnabled() {
         return MinegasmConfig.mode.equals(ClientConfig.GameplayMode.ACCUMULATION);
     }
-    
+
     public static int getIntensity(String type) {
         Map<String, Integer> normal = new HashMap<>();
         normal.put("attack", 60);
@@ -90,7 +61,7 @@ public abstract class AbstractVibrationState
         hedonist.put("harvest", 20);
         hedonist.put("vitality", 10);
         hedonist.put("advancement", 100);
-        
+
         Map<String, Integer> accumulation = new HashMap<>();
         accumulation.put("attack", 1);
         accumulation.put("hurt", 1);
@@ -115,18 +86,44 @@ public abstract class AbstractVibrationState
 
 
         int returnValue = -1;
-        
-        switch (MinegasmConfig.mode)
-        {
-            case NORMAL: returnValue = normal.get(type);
-            case MASOCHIST: returnValue = masochist.get(type);
-            case HEDONIST: returnValue = hedonist.get(type);
-            case ACCUMULATION: returnValue = accumulation.get(type);
-            case CUSTOM: returnValue = custom.get(type);
-        };
-        
+
+        switch (MinegasmConfig.mode) {
+            case NORMAL:
+                returnValue = normal.get(type);
+            case MASOCHIST:
+                returnValue = masochist.get(type);
+            case HEDONIST:
+                returnValue = hedonist.get(type);
+            case ACCUMULATION:
+                returnValue = accumulation.get(type);
+            case CUSTOM:
+                returnValue = custom.get(type);
+        }
+        ;
+
         return returnValue;
     }
-    
+
+    public void onTick() {
+        if (accumulationEnabled()) {
+            if (vibrationCountdown > 0)
+                vibrationCountdown--;
+            else if (intensity > 0) {
+                intensity = Math.max(0, intensity - 5);
+                vibrationCountdown = streakCountdownAmount * MinegasmConfig.ticksPerSecond;
+            }
+        } else {
+            vibrationCountdown = Math.max(0, vibrationCountdown - 1);
+        }
+
+        vibrationFeedbackCountdown = Math.max(0, vibrationFeedbackCountdown - 1);
+    }
+
+    public void resetState() {
+        vibrationCountdown = 0;
+        vibrationFeedbackCountdown = 0;
+        intensity = 0;
+    }
+
     public abstract int getIntensity();
 }

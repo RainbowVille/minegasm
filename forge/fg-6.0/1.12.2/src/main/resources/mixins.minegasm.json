@@ -5,8 +5,8 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "mixins.minegasm.refmap.json",
   "mixins": [
-    "PlayerControllerMPMixin",
     "ClientAdvancementManagerMixin",
-    "EntityPlayerSPMixin"
+    "EntityPlayerSPMixin",
+    "PlayerControllerMPMixin"
   ]
 }

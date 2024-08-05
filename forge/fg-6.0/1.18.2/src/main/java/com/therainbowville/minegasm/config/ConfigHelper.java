@@ -1,8 +1,6 @@
 package com.therainbowville.minegasm.config;
 
 import net.minecraftforge.client.ConfigGuiHandler;
-import net.minecraftforge.common.ForgeConfigSpec;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -16,7 +14,7 @@ public final class ConfigHelper {
         MinegasmConfig.stealth = ConfigHolder.CLIENT.stealth.get();
         MinegasmConfig.tickFrequency = ConfigHolder.CLIENT.tickFrequency.get().getInt();
         MinegasmConfig.ticksPerSecond = Math.max(1, Math.toIntExact(20 / MinegasmConfig.tickFrequency));
-        
+
         MinegasmConfig.attackIntensity = ConfigHolder.CLIENT.attackIntensity.get();
         MinegasmConfig.hurtIntensity = ConfigHolder.CLIENT.hurtIntensity.get();
         MinegasmConfig.mineIntensity = ConfigHolder.CLIENT.mineIntensity.get();
@@ -30,30 +28,28 @@ public final class ConfigHelper {
 
     public static void bakeServer() {
     }
-    
-    public static void saveClient()
-    {
-        try{
-        
-        MinegasmConfigBuffer buffer = new MinegasmConfigBuffer();
-    
-        ConfigHolder.CLIENT.serverUrl.set(buffer.serverUrl);
-        ConfigHolder.CLIENT.vibrate.set(buffer.vibrate);
-        ConfigHolder.CLIENT.mode.set(buffer.mode);
-        ConfigHolder.CLIENT.stealth.set(buffer.stealth);
-        ConfigHolder.CLIENT.tickFrequency.set(ClientConfig.TickFrequencyOptions.fromInt(buffer.tickFrequency));
-                
-        ConfigHolder.CLIENT.attackIntensity.set(buffer.attackIntensity);
-        ConfigHolder.CLIENT.hurtIntensity.set(buffer.hurtIntensity);
-        ConfigHolder.CLIENT.mineIntensity.set(buffer.mineIntensity);
-        ConfigHolder.CLIENT.placeIntensity.set(buffer.placeIntensity);
-        ConfigHolder.CLIENT.xpChangeIntensity.set(buffer.xpChangeIntensity);
-        ConfigHolder.CLIENT.fishingIntensity.set(buffer.fishingIntensity);
-        ConfigHolder.CLIENT.harvestIntensity.set(buffer.harvestIntensity);
-        ConfigHolder.CLIENT.vitalityIntensity.set(buffer.vitalityIntensity);
-        ConfigHolder.CLIENT.advancementIntensity.set(buffer.advancementIntensity);
-        } catch (Throwable e)
-        {
+
+    public static void saveClient() {
+        try {
+
+            MinegasmConfigBuffer buffer = new MinegasmConfigBuffer();
+
+            ConfigHolder.CLIENT.serverUrl.set(buffer.serverUrl);
+            ConfigHolder.CLIENT.vibrate.set(buffer.vibrate);
+            ConfigHolder.CLIENT.mode.set(buffer.mode);
+            ConfigHolder.CLIENT.stealth.set(buffer.stealth);
+            ConfigHolder.CLIENT.tickFrequency.set(ClientConfig.TickFrequencyOptions.fromInt(buffer.tickFrequency));
+
+            ConfigHolder.CLIENT.attackIntensity.set(buffer.attackIntensity);
+            ConfigHolder.CLIENT.hurtIntensity.set(buffer.hurtIntensity);
+            ConfigHolder.CLIENT.mineIntensity.set(buffer.mineIntensity);
+            ConfigHolder.CLIENT.placeIntensity.set(buffer.placeIntensity);
+            ConfigHolder.CLIENT.xpChangeIntensity.set(buffer.xpChangeIntensity);
+            ConfigHolder.CLIENT.fishingIntensity.set(buffer.fishingIntensity);
+            ConfigHolder.CLIENT.harvestIntensity.set(buffer.harvestIntensity);
+            ConfigHolder.CLIENT.vitalityIntensity.set(buffer.vitalityIntensity);
+            ConfigHolder.CLIENT.advancementIntensity.set(buffer.advancementIntensity);
+        } catch (Throwable e) {
             LOGGER.info(e);
         }
     }

@@ -12,15 +12,15 @@ import org.apache.logging.log4j.Logger;
 public class ClientProxy extends CommonProxy {
     public static Logger logger;
 
+    @SubscribeEvent
+    public static void registerModels(ModelRegistryEvent event) {
+        logger.info("Client RegisterModels...");
+    }
+
     @Override
     public void preInit(FMLPreInitializationEvent event) {
         logger = event.getModLog();
         super.preInit(event);
         logger.info("Client PreInit...");
-    }
-
-    @SubscribeEvent
-    public static void registerModels(ModelRegistryEvent event) {
-        logger.info("Client RegisterModels...");
     }
 }
