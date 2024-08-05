@@ -4,6 +4,9 @@ repository: RainbowVille/minegasm
 description: A haptics Minecraft (Neo)Forge mod
 theme: just-the-docs
 color_scheme: minegasm
+aux_links:
+  "Minegasm on GitHub":
+    - "//github.com/RainbowVille/minegasm"
 callouts:
   warning:
     color: red
