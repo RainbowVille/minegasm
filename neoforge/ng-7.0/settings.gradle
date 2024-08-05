@@ -16,3 +16,5 @@ rootDir.eachDir { dir ->
         include ":${dir.name}"
     }
 }
+
+includeBuild '../../common'

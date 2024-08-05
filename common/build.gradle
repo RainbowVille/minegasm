@@ -1,0 +1,12 @@
+apply plugin: 'java'
+
+group = "com.therainbowville.minegasm"
+version = "0.1.0"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'io.github.blackspherefollower:buttplug4j.connectors.jetty.websocket.client:3.1.105'
+}
