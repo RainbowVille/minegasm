@@ -1,4 +1,4 @@
-buildscript {
+/*buildscript {
     repositories {
         //new forge repository
         maven { url "https://maven.minecraftforge.net" }
@@ -90,4 +90,4 @@ reobf {
     //shadowJar {}
 }
 
-build.dependsOn shadowJar
+build.dependsOn shadowJar*/

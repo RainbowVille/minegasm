@@ -103,7 +103,7 @@ dependencies {
     implementation "net.neoforged:neoforge:${neo_version}"
     implementation 'io.github.blackspherefollower:buttplug4j.connectors.jetty.websocket.client:3.1.105'
 
-    implementation 'com.therainbowville.minegasm:common:0.1.0'
+    implementation project(':common')
 
     // Example optional mod dependency with JEI
     // The JEI API is declared for compile time use, while the full JEI artifact is used at runtime

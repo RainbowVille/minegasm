@@ -1,0 +1,78 @@
+pluginManagement {
+    repositories {
+        mavenLocal()
+        gradlePluginPortal()
+        maven {
+            url = "https://files.minecraftforge.net/maven"
+        }
+        maven {
+            url = "https://maven.minecraftforge.net/"
+        }
+        maven {
+            url = "https://maven.neoforged.net/releases"
+        }
+        mavenCentral()
+    }
+}
+
+rootProject.name = 'minegasm'
+
+// Common module
+include 'common'
+
+// Function to include subprojects
+def includeSubprojects(String path) {
+    file(path).eachDir { dir ->
+        // Skip hidden directories and 'gradle' directory
+        if (dir.name.startsWith('.') || dir.name == 'gradle') return
+
+        def projectPath = ':' + path.replace('/', ':') + ':' + dir.name
+        include projectPath
+        project(projectPath).projectDir = dir
+
+        // Check for Minecraft version subfolders
+        dir.eachDir { mcDir ->
+            // Skip hidden directories and 'gradle' directory
+            if (mcDir.name.startsWith('.') || mcDir.name == 'gradle') return
+
+            def mcProjectPath = projectPath + ':' + mcDir.name
+            include mcProjectPath
+            project(mcProjectPath).projectDir = mcDir
+        }
+    }
+}
+
+// Include Forge versions
+includeSubprojects('forge')
+
+// Include NeoForge versions
+includeSubprojects('neoforge')
+
+// Utility function to get all Forge subprojects
+ext.forgeProjects = { ->
+    gradle.rootProject.subprojects.findAll { it.path.startsWith(':forge') }
+}
+
+// Utility function to get all NeoForge subprojects
+ext.neoForgeProjects = { ->
+    gradle.rootProject.subprojects.findAll { it.path.startsWith(':neoforge') }
+}
+
+// Utility function to get all mod subprojects (Forge + NeoForge)
+ext.modProjects = { ->
+    gradle.rootProject.subprojects.findAll { it.path.startsWith(':forge') || it.path.startsWith(':neoforge') }
+}
+
+// Utility function to get Minecraft version from project path
+ext.getMcVersion = { String projectPath ->
+    def parts = projectPath.tokenize(':')
+    parts.size() >= 2 ? parts.last() : null
+}
+
+// Print discovered projects and their Gradle versions for verification
+gradle.projectsEvaluated {
+    println "Discovered projects:"
+    modProjects().each { project ->
+        println "  ${project.path} (Gradle ${project.gradle.gradleVersion})"
+    }
+}
