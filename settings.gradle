@@ -7,11 +7,27 @@ pluginManagement {
     }
 }
 
-include("common")
-//include("fabric-like")
-//include("fabric")
-//include("quilt")
-include("forge")
-include("neoforge")
-
 rootProject.name = "minegasm"
+
+// Function to include projects based on a base directory, skipping hidden and unwanted directories
+def includeProjectsFrom(baseDir) {
+    def baseDirFile = file(baseDir)
+    if (baseDirFile.isDirectory()) {
+        baseDirFile.eachDir { dir ->
+            if (dir.isDirectory() && !dir.name.startsWith('.') && !dir.name.equals('.gradle')) {
+                def version = dir.name
+                def projectPath = "${baseDir.replace('/', ':')}:${version.replace('/', ':')}"
+                include(projectPath)
+                project(":$projectPath").projectDir = dir
+            }
+        }
+    }
+}
+
+// Include projects from 'forge' and 'neoforge' directories
+includeProjectsFrom('forge')
+includeProjectsFrom('neoforge')
+
+// Include the 'common' project
+include 'common'
+project(':common').projectDir = file('common')
