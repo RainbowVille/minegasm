@@ -13,6 +13,7 @@ pluginManagement {
         id("gg.essential.defaults") version egtVersion
         id("gg.essential.multi-version.root") version egtVersion
         id("gg.essential.multi-version.api-validation") version egtVersion
+        id("com.gradleup.shadow") version "8.3.3"
     }
 }
 
