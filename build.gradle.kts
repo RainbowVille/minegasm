@@ -1,3 +1,5 @@
+import net.fabricmc.loom.extension.MixinExtension
+
 plugins {
     kotlin("jvm")
     id("gg.essential.multi-version")
@@ -31,6 +33,8 @@ dependencies {
     // Add any common dependencies here
     // For example:
     // implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    annotationProcessor("org.spongepowered:mixin:0.8.5:processor")
+    implementation("io.github.blackspherefollower:buttplug4j.connectors.jetty.websocket.client:3.1.105")
 }
 
 tasks {

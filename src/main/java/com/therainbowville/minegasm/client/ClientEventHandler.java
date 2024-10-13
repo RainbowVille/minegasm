@@ -3,10 +3,10 @@ package com.therainbowville.minegasm.client;
 import com.therainbowville.minegasm.common.*;
 import com.therainbowville.minegasm.config.MinegasmConfig;
 import net.minecraft.client.Minecraft;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.text.StringTextComponent;
-import net.minecraft.util.text.TextFormatting;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.network.chat.TextComponent;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraftforge.common.util.FakePlayer;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityJoinWorldEvent;
@@ -74,8 +74,8 @@ public class ClientEventHandler {
 
     private static boolean isPlayer(Entity entity) {
         try {
-            if (entity instanceof PlayerEntity && !(entity instanceof FakePlayer)) {
-                PlayerEntity player = (PlayerEntity) entity;
+            if (entity instanceof Player && !(entity instanceof FakePlayer)) {
+                Player player = (Player) entity;
                 ;
                 UUID uuid = player.getGameProfile().getId();
                 return uuid.equals(playerId);
@@ -97,7 +97,7 @@ public class ClientEventHandler {
     public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
         try {
             if (event.phase == TickEvent.Phase.END && isPlayer(event.player)) {
-                PlayerEntity player = event.player;
+                Player player = event.player;
 
                 tickCounter = (tickCounter + 1) % 100;
 
@@ -201,7 +201,7 @@ public class ClientEventHandler {
     @SubscribeEvent
     public static void onXpChange(PlayerXpEvent.XpChange event) {
         if (isPlayer(event.getEntityLiving())) {
-            ((VibrationStateXpChange) vibrationStates.get("xpChange")).onXpChange(((PlayerEntity) event.getEntityLiving()).totalExperience, event.getAmount());
+            ((VibrationStateXpChange) vibrationStates.get("xpChange")).onXpChange(((Player) event.getEntityLiving()).totalExperience, event.getAmount());
         }
     }
 
@@ -220,11 +220,11 @@ public class ClientEventHandler {
             return;
         }
 
-        if (entity instanceof PlayerEntity) {
+        if (entity instanceof Player) {
             LOGGER.info("Client Entered world: " + entity.toString());
 
             try {
-                PlayerEntity player = (PlayerEntity) entity;
+                Player player = (Player) entity;
                 UUID uuid = player.getGameProfile().getId();
 
                 if (uuid.equals(Minecraft.getInstance().player.getGameProfile().getId())) {
@@ -250,12 +250,12 @@ public class ClientEventHandler {
 
         if (ToyController.isConnected) return;
 
-        if (entity instanceof PlayerEntity) {
+        if (entity instanceof Player) {
             LOGGER.info("Player respawn world: " + entity.toString());
 
             new Thread(() -> {
                 try {
-                    PlayerEntity player = (PlayerEntity) entity;
+                    Player player = (Player) entity;
                     UUID uuid = player.getGameProfile().getId();
 
                     if (uuid.equals(Minecraft.getInstance().player.getGameProfile().getId())) {
@@ -264,10 +264,10 @@ public class ClientEventHandler {
                         if (ToyController.connectDevice()) {
                             ((VibrationStateClient) vibrationStates.get("generic")).setVibration(5, 1);
                             if (!MinegasmConfig.stealth) {
-                                player.displayClientMessage(new StringTextComponent(String.format("Connected to " + TextFormatting.GREEN + "%s" + TextFormatting.RESET + " [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
+                                player.displayClientMessage(new TextComponent(String.format("Connected to %s [%d]", ToyController.getDeviceName(), ToyController.getDeviceId())), true);
                             }
                         } else if (!MinegasmConfig.stealth) {
-                            player.displayClientMessage(new StringTextComponent(String.format(TextFormatting.YELLOW + "Minegasm " + TextFormatting.RESET + "failed to start\n%s", ToyController.getLastErrorMessage())), false);
+                            player.displayClientMessage(new TextComponent(String.format("Minegasm failed to start\n%s", ToyController.getLastErrorMessage())), false);
                         }
                         playerId = uuid;
                     }

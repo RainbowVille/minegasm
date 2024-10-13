@@ -1,17 +1,17 @@
 package com.therainbowville.minegasm.common;
 
 import com.therainbowville.minegasm.config.MinegasmConfig;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.phys.Vec3;
 
 public class VibrationStateFish extends AbstractVibrationState {
     public VibrationStateFish() {
         super(0);
     }
 
-    public void onTick(PlayerEntity player) {
+    public void onTick(Player player) {
         if (player.fishing != null) {
-            Vector3d vector = player.fishing.getDeltaMovement();
+            Vec3 vector = player.fishing.getDeltaMovement();
             double x = vector.x();
             double y = vector.y();
             double z = vector.z();

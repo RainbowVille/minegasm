@@ -1,7 +1,6 @@
 package com.therainbowville.minegasm.common;
 
 import com.therainbowville.minegasm.config.ConfigHolder;
-import com.therainbowville.minegasm.config.ConfigScreen;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -32,7 +31,7 @@ public class Minegasm {
         eventBus.addListener(this::setupCommon);
         eventBus.addListener(this::setupClient);
 
-        context.registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> new ConfigScreen(screen));
+        //context.registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (mc, screen) -> new ConfigScreen(screen));
     }
 
     private void setupCommon(final FMLCommonSetupEvent event) {

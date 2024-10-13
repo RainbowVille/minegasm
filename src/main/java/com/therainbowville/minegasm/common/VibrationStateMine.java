@@ -1,7 +1,7 @@
 package com.therainbowville.minegasm.common;
 
 import com.therainbowville.minegasm.config.MinegasmConfig;
-import net.minecraft.block.BlockState;
+import net.minecraft.world.level.block.state.BlockState;
 
 public class VibrationStateMine extends AbstractVibrationState {
     public VibrationStateMine() {

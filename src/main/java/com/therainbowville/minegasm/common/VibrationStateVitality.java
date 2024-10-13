@@ -2,7 +2,7 @@ package com.therainbowville.minegasm.common;
 
 import com.therainbowville.minegasm.config.ClientConfig;
 import com.therainbowville.minegasm.config.MinegasmConfig;
-import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.world.entity.player.Player;
 
 public class VibrationStateVitality extends AbstractVibrationState {
     private int intensityCooldown;
@@ -14,7 +14,7 @@ public class VibrationStateVitality extends AbstractVibrationState {
         targetMet = false;
     }
 
-    public void onTick(PlayerEntity player) {
+    public void onTick(Player player) {
         float playerHealth = player.getHealth();
         float playerFoodLevel = player.getFoodData().getFoodLevel();
 
